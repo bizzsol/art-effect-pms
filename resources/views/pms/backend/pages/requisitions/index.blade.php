@@ -45,8 +45,7 @@
                                 <h5 class="mb-0">
                                     <button class="btn btn-link" data-toggle="collapse" data-target="#filter"
                                             aria-expanded="true" aria-controls="filter">
-                                        <h5 class="text-white"><strong><i
-                                                        class="las la-chevron-circle-right la-spin"></i>&nbsp;Search</strong>
+                                        <h5 class="text-white"><strong><i class="las la-chevron-circle-right la-spin"></i>&nbsp;Search</strong>
                                         </h5>
                                     </button>
                                 </h5>
@@ -89,8 +88,7 @@
                                                             @if(isset($categories[0]))
 
                                                                 @foreach($categories as $category)
-                                                                    <option value="{{ $category->id }}" {{ request()->has('category_id') && request()->get('category_id') == $category->id ? 'selected' : '' }}>{{
-                                        $category->name.'('.$category->code.')'}}
+                                                                    <option value="{{ $category->id }}" {{ request()->has('category_id') && request()->get('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name.'('.$category->code.')'}}
                                                                     </option>
                                                                 @endforeach
                                                             @endif
@@ -98,32 +96,34 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label for="from"><strong>Start Date</strong></label>
-                                                    <input type="date" name="from" id="from" value="{{ $from }}"
-                                                           class="form-control">
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="from"><strong>Start Date</strong></label>
+                                                            <input type="date" name="from" id="from" value="{{ $from }}"
+                                                                   class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="to"><strong>End Date</strong></label>
+                                                            <input type="date" name="to" id="to" value="{{ $to }}"
+                                                                   class="form-control">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label for="to"><strong>End Date</strong></label>
-                                                    <input type="date" name="to" id="to" value="{{ $to }}"
-                                                           class="form-control">
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-6 pt-4">
+                                                        <button class="btn btn-sm btn-block btn-success report-button mt-2" type="submit"><i class="la la-search"></i>&nbsp;Search</button>
+                                                    </div>
+                                                    <div class="col-md-6 pt-4">
+                                                        <a class="btn btn-sm btn-block btn-danger mt-2" href="{{ url('pms/requisition/requisition') }}"><i class="la la-times"></i>&nbsp;Clear</a>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-1 pt-1 pl-0 mt-4">
-                                                <button class="btn btn-sm btn-block btn-success report-button"
-                                                        type="submit"><i class="la la-search"></i>&nbsp;Search
-                                                </button>
-                                            </div>
-                                            <div class="col-md-1 pt-1 pl-0 mt-4">
-                                                <a class="btn btn-sm btn-block btn-danger"
-                                                   href="{{ url('pms/requisition/requisition') }}"><i
-                                                            class="la la-times"></i>&nbsp;Clear</a>
-                                            </div>
-
                                         </div>
                                     </form>
                                 </div>

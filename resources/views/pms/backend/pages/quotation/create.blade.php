@@ -17,35 +17,32 @@
         .mask-money {
             text-align: right !important;
         }
-
     </style>
 @endsection
 @section('main-content')
-
     <div class="main-content">
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="{{  route('pms.dashboard') }}">{{ __('Home') }}</a>
+                        <a href="{{ route('pms.dashboard') }}">Home</a>
                     </li>
                     <li>
                         <a href="#">PMS</a>
                     </li>
-                    <li class="active">{{__($title)}}</li>
+                    <li class="active">{{ $title }}</li>
                     <li class="top-nav-btn">
                         <a href="javascript:history.back()" class="btn btn-sm btn-warning text-white"
                            data-toggle="tooltip" title="Back"> <i class="las la-chevron-left"></i>Back</a>
                     </li>
-                </ul><!-- /.breadcrumb -->
+                </ul>
             </div>
 
             <div class="page-content">
                 <div class="">
                     <div class="panel panel-info">
-                        <form method="post" action="{{ route('pms.rfp.quotations.store') }}"
-                              enctype="multipart/form-data">
+                        <form method="post" action="{{ route('pms.rfp.quotations.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="panel-body">
                                 <div class="row">
@@ -148,7 +145,7 @@
                                             <th style="width: 7.5%">Vat (%)</th>
                                             <th style="width: 10%">Vat Amount</th>
                                             <th style="width: 10%">Final Total</th>
-                                            <th style="width: 10%">Technical Specification</th>
+                                            <th style="width: 10%" title="Technical Specification">Specs</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -240,12 +237,16 @@
                                                     </td>
 
                                                     <td class="text-center">
-                                                        <input type="file"
+                                                        <label class="btn btn-sm btn-dark custom-file-upload">
+                                                            <input type="file"
                                                                name="item_technical_specification_file[{{$item->product->id}}]"
                                                                accept="application/pdf"
                                                                id="item_technical_specification_file{{$item->product->id}}"
-                                                               placeholder="Upload technical file"
-                                                        >
+                                                               style="display: none"
+                                                               onchange="checkFile($(this))"
+                                                            >
+                                                            <span class="custom-file-upload-text">Upload</span>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -563,6 +564,16 @@
                     $('#currency_id').html(currencies != '' ? currencies : '<option value="">Choose Currency</option>').change();
                     $('#supplier_payment_terms_id').html(response.terms).change();
                 });
+        }
+
+        function checkFile(element) {
+            if(element[0].files.length == 0){
+                element.parent().removeClass('btn-success').addClass('btn-dark');
+                element.parent().find('.custom-file-upload-text').html('Upload');
+            }else{
+                element.parent().removeClass('btn-dark').addClass('btn-success');
+                element.parent().find('.custom-file-upload-text').html('Uploded');
+            }
         }
     </script>
 @endsection

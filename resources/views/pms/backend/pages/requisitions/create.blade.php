@@ -34,8 +34,7 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-3 col-sm-6">
-                                        <p class="mb-1 font-weight-bold"><label for="reference"><strong>{{ __('Reference No.')
-                            }} <span class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <p class="mb-1 font-weight-bold"><label for="reference"><strong>{{ __('Reference No.') }} <span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="text" name="reference_no" id="reference"
                                                    class="form-control rounded" aria-label="Large"
@@ -43,25 +42,21 @@
                                                    value="{{ old('reference_no',$refNo) }}">
                                             @if ($errors->has('reference_no'))
                                                 <span class="help-block">
-                                    <strong class="text-danger">{{ $errors->first('reference_no') }}</strong>
-                                </span>
+                                                    <strong class="text-danger">{{ $errors->first('reference_no') }}</strong>
+                                                </span>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-sm-6">
-                                        <p class="mb-1 font-weight-bold"><label for="date"><strong>{{ __('Date') }}
-                                                    :<span class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <p class="mb-1 font-weight-bold"><label for="requisition_date"><strong>{{ __('Date') }}:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
-                                            <input type="text" name="requisition_date" id="date"
-                                                   class="form-control rounded air-datepicker" readonly
-                                                   aria-label="Large"
-                                                   aria-describedby="inputGroup-sizing-sm" required
-                                                   value="{{ old('date')?old('date'):date('d-m-Y h:i a', time()) }}">
+                                            <input type="datetime-local" name="requisition_date" id="requisition_date"
+                                                   class="form-control rounded" required value="{{ old('requisition_date', date('Y-m-d H:i:s')) }}">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 col-sm-6">
+                                    <div class="col-md-{{ !empty($task) ? 3 : 6 }} col-sm-{{ !empty($task) ? 3 : 6 }}">
                                         <p class="mb-1 font-weight-bold"><label for="category_id"><strong>
                                                     {{ __('Category')
                                                 }}:<span class="text-danger">&nbsp;*</span>
@@ -70,17 +65,13 @@
 
                                             <select name="category_id" id="category_id" class="form-control category"
                                                     onchange="getSubCategories()">
-                                                <option value="{{ null }}" disabled {{ request()->has('category_id') &&
-                                request()->get('category_id') > 0 ? '' : 'selected' }} data-sub-category-ids=""
-                                                        data-sub-category-names="" data-sub-category-codes="">{{ __('Select
-                            Category') }}</option>
-
+                                                <option value="{{ null }}" disabled {{ request()->has('category_id') && request()->get('category_id') > 0 ? '' : 'selected' }} data-sub-category-ids=""
+                                                        data-sub-category-names="" data-sub-category-codes="">{{ __('Select Category') }}</option>
 
                                                 @if(isset($categories[0]) && !isset($task->id))
                                                     <optgroup label="Products">
                                                         @foreach($categories as $category)
-                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') &&
-                                request()->get('category_id') == $category->id ? 'selected' : (isset(session()->get('requisition-items')['category_id']) && session()->get('requisition-items')['category_id'] == $category->id ? 'selected' : '') }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
+                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') && request()->get('category_id') == $category->id ? 'selected' : (isset(session()->get('requisition-items')['category_id']) && session()->get('requisition-items')['category_id'] == $category->id ? 'selected' : '') }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
                                                                     data-sub-category-names="{{ $category->subCategory->pluck('name')->implode(',') }}"
                                                                     data-sub-category-codes="{{ $category->subCategory->pluck('code')->implode(',') }}">{{ $category->name.'('.$category->code.')'}}
                                                             </option>
@@ -91,8 +82,7 @@
                                                 @if(isset($fixedAssetCategories[0]) && !isset($task->id))
                                                     <optgroup label="Fixed Assets">
                                                         @foreach($fixedAssetCategories as $category)
-                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') &&
-                                request()->get('category_id') == $category->id ? 'selected' : '' }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
+                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') && request()->get('category_id') == $category->id ? 'selected' : '' }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
                                                                     data-sub-category-names="{{ $category->subCategory->pluck('name')->implode(',') }}"
                                                                     data-sub-category-codes="{{ $category->subCategory->pluck('code')->implode(',') }}">{{ $category->name.'('.$category->code.')'}}
                                                             </option>
@@ -103,8 +93,7 @@
                                                 @if(isset($cwipCategories[0]))
                                                     <optgroup label="CWIP">
                                                         @foreach($cwipCategories as $category)
-                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') &&
-                                request()->get('category_id') == $category->id ? 'selected' : '' }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
+                                                            <option value="{{ $category->id }}" {{ request()->has('category_id') && request()->get('category_id') == $category->id ? 'selected' : '' }} data-sub-category-ids="{{ $category->subCategory->pluck('id')->implode(',') }}"
                                                                     data-sub-category-names="{{ $category->subCategory->pluck('name')->implode(',') }}"
                                                                     data-sub-category-codes="{{ $category->subCategory->pluck('code')->implode(',') }}">{{ $category->name.'('.$category->code.')'}}
                                                             </option>

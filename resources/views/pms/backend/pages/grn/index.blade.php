@@ -123,5 +123,9 @@
             notify('Something went wrong!','error');
         });
     }
+
+    function sendMail() {
+        // body...
+    }
 </script>
 @endsection
