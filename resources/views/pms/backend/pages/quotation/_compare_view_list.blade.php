@@ -8,18 +8,18 @@
 
         @if($quotations->count() > 2)
             thead, tbody tr {
-                display: table;
-                width: 2000px;
-                table-layout: fixed;
-            }
+            display: table;
+            width: 2000px;
+            table-layout: fixed;
+        }
 
-            thead {
-                width: calc(2000px)
-            }
+        thead {
+            width: calc(2000px)
+        }
 
-            ul {
-                list-style: none;
-            }
+        ul {
+            list-style: none;
+        }
         @endif
     </style>
 @endsection
@@ -131,7 +131,9 @@
                                                                data-quotation-id="{{ $quotation->id }}"
                                                                style="cursor: pointer;transform: scale(1.5, 1.5)"> --}}
                                                         Approved Qty
-                                                        <input type="hidden" name="quotaion_qty" data-quotation-id="{{ $quotation->id }}" value="{{ $quotation->qty }}">
+                                                        <input type="hidden" name="quotaion_qty"
+                                                               data-quotation-id="{{ $quotation->id }}"
+                                                               value="{{ $quotation->qty }}">
                                                     </th>
                                                     <th class="text-center">Unit Price
                                                         ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
@@ -159,7 +161,9 @@
                                                         <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{isset($item->relProduct->id)? getProductAttributesFaster($item->relProduct):''}}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                         <td class="text-center">{{$item->qty}}</td>
-                                                        <td class="text-center left-quantity left-quantity-{{ $item->id }}">0</td>
+                                                        <td class="text-center left-quantity left-quantity-{{ $item->id }}">
+                                                            0
+                                                        </td>
 
                                                         @foreach($quotations as $key => $quotation)
                                                             @php
@@ -179,7 +183,7 @@
                                                                        class="form-control text-center item-quantities item-quantity-{{ $quotation->id }} itemized-quantity-{{ $item->id }}"
                                                                        data-quotation-id="{{ $quotation->id }}"
                                                                        data-item-id="{{ $item->id }}"
-                                                                       value="{{ $quotation->recommendation == 'yes' ? $item->qty : 0 }}"
+                                                                       value="{{ $quotation->recommendation == 'yes' ? $item->qty : (request()->get('type')=='direct-purchase'?$item->qty:0) }}"
                                                                        data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
                                                                        data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
                                                                        data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
@@ -189,10 +193,14 @@
                                                                        onkeyup="checkQuantity($(this))"
                                                                 >
 
-                                                                <span style="display: none" class="this-discount-amount discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount'] : 0 }}</span>
-                                                                <span style="display: none" class="this-exchange-discount-amount exchange-discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
-                                                                <span style="display: none" class="this-vat-amount vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat'] : 0 }}</span>
-                                                                <span style="display: none" class="this-exchange-vat-amount exchange-vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
+                                                                <span style="display: none"
+                                                                      class="this-discount-amount discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount'] : 0 }}</span>
+                                                                <span style="display: none"
+                                                                      class="this-exchange-discount-amount exchange-discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
+                                                                <span style="display: none"
+                                                                      class="this-vat-amount vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat'] : 0 }}</span>
+                                                                <span style="display: none"
+                                                                      class="this-exchange-vat-amount exchange-vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
                                                             </td>
                                                             <td class="text-right">{{number_format(isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0, 2)}}</td>
                                                             <td class="text-right sub-total-price-{{ $quotation->id }}">{{number_format(isset($this_prices['sub_total_price']) ? $this_prices['sub_total_price'] : 0, 2)}}</td>
@@ -243,7 +251,8 @@
 
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>(+) Vat </strong></td>
-                                                    <td class="text-right"><strong id="total-vat-amount-{{ $quotation->id }}">{{$quotation->vat}}</strong>
+                                                    <td class="text-right"><strong
+                                                                id="total-vat-amount-{{ $quotation->id }}">{{$quotation->vat}}</strong>
                                                     </td>
                                                     @if($systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : ''))
                                                         <td class="text-right">
@@ -312,6 +321,21 @@
                                                     </td>
                                                 @endforeach
                                             </tr>
+                                            @if(request()->get('type')=='direct-purchase')
+                                            <tr>
+                                                <td colspan="6" class="text-right">Choose Cost Centre</td>
+                                                @foreach($quotations as $key=>$quotation)
+                                                    <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+
+                                                        <select name="cost_centre_id" id="cost_centre_id" class="form-control">
+                                                            {!! getCostCenterForDirectPurchase($quotation->relRequestProposal->requestProposalRequisition[0]->requisition_id,$quotation->relRequestProposal->requestProposalRequisition[0]->relRequisition->hr_unit_id) !!}
+                                                        </select>
+
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                            @endif
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -445,39 +469,39 @@
             });
         });
 
-        function checkQuantity(element){
+        function checkQuantity(element) {
             var value = parseInt(element.val());
             var min = parseInt(element.attr('min'));
             var max = parseInt(element.attr('max'));
-            if(value > max){
+            if (value > max) {
                 element.val(max);
                 value = max;
-            }else if(value < min){
+            } else if (value < min) {
                 element.val(min);
                 value = min;
             }
 
             var total = 0;
-            $.each($('.itemized-quantity-'+parseInt(element.attr('data-item-id'))), function(index, val) {
+            $.each($('.itemized-quantity-' + parseInt(element.attr('data-item-id'))), function (index, val) {
                 total += parseInt($(this).val());
             });
 
-            if(total > max){
-                element.val(parseInt(value-(total-max)));
-                value = parseInt(value-(total-max));
+            if (total > max) {
+                element.val(parseInt(value - (total - max)));
+                value = parseInt(value - (total - max));
                 var left = 0;
-            }else{
-                var left = max-total;
+            } else {
+                var left = max - total;
             }
 
-            $('.left-quantity-'+parseInt(element.attr('data-item-id'))).html(left);
+            $('.left-quantity-' + parseInt(element.attr('data-item-id'))).html(left);
 
             var total_left = 0;
-            $.each($('.left-quantity'), function(index, val) {
+            $.each($('.left-quantity'), function (index, val) {
                 total_left += parseInt($(this).text());
             });
 
-            $('.total-left-quantity').html('<strong>'+total_left+'</strong>');
+            $('.total-left-quantity').html('<strong>' + total_left + '</strong>');
 
 
             var unit_price = parseFloat(element.attr('data-unit-price'));
@@ -485,64 +509,64 @@
             var discount = parseFloat(element.attr('data-discount'));
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
 
-            var sub_total = unit_price*parseFloat(element.val());
-            element.parent().parent().find('.sub-total-price-'+parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
+            var sub_total = unit_price * parseFloat(element.val());
+            element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
 
-            var exchange_sub_total = sub_total*exchange_rate;
-            element.parent().parent().find('.exchange-sub-total-price-'+parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
+            var exchange_sub_total = sub_total * exchange_rate;
+            element.parent().parent().find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
 
-            var discount_amount = (sub_total > 0 && discount > 0 ? sub_total*(discount/100) : 0);
-            var exchange_discount_amount = discount_amount*exchange_rate;
+            var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
+            var exchange_discount_amount = discount_amount * exchange_rate;
             element.parent().find('.this-discount-amount').html(discount_amount);
             element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
 
-            var after_discount = sub_total-discount_amount;
-            var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount*(vat_percentage/100) : 0);
-            var exchange_vat_amount = vat_amount*exchange_rate;
+            var after_discount = sub_total - discount_amount;
+            var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
+            var exchange_vat_amount = vat_amount * exchange_rate;
             element.parent().find('.this-vat-amount').html(vat_amount);
             element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
 
             var total_sub_total = 0;
-            $.each($('.sub-total-price-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_sub_total += parseFloat($(this).text().split(",").join(""));
             });
 
             var total_exchange_sub_total = 0;
-            $.each($('.exchange-sub-total-price-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_sub_total += parseFloat($(this).text().split(",").join(""));
             });
 
             var total_discount = 0;
-            $.each($('.discount-amount-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_discount += parseFloat($(this).text().split(",").join(""));
             });
 
             var total_exchange_discount = 0;
-            $.each($('.exchange-discount-amount-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_discount += parseFloat($(this).text().split(",").join(""));
             });
 
             var total_vat = 0;
-            $.each($('.vat-amount-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_vat += parseFloat($(this).text().split(",").join(""));
             });
 
             var total_exchange_vat = 0;
-            $.each($('.exchange-vat-amount-'+parseInt(element.attr('data-quotation-id'))), function(index, val) {
+            $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_vat += parseFloat($(this).text().split(",").join(""));
             });
 
-            $('#total-sub-total-price-'+parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
-            $('#total-exchange-sub-total-price-'+parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
+            $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
+            $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
 
-            $('#total-discount-amount-'+parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
-            $('#total-exchange-discount-amount-'+parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
+            $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
+            $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
 
-            $('#total-vat-amount-'+parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
-            $('#total-exchange-vat-amount-'+parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
+            $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
+            $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
 
-            $('#total-gross-amount-'+parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total-total_discount+total_vat).toFixed(2));
-            $('#total-exchange-gross-amount-'+parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total-total_exchange_discount+total_exchange_vat).toFixed(2));
+            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
+            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
         }
     </script>
 @endsection

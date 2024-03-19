@@ -5,6 +5,10 @@
         .po-table th {
             font-size: 10px !important;
         }
+
+        .note-editor {
+            width: 100% !important;
+        }
     </style>
 @endsection
 @section('main-content')
@@ -108,7 +112,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-9 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="requisition_id"><strong>{{ __('Requisitions') }} <span
                                                             class="text-danger">*</span></strong></label></p>
@@ -120,7 +124,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12" style="display: none">
+                                    <div class="col-md-3 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="cost_centre_id"><strong>{{ __('Cost Centre') }} <span
                                                             class="text-danger">*</span></strong></label></p>
@@ -276,7 +280,6 @@
                                                       id="terms"
                                                       class="form-control rounded summer-editor"
                                                       rows="3"
-                                                      cols="5"
                                                       placeholder="Write here...">{!! isset($quotation->relSuppliers->term_condition)?$quotation->relSuppliers->term_condition:'' !!}
                                             </textarea>
                                         </div>

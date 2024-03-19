@@ -79,13 +79,15 @@
             <th>SL</th>
             <th>Category</th>
             <th>Product</th>
+            <th>UOM</th>
             <th>Stock Qty</th>
             <th>Req. Qty</th>
             <th>PO. Qty</th>
             <th>QC. Qty</th>
             <th>Prv. Dlv.  Qty</th>
-            <th>Dlv. Qty</th>
             <th>Left. Qty</th>
+            <th>Dlv. UOM</th>
+            <th>Dlv. Qty</th>
             <th>WareHouse</th>
             <th>Cost Centre</th>
         </tr>
@@ -93,67 +95,64 @@
     <tbody>
 
         @if(isset($requisitionItems[0]))
-            @php 
-            $totalStockQty = 0;
-            $totalRequisitionQty = 0;
-            @endphp
             @foreach($requisitionItems as $key=>$item)
                 @if(isset($item->product->id))
-                    @if($item->qty!=$item->delivery_qty)
-                        
+                        @if($item->qty != $item->delivery_qty)
+                        @php
+                            $left = floor($item->qc_qty<$item->item_stock_sum ? $item->qc_qty-$item->delivery_qty : $item->item_stock_sum);
+                        @endphp
                             <tr id="SelectedRow{{$item->product->id}}">
                                 <td>{{$key+1}}</td>
                                 <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
                                 <td>{{isset($item->product->name)?$item->product->name:''}} {{ getProductAttributesFaster($item->product) }}</td>
+                                <td class="text-center">
+                                    {{ $item->product->productUnit->unit_name }}
+                                </td>
                                 <td class="text-center">{{$item->item_stock_sum}}</td>
                                 <td class="text-center">{{$item->qty}}</td>
                                 <td class="text-center">{{$item->purchase_qty}}</td>
                                 <td class="text-center">{{$item->qc_qty}}</td>
                                 <td class="text-center">{{$item->delivery_qty}}</td>
-                                <td>
-                                    <input type="number" name="delivery_qty[{{$item->product->id}}]" id="delivery_qty_{{$item->product->id}}" class="form-control deliveryQty" min="0" max="{{$item->qc_qty<$item->item_stock_sum ? $item->qc_qty-$item->delivery_qty : $item->item_stock_sum}}" data-id="{{$item->product->id}}" value="{{$item->qc_qty<$item->item_stock_sum ? $item->qc_qty-$item->delivery_qty : $item->item_stock_sum}}" data-id="{{$item->product->id}}">
-                                    </td>
-                                    <td>
-                                        <input type="hidden" value="{{$item->qc_qty-$item->delivery_qty}}" id="leftQty_{{$item->product->id}}">
-                                        <span id="leftQtyAfterSubTract_{{$item->product->id}}">{{$item->qc_qty-$item->delivery_qty}}</span>
-                                    </td>
-                                    <td>
-                                        <select class="form-control not-select2 warehouse" name="warehouse_id[{{$item->product->id}}]" id="warehouse_{{$item->product->id}}">
-                                            @if(isset($item->product->relInventoryDetails))
-                                                @foreach($item->product->relInventoryDetails as $data)
-                                                    @if(in_array($data->warehouse_id, auth()->user()->relUsersWarehouse->pluck('id')->toArray()))
-                                                    
-                                                    <option value="{{$data->warehouse_id}}" data-role="{{$data->item_warehouse_stock_sum}}"> {!! (isset($data->relWarehouse->name)?$data->relWarehouse->name:'') . '('.$data->item_warehouse_stock_sum.')' !!}</option>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </td>
-                                    <td>
-                                        @if(!($item->product->category->is_fixed_asset == 1 || $item->product->category->is_cwip == 1))
-                                            <select class="form-control not-select2 cost_centre" name="cost_centre_id[{{$item->product->id}}]" id="cost_centre_{{$item->product->id}}">
-                                               {!! $costCentres !!}
-                                            </select>
+                                <td class="text-center">
+                                    <input type="hidden" value="{{$item->qc_qty-$item->delivery_qty}}" id="leftQty_{{$item->product->id}}">
+                                    <span id="leftQtyAfterSubTract_{{$item->product->id}}">{{$item->qc_qty-$item->delivery_qty}}</span>
+                                </td>
+                                <td class="text-center">
+                                    <select name="product_unit_id[{{ $item->product->id }}]" id="product_unit_id_{{ $item->product->id }}" onchange="updateDeliveryQuantity($(this))" class="product_unit_id">
+                                        <option value="{{ $item->product->product_unit_id }}" data-conversion-rate="1">{{ $item->product->productUnit->unit_name }}</option>
+                                        @if($item->product->productUnitConversions->where('conversion_rate', '>', 0)->count() > 0)
+                                        @foreach($item->product->productUnitConversions->where('conversion_rate', '>', 0) as $key => $this_unit)
+                                        <option value="{{ $this_unit->conversion_unit_id }}" data-conversion-rate="{{ $this_unit->conversion_rate }}">{{ $this_unit->conversionUnit->unit_name }} ({{ $this_unit->conversion_rate }})</option>
+                                        @endforeach
                                         @endif
-                                    </td>
-                                </tr>
-                                @php
-                                $totalStockQty += isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0;
-                                $totalRequisitionQty += $item->qty;
-                                @endphp
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="delivery_qty[{{$item->product->id}}]" id="delivery_qty_{{$item->product->id}}" class="form-control delivery_qty text-right" min="0" max="{{$left}}" value="{{$left}}" data-id="{{$item->product->id}}" step="1" onchange="checkDeliveryQuantity($(this))" onkeyup="checkDeliveryQuantity($(this))">
+                                </td>
+                                <td>
+                                    <select class="form-control not-select2 warehouse_id" name="warehouse_id[{{$item->product->id}}]" id="warehouse_{{$item->product->id}}" onchange="updateDeliveryQuantity($(this))">
+                                        @if(isset($item->product->relInventoryDetails))
+                                            @foreach($item->product->relInventoryDetails as $data)
+                                                @if(in_array($data->warehouse_id, auth()->user()->relUsersWarehouse->pluck('id')->toArray()))
+                                                <option value="{{$data->warehouse_id}}" data-remaining="{{$data->item_warehouse_stock_sum}}"> {!! (isset($data->relWarehouse->name)?$data->relWarehouse->name:'') . ' ('.$data->item_warehouse_stock_sum.' '.$item->product->productUnit->unit_name.')' !!}</option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </td>
+                                <td>
+                                    @if(!($item->product->category->is_fixed_asset == 1 || $item->product->category->is_cwip == 1))
+                                        <select class="form-control not-select2 cost_centre" name="cost_centre_id[{{$item->product->id}}]" id="cost_centre_{{$item->product->id}}">
+                                           {!! $costCentres !!}
+                                        </select>
+                                    @endif
+                                </td>
+                            </tr>
                         @endif
                     @endif
                 @endforeach
             @endif
-            <tr>
-                <td colspan="3" class="text-right">Total</td>
-                <td colspan="" class="text-center">{{isset($totalStockQty) ? $totalStockQty : 0}}</td>
-                <td colspan="" class="text-center">{{isset($totalRequisitionQty) ? $totalRequisitionQty : 0}}</td>
-                <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td colspan="4" id="totalDeliveryQty"></td>
-            </tr>
         </tbody>
     </table>
 </div>
@@ -173,45 +172,29 @@
 @endsection
 @section('page-script')
 <script>
-    (function ($) {
-        "use strcit";
+    $('body').addClass('sidebar-main');
 
-        const calculateDeliveryQty = () => {
-            $('.deliveryQty').on('keyup', function () {
-                let id = $(this).attr('data-id');
+    function updateDeliveryQuantity(element) {
+        var rate = element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') != undefined ? element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') : 0;
+        var left = element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') != undefined ? element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') : 0;
+        var qty = Math.floor(rate*left);
 
-                let deliveryQty= parseFloat($('#delivery_qty_'+id).val());
-                let maxQty= parseFloat($('#delivery_qty_'+id).attr('max'));
-                let mainLeftQty = parseFloat($('#leftQty_'+id).val());
+        element.parent().parent().find('.delivery_qty').val(qty).attr('max', qty);
+    }
 
-                if (deliveryQty<=maxQty) {
-                    $('#leftQtyAfterSubTract_'+id).text(mainLeftQty-deliveryQty);
+    function checkDeliveryQuantity(element) {
+        var value = parseFloat(element.val());
+        var max = parseFloat(element.attr('max'));
+        var min = parseFloat(element.attr('min'));
 
-                    if (deliveryQty>0){
-                        $('#warehouse_'+id).attr('required',true);
-                    }else {
-                        $('#warehouse_'+id).attr('required',false);
-                    }
+        if(value > max){
+            element.val(max);
+        }
 
-                    let totalDeliveryQty=0;
-                    $('.deliveryQty').each(function () {
-                        if ($(this).val().length!==0){
-                            totalDeliveryQty+=parseInt($(this).val())
-                        }
-                    })
-                    $('#totalDeliveryQty').text(totalDeliveryQty);
-                }else{
-                    setTimeout(notify('Total delivery qty not greater then left qty.', 'warning'),20000)
-                    $('#delivery_qty_'+id).val(maxQty);
-                }
-
-                return false;
-            });
-        };
-
-        calculateDeliveryQty();
-
-    })(jQuery);
+        if(value < min){
+            element.val(min);
+        }
+    }
 </script>
 
 @endsection
