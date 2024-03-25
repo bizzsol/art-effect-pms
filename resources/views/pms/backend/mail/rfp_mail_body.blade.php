@@ -27,7 +27,7 @@
 	@endif
 
 	<p style="font-size:16px;font-weight:500">Yours truly,</p>
-	<p style="font-size:14px">MBM Garments Limited.</p>
+	<p style="font-size:14px">SSLZ.</p>
 	<p style="margin-top:10px"></p>
 </body>
 </html>

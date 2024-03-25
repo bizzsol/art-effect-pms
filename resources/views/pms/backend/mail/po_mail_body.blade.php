@@ -12,7 +12,7 @@
 	<p style="font-size:16px;font-weight:500">Please check the attachment below and reply to us if you need to know more.</p>
 
 	<p style="font-size:16px;font-weight:500">Yours truly,</p>
-	<p style="font-size:14px">MBM Garments Limited.</p>
+	<p style="font-size:14px">SSLZ.</p>
 	<p style="margin-top:10px"></p>
 </body>
 </html>

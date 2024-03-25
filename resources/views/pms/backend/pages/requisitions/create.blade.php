@@ -1,6 +1,11 @@
 @extends('pms.backend.layouts.master-layout')
 @section('title', session()->get('system-information')['name']. ' | '.$title)
 @section('page-css')
+<style type="text/css" media="screen">
+    .select2-container{
+        width: 100% !important;
+    }
+</style>
 @endsection
 @section('main-content')
     <div class="main-content">
@@ -51,16 +56,12 @@
                                     <div class="col-md-3 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="requisition_date"><strong>{{ __('Date') }}:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
-                                            <input type="datetime-local" name="requisition_date" id="requisition_date"
-                                                   class="form-control rounded" required value="{{ old('requisition_date', date('Y-m-d H:i:s')) }}">
+                                            <input type="datetime-local" name="requisition_date" id="requisition_date" class="form-control rounded" required value="{{ old('requisition_date', date('Y-m-d H:i:s')) }}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-{{ !empty($task) ? 3 : 6 }} col-sm-{{ !empty($task) ? 3 : 6 }}">
-                                        <p class="mb-1 font-weight-bold"><label for="category_id"><strong>
-                                                    {{ __('Category')
-                                                }}:<span class="text-danger">&nbsp;*</span>
-                                                </strong></label></p>
+                                        <p class="mb-1 font-weight-bold"><label for="category_id"><strong>{{ __('Category') }}:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
 
                                             <select name="category_id" id="category_id" class="form-control category"
@@ -134,11 +135,11 @@
                                                width="100%" id="dataTable">
                                             <thead>
                                             <tr class="text-center">
-                                                <th>Sub Category</th>
-                                                <th width="50%">Product</th>
-                                                <th width="10%">UOM</th>
-                                                <th width="10%">Quantity</th>
-                                                <th class="text-center">Action</th>
+                                                <th style="width: 15%">Sub Category</th>
+                                                <th style="width: 40%">Product</th>
+                                                <th style="width: 35%">Attributes</th>
+                                                <th style="width: 10%">Quantity</th>
+                                                <th style="width: 5%" class="text-center">Action</th>
                                             </tr>
                                             </thead>
                                             <tbody class="field_wrapper">
@@ -147,25 +148,24 @@
                                                 @foreach(session()->get('requisition-items')['items'] as $key => $item)
                                                     <tr>
                                                         <td>
-                                                            <div class="input-group input-group-md mb-3 d-">
+                                                            <div class="input-group input-group-md">
                                                                 <select name="sub_category_id[]" id="sub_category_id_{{ $key+1 }}" style="width: 100%" class="form-control subcategory" onchange="getProduct($(this))" data-category-id="{{ $item['category_id'] }}">
 
                                                                 </select>
                                                             </div>
                                                         </td>
                                                         <td class="product-td">
-                                                            <div class="input-group input-group-md mb-3 d-">
-                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products" onchange="getUOM()" required  data-product-id="{{ $item['product_id'] }}">
-                                                                    <option value="{{ null }}" data-uom="">{{ __('Select
-                                    Product') }}</option>
+                                                            <div class="input-group input-group-md">
+                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products"required  data-product-id="{{ $item['product_id'] }}">
+                                                                    <option value="{{ null }}" data-uom="">{{ __('Product') }}</option>
                                                                 </select>
                                                             </div>
                                                         </td>
-                                                        <td class="product-uom text-center">
-                                                            {{ $item['uom'] }}
+                                                        <td class="product-attributes">
+                                                            
                                                         </td>
                                                         <td>
-                                                            <div class="input-group input-group-md mb-3 d-">
+                                                            <div class="input-group input-group-md">
                                                                 <input type="number" name="qty[]" min="1" max="99999999"
                                                                        id="qty_{{ $key+1 }}" class="form-control requisition-qty"
                                                                        aria-label="Large"
@@ -178,9 +178,9 @@
                                                                        >
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             <a href="javascript:void(0);" id="remove_{{ $key+1 }}"
-                                                               class="remove_button btn btn-sm btn-danger" title="Remove"
+                                                               class="remove_button btn btn-xs btn-danger" title="Remove"
                                                                style="color:#fff;">
                                                                 <i class="las la-trash"></i>
                                                             </a>
@@ -190,7 +190,7 @@
                                             @else
                                                 <tr>
                                                     <td>
-                                                        <div class="input-group input-group-md mb-3 d-">
+                                                        <div class="input-group input-group-md">
                                                             <select name="sub_category_id[]" id="sub_category_id_1"
                                                                     style="width: 100%" class="form-control subcategory"
                                                                     onchange="getProduct($(this))">
@@ -199,20 +199,18 @@
                                                         </div>
                                                     </td>
                                                     <td class="product-td">
-                                                        <div class="input-group input-group-md mb-3 d-">
+                                                        <div class="input-group input-group-md">
                                                             <select name="product_id[]" id="product_1"
-                                                                    class="form-control product requisition-products"
-                                                                    onchange="getUOM()" data-product-id="" required>
-                                                                <option value="{{ null }}" data-uom="">{{ __('Select
-                                Product') }}</option>
+                                                                    class="form-control product requisition-products" data-product-id="" required>
+                                                                <option value="{{ null }}" data-uom="">{{ __('Select Product') }}</option>
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="product-uom text-center">
-
+                                                    <td class="product-attributes">
+                                                            
                                                     </td>
                                                     <td>
-                                                        <div class="input-group input-group-md mb-3 d-">
+                                                        <div class="input-group input-group-md">
                                                             <input type="number" name="qty[]" min="1" max="99999999"
                                                                    id="qty_1" class="form-control requisition-qty"
                                                                    aria-label="Large"
@@ -225,9 +223,9 @@
                                                                    >
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <a href="javascript:void(0);" id="remove_1"
-                                                           class="remove_button btn btn-sm btn-danger" title="Remove"
+                                                           class="remove_button btn btn-xs btn-danger" title="Remove"
                                                            style="color:#fff;">
                                                             <i class="las la-trash"></i>
                                                         </a>
@@ -430,7 +428,6 @@
 
             var form = $('#addRequisitionForm');
 
-
             var maxField = 200;
             var addButton = $('.add_button');
             var x = 1;
@@ -445,7 +442,7 @@
                 var fieldHTML = '<tr>\n' +
                     '                                            <td>\n' +
                     '\n' +
-                    '                                                <div class="input-group input-group-md mb-3 d-">\n' +
+                    '                                                <div class="input-group input-group-md">\n' +
                     '                                                    <select name="sub_category_id[]" style="width: 100%" id="sub_category_id_' + x + '" class="form-control select2 subcategory" onchange="getProduct($(this))" required></select>\n' +
                     '                                                </div>\n' +
                     '\n' +
@@ -453,22 +450,22 @@
 
                     '                                            <td class="product-td">\n' +
                     '\n' +
-                    '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-                    '                                                    <select name="product_id[]" onchange="getUOM()" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required>\n' +
+                    '                                                <div class="input-group input-group-md">\n' +
+                    '                                                    <select name="product_id[]" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required>\n' +
                     '                                                        <option value="{{ null }}">{{ __("Select Product") }}</option>\n' +
                     '                                                    </select>\n' +
                     '                                                </div>\n' +
                     '\n' +
                     '                                            </td>\n' +
-                    '<td class="product-uom text-center"></td>' +
+                    '<td class="product-attributes"></td>'+
                     '                                            <td>\n' +
-                    '                                                <div class="input-group input-group-md mb-3 d-">\n' +
+                    '                                                <div class="input-group input-group-md">\n' +
                     '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '\n' +
-                    '                                            <td>\n' +
-                    '                                                <a href="javascript:void(0);" id="remove_' + x + '" class="remove_button btn btn-sm btn-danger" title="Remove" style="color:#fff;">\n' +
+                    '                                            <td class="text-center">\n' +
+                    '                                                <a href="javascript:void(0);" id="remove_' + x + '" class="remove_button btn btn-xs btn-danger" title="Remove" style="color:#fff;">\n' +
                     '                                                    <i class="las la-trash"></i>\n' +
                     '                                                    \n' +
                     '                                                </a>\n' +
@@ -557,9 +554,9 @@
         }
 
         function getUOM() {
-            $.each($('.product'), function (index, val) {
-                $(this).parent().parent().next().html($(this).find(':selected').attr('data-uom'));
-            });
+            // $.each($('.product'), function (index, val) {
+            //     $(this).parent().parent().next().html($(this).find(':selected').attr('data-uom'));
+            // });
         }
 
         function uploadExcelFile() {

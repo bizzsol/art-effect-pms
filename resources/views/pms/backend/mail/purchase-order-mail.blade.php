@@ -219,7 +219,7 @@ $contactPersonSales = \App\Models\PmsModels\SupplierContactPerson::where(['suppl
 									</div> --}}
 
 									<div class="form-group">
-										<small>(Note: This purchase order doesn’t require signature as it is automatically generated from MBM Group’s ERP)</small>
+										<small>(Note: This purchase order doesn’t require signature as it is automatically generated from SSLZ ERP)</small>
 									</div>
 
 								</div>

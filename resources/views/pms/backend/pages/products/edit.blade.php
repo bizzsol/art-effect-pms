@@ -119,7 +119,7 @@
                                 </div>
 
                                 <div class="form-row">
-                                   <div class="col-md-2 mb-3">
+                                   <div class="col-md-1 mb-3">
                                     <p class="mb-1 font-weight-bold"><label for="supplier"><strong>{{ __('Safety Stock') }}</strong></label> {!! $errors->has('buffer_inventory')? '<span class="text-danger text-capitalize">'. $errors->first('buffer_inventory').'</span>':'' !!}</p>
                                     @if(auth()->user()->hasRole('Employee'))
                                     {{ ($product->relInventorySummary ? $product->relInventorySummary->buffer_inventory : 0) }}
@@ -152,7 +152,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <p class="mb-1 font-weight-bold"><label for="tax"><strong>
                                                 {{ __('TAX') }}<span class="text-danger">&nbsp;*</span>
                                             </strong></label> {!! $errors->has('tax')? '<span class="text-danger text-capitalize">'. $errors->first('tax').'</span>':'' !!}</p>
@@ -161,7 +161,15 @@
                                                 >
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <p class="mb-1 font-weight-bold"><label for="vat_type"><strong>{{ __('Type') }}<span class="text-danger">&nbsp;*</span></strong></label>
+                                                {!! $errors->has('vat_type')? '<span class="text-danger text-capitalize">'. $errors->first('vat_type').'</span>':'' !!}
+                                            </p>
+                                            <div class="select-search-group  input-group input-group-md mb-3 d-">
+                                                {!! Form::Select('vat_type',['exclusive'=>'Exclusive','inclusive'=>'Inclusive'],old('vat_type',$product->vat_type),['id'=>'vat_type', 'class'=>'form-control select2']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
                                             <p class="mb-1 font-weight-bold"><label for="vat"><strong>
                                                 {{ __('VAT') }}<span class="text-danger">&nbsp;*</span>
                                             </strong></label> {!! $errors->has('vat')? '<span class="text-danger text-capitalize">'. $errors->first('vat').'</span>':'' !!}</p>
