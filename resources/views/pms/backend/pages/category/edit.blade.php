@@ -101,9 +101,7 @@
 									<div class="select-search-group input-group input-group-md mb-3 d-">
 										<select name="hr_department_id[]" id="hr_department_id" class="form-control select2 hr-departments" multiple>
 											@foreach($departments as $key => $department)
-
-											<option value="{{ $department->hr_department_id }}" {{ in_array($department->hr_department_id, $departmentsId) ? 'selected' : '' }}>{{ $department->hr_department_name}}</option>
-
+											<option value="{{ $department->hr_department_id }}" {{ in_array($department->hr_department_id, $departmentsId) ? 'selected' : '' }}>[{{ $department->hr_department_code}}] {{ $department->hr_department_name}}</option>
 											@endforeach
 										</select>
 									</div>
