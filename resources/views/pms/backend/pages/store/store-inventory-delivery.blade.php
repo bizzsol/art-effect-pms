@@ -142,7 +142,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    @if(!($item->product->category->is_fixed_asset == 1 || $item->product->category->is_cwip == 1))
+                                    @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))
                                         <select class="form-control not-select2 cost_centre" name="cost_centre_id[{{$item->product->id}}]" id="cost_centre_{{$item->product->id}}">
                                            {!! $costCentres !!}
                                         </select>

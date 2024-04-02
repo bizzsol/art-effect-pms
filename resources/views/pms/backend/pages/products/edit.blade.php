@@ -91,19 +91,19 @@
                                     @endif
                                 </div>
                                 <div class="col-md-2">
-                                    <p class="mb-1 font-weight-bold"><label for="product_type"><strong>Product Type<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
+                                    <p class="mb-1 font-weight-bold"><label for="category_type"><strong>Category Type<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('category_type')? '<span class="text-danger text-capitalize">'. $errors->first('category_type').'</span>':'' !!}</p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-" onchange="getSubCategories()">
-                                        <select name="product_type" id="product_type" class="form-control parent-category">
-                                            <option value="products" {{ $product_type == 'products' ? 'selected' : '' }}>Product</option>
-                                            <option value="fixed_asset" {{ $product_type == 'fixed_asset' ? 'selected' : '' }}>Fixed Asset</option>
-                                            <option value="cwip" {{ $product_type == 'cwip' ? 'selected' : '' }}>CWIP</option>
+                                        <select name="category_type" id="category_type" class="form-control parent-category">
+                                            <option value="products" {{ $category_type == 'products' ? 'selected' : '' }}>Product</option>
+                                            <option value="fixed_asset" {{ $category_type == 'fixed_asset' ? 'selected' : '' }}>Fixed Asset</option>
+                                            <option value="cwip" {{ $category_type == 'cwip' ? 'selected' : '' }}>CWIP</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <p class="mb-1 font-weight-bold"><label for="category_id"><strong>{{ __('Sub Category') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('category_id')? '<span class="text-danger text-capitalize">'. $errors->first('category_id').'</span>':'' !!}</p>
                                     <div class="select-search-group input-group input-group-md d-">
-                                        <select name="category_id" id="category_id" class="form-control rounded select2 sub-category" required onchange="checkAttributes()">
+                                        <select name="category_id" id="category_id" class="form-control rounded select2 sub-category" required onchange="checkAttributes();getSubCategoryInformation();">
                                             
                                         </select>
                                     </div>
@@ -116,6 +116,7 @@
                                            {!! Form::Select('brand_id',$brands,old('brand_id', $product->brand_id),['id'=>'brand_id', 'class'=>'form-control selectheighttype select2']) !!}
                                        </div>
                                    </div> --}}
+
                                 </div>
 
                                 <div class="form-row">
@@ -280,7 +281,36 @@
 
                                 <div class="col-md-12 mt-3">
                                     <div class="row pr-3">
-                                        <div class="col-md-4 ledgers-div inventory-div">
+                                        <div class="col-md-2">
+                                            <p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
+                                            <div class="select-search-group input-group input-group-md mb-3 d-">
+                                                <select name="product_type" id="product_type" class="form-control select2 types" onchange="updateFinanceSection()">
+                                                    <option value="products" {{ $product_type == 'products' ? 'selected' : '' }}>Product</option>
+                                                    <option value="fixed_asset" {{ $product_type == 'fixed_asset' ? 'selected' : '' }}>Fixed Asset</option>
+                                                    <option value="cwip" {{ $product_type == 'cwip' ? 'selected' : '' }}>CWIP</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 service-div">
+                                            <p class="mb-1 font-weight-bold"><label for="is_service"><strong>{{ __('Service ?') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('is_service')? '<span class="text-danger text-capitalize">'. $errors->first('is_service').'</span>':'' !!}</p>
+                                            <div class="select-search-group input-group input-group-md mb-3 d-">
+                                                <select name="is_service" id="is_service" class="form-control select2 types" onchange="updateFinanceSection()">
+                                                    <option value="0" {{ $product->is_service == 0 ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ $product->is_service == 1 ? 'selected' : '' }}>Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 sale-item-div">
+                                            <p class="mb-1 font-weight-bold"><label for="is_sale_item"><strong>{{ __('Sale Item ?') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('is_sale_item')? '<span class="text-danger text-capitalize">'. $errors->first('is_sale_item').'</span>':'' !!}</p>
+                                            <div class="select-search-group input-group input-group-md mb-3 d-">
+                                                <select name="is_sale_item" id="is_sale_item" class="form-control select2 types" onchange="updateFinanceSection()">
+                                                    <option value="0" {{ $product->is_sale_item == 0 ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ $product->is_sale_item == 1 ? 'selected' : '' }}>Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 ledgers-div inventory-div">
                                             <label for="inventory_account_id"><strong><span id="inventory-title">Inventory Accounts</span>:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_account_id }}">
@@ -289,7 +319,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 ledgers-div consumption-div">
+                                        <div class="col-md-3 ledgers-div consumption-div">
                                             <label for="cogs_account_id"><strong>{{ __('Consumption Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $product->cogs_account_id }}">
@@ -298,7 +328,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 ledgers-div sales-div">
+                                        <div class="col-md-3 ledgers-div sales-div">
                                             <label for="sales_account_id"><strong>{{ __('Sales Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $product->sales_account_id }}">
@@ -307,7 +337,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 ledgers-div asset-div">
+                                        <div class="col-md-3 ledgers-div asset-div">
                                             <label for="cwip_asset_account_id"><strong>{{ __('Asset Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <select name="cwip_asset_account_id" id="cwip_asset_account_id" class="form-control select-me rounded" data-selected="{{ $product->cwip_asset_account_id }}">
@@ -435,7 +465,6 @@
 
         form.submit(function(event) {
             event.preventDefault();
-
             save_button.prop('disabled', true).html('<i class="la la-spinner"></i>&nbsp;Please Wait...');
 
             $.ajax({
@@ -561,7 +590,6 @@
         }
 
         getDepreciationMethodOptions();
-        // checkFixedAsset();
     }
 
     function updateAttributes(){
@@ -575,58 +603,58 @@
         });
     }
 
-    (function ($) {
-        "use script";
+    function getSubCategoryInformation(){
+        var category = $('#category_id');
 
-        const showAlert = (status, error) => {
-            swal({
-                icon: status,
-                text: error,
-                dangerMode: true,
-                buttons: {
-                    cancel: false,
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        closeModal: true
-                    },
-                },
-            }).then((value) => {
-                if(value) form.reset();
-            });
-        };
+        $('#product_type').select2().val(category.find(':selected').attr('data-product-type')).trigger("change");
+        $('#is_service').select2().val(category.find(':selected').attr('data-service')).trigger("change");
 
-        $('.sub-category').on('change', function () {
-            let  categoryId = $(this).val();
+        var inventory_account_id = category.find(':selected').attr('inventory_account_id');
+        var cwip_asset_account_id = category.find(':selected').attr('cwip_asset_account_id');
+        var cogs_account_id = category.find(':selected').attr('cogs_account_id');
+        var inventory_adjustments_account_id = category.find(':selected').attr('inventory_adjustments_account_id');
 
-            $.ajax({
-                type: 'get',
-                url: '{{url('pms/product-management/get-category-accounts-info')}}'+'/'+categoryId,
-                data: {},
+        var sales_account_id = category.find(':selected').attr('sales_account_id');
+        var depreciation_cost_account_id = category.find(':selected').attr('depreciation_cost_account_id');
+        var depreciation_disposal_account_id = category.find(':selected').attr('depreciation_disposal_account_id');
 
-            }).done(function(response) {
-                if (response.status=='success') {
-                    $('#inventory_account_id').html(response.inventory_account_id);
-                    $('#cogs_account_id').html(response.cogs_account_id);
-                    $('#inventory_adjustments_account_id').html(response.inventory_adjustments_account_id);
-                }else{
-                    showAlert('error', response.info);
-                }
-            });
+        if (inventory_account_id && inventory_account_id != 0) {
+            $("#inventory_account_id").select2().val(inventory_account_id).trigger("change");
+        }
 
-            getSubAssets();
+        if (cwip_asset_account_id && cwip_asset_account_id != 0) {
+            $("#cwip_asset_account_id").select2().val(cwip_asset_account_id).trigger("change");
+        }
 
-            updateFinanceSection();
-        });
-    })(jQuery);
+        if (cogs_account_id && cogs_account_id != 0) {
+            $("#cogs_account_id").select2().val(cogs_account_id).trigger("change");
+        }
 
-    getDepreciationMethodOptions();
+        if (inventory_adjustments_account_id && inventory_adjustments_account_id != 0) {
+            $("#inventory_adjustments_account_id").select2().val(inventory_adjustments_account_id).trigger("change");
+        }
+
+        if (sales_account_id && sales_account_id != 0) {
+            $("#sales_account_id").select2().val(sales_account_id).trigger("change");
+        }
+
+        if (depreciation_cost_account_id && depreciation_cost_account_id != 0) {
+            $("#depreciation_cost_account_id").select2().val(depreciation_cost_account_id).trigger("change");
+        }
+
+        if (depreciation_disposal_account_id && depreciation_disposal_account_id != 0) {
+            $("#depreciation_disposal_account_id").select2().val(depreciation_disposal_account_id).trigger("change");
+        }
+
+        updateFinanceSection();
+        getDepreciationMethodOptions();
+        getSubAssets();
+    }
 
     updateFinanceSection();
     function updateFinanceSection() {
-        var product_type = $('.sub-category').find(':selected').attr('data-product-type');
-        var is_service = $('.sub-category').find(':selected').attr('data-service');
+        var product_type = $('#product_type').val();
+        var is_service = $('#is_service').val();
         $('.ledgers-div').hide();
 
         if(product_type == 'products'){
@@ -676,6 +704,7 @@
     //     getDepreciationMethodOptions();
     // }
 
+    getDepreciationMethodOptions();
     function getDepreciationMethodOptions() {
         var depreciation_method = $('#depreciation_method_id');
         var id = depreciation_method.val();
@@ -728,12 +757,12 @@
     getSubCategories();
     function getSubCategories(){
         $.ajax({
-            url: "{{ url('pms/product-management/product/create') }}?get-sub-categories&"+$('#product_type').val()+"&chosen={{ $product->category_id }}",
+            url: "{{ url('pms/product-management/product/create') }}?get-sub-categories&"+$('#category_type').val()+"&chosen={{ $product->category_id }}",
             type: 'GET',
             data: {},
         })
         .done(function(response) {
-            $('#category_id').html(response).change();
+            $('#category_id').html(response);
         });
     }
 </script>
