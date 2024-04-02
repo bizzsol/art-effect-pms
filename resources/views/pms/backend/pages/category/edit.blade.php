@@ -58,7 +58,6 @@
                     <a href="javascript:history.back()" class="btn btn-sm btn-warning text-white" data-toggle="tooltip" title="Back" > <i class="las la-chevron-left"></i>Back</a>
                 </li>
 			</ul>
-
 		</div>
 
 		<div class="page-content">
@@ -68,9 +67,6 @@
 						<form action="{{ route('pms.product-management.category.update', $category->id) }}
 							" method="post">
 							@csrf
-							@method('PUT')
-							<input type="hidden" name="product_type" id="product_type" value="{{ $category->is_fixed_asset == 1 ? 'fixed_asset' : ($category->is_cwip == 1 ? 'cwip' : 'products') }}">
-							<input type="hidden" name="is_service" id="is_service" value="{{ $category->is_service }}">
 							<div class="row">
 								<div class="col-md-3">
 									<p class="mb-1 font-weight-bold"><label for="code"><strong>{{ __('Code') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('code')? '<span class="text-danger text-capitalize">'. $errors->first('code').'</span>':'' !!}</p>
@@ -95,22 +91,37 @@
 									</div>
 								</div>
 
-								@if($departments->count() > 0)
-								<div class="col-md-12">
-									<p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Departments') }}</strong>:</label> {!! $errors->has('hr_department_id')? '<span class="text-danger text-capitalize">'. $errors->first('hr_department_id').'</span>':'' !!}</p>
-									<div class="select-search-group input-group input-group-md mb-3 d-">
-										<select name="hr_department_id[]" id="hr_department_id" class="form-control select2 hr-departments" multiple>
-											@foreach($departments as $key => $department)
-											<option value="{{ $department->hr_department_id }}" {{ in_array($department->hr_department_id, $departmentsId) ? 'selected' : '' }}>[{{ $department->hr_department_code}}] {{ $department->hr_department_name}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								@endif
-
-								<div class="col-md-12 mt-4">
-                                    <div class="row pr-3">
-                                        <div class="col-md-4 ledgers-div inventory-div">
+								<div class="col-md-12 mt-3">
+									<div class="row pr-3">
+										<div class="col-md-2">
+											<p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
+											<div class="select-search-group input-group input-group-md mb-3 d-">
+												<select name="product_type" id="product_type" class="form-control select2 types" onchange="updateFinanceSection()">
+													<option value="products" {{ $category_type == 'products' ? 'selected' : '' }}>Product</option>
+													<option value="fixed_asset" {{ $category_type == 'fixed_asset' ? 'selected' : '' }}>Fixed Asset</option>
+													<option value="cwip" {{ $category_type == 'cwip' ? 'selected' : '' }}>CWIP</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-2 service-div">
+											<p class="mb-1 font-weight-bold"><label for="is_service"><strong>{{ __('Service ?') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('is_service')? '<span class="text-danger text-capitalize">'. $errors->first('is_service').'</span>':'' !!}</p>
+											<div class="select-search-group input-group input-group-md mb-3 d-">
+												<select name="is_service" id="is_service" class="form-control select2 types" onchange="updateFinanceSection()">
+													<option value="0" {{ $category->is_service == 0 ? 'selected' : '' }}>No</option>
+													<option value="1" {{ $category->is_service == 1 ? 'selected' : '' }}>Yes</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-2 sale-item-div">
+											<p class="mb-1 font-weight-bold"><label for="is_sale_item"><strong>{{ __('Sale Item ?') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('is_sale_item')? '<span class="text-danger text-capitalize">'. $errors->first('is_sale_item').'</span>':'' !!}</p>
+											<div class="select-search-group input-group input-group-md mb-3 d-">
+												<select name="is_sale_item" id="is_sale_item" class="form-control select2 types" onchange="updateFinanceSection()">
+													<option value="0" {{ $category->is_sale_item == 0 ? 'selected' : '' }}>No</option>
+													<option value="1" {{ $category->is_sale_item == 1 ? 'selected' : '' }}>Yes</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-3 ledgers-div inventory-div">
 											<label for="inventory_account_id"><strong><span id="inventory-title">Inventory Accounts</span>:<span class="text-danger">&nbsp;*</span></strong></label>
 											<div class="input-group input-group-md mb-3 d-">
 												<select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $category->inventory_account_id }}">
@@ -119,7 +130,7 @@
 											</div>
 										</div>
 
-										<div class="col-md-4 ledgers-div consumption-div">
+										<div class="col-md-3 ledgers-div consumption-div">
 											<label for="cogs_account_id"><strong>{{ __('Consumption Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
 											<div class="input-group input-group-md mb-3 d-">
 												<select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $category->cogs_account_id }}">
@@ -128,7 +139,7 @@
 											</div>
 										</div>
 
-										<div class="col-md-4 ledgers-div sales-div">
+										<div class="col-md-3 ledgers-div sales-div">
 											<label for="sales_account_id"><strong>{{ __('Sales Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
 											<div class="input-group input-group-md mb-3 d-">
 												<select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $category->sales_account_id }}">
@@ -137,7 +148,7 @@
 											</div>
 										</div>
 
-										<div class="col-md-4 ledgers-div asset-div">
+										<div class="col-md-3 ledgers-div asset-div">
 											<label for="cwip_asset_account_id"><strong>{{ __('Asset Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
 											<div class="input-group input-group-md mb-3 d-">
 												<select name="cwip_asset_account_id" id="cwip_asset_account_id" class="form-control select-me rounded" data-selected="{{ $category->cwip_asset_account_id }}">
@@ -145,10 +156,11 @@
 												</select>
 											</div>
 										</div>
-                                    </div>
-                                </div>
+										
+									</div>
+								</div>
 
-                                <div class="col-md-12 mb-4 mt-4 fixed-asset-info">
+								<div class="col-md-12 mb-4 mt-4 fixed-asset-info">
 									<div class="card">
 	                                    <div class="card-body bordered">
 	                                        <h5 class="floating-title">Fixed Asset Information</h5>
@@ -176,7 +188,7 @@
 															</div>
 														</div>
 														<div class="col-md-4">
-															<label for="depreciation_disposal_account_id"><strong>{{ __('Disposal Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
+															<label for="depreciation_disposal_account_id"><strong>{{ __('Asset Disposal Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
 															<div class="input-group input-group-md mb-3 d-">
 																<select name="depreciation_disposal_account_id" id="depreciation_disposal_account_id" class="form-control select-me rounded" data-selected="{{ $category->depreciation_disposal_account_id }}">
 																	{!! $chartOfAccountsOptions !!}
@@ -190,12 +202,31 @@
 	                                </div>
 								</div>
 
+								@if($units->count() > 0)
+								<div class="col-md-12 mt-3 mb-3">
+									<div class="row">
+										@foreach($units as $unit)
+										<div class="col-md-2">
+											<h6><strong>{{ $unit->hr_unit_code }}</strong></h6>
+											@foreach($unit->departments as $department)
+											<div class="icheck-primary">
+			                                    <input type="checkbox" id="hr_department_id_{{ $department->hr_department_id }}" name="hr_department_id[]" value="{{ $department->hr_department_id }}" class="companies" {{ in_array($department->hr_department_id, $departmentsId) ? 'checked' : '' }}>
+			                                    <label for="hr_department_id_{{ $department->hr_department_id }}" class="text-primary">
+			                                      {{ $department->hr_department_name}}&nbsp;&nbsp;&nbsp;
+			                                    </label>
+			                                </div>
+			                                @endforeach
+										</div>
+										@endforeach
+									</div>
+								</div>
+								@endif
+
 								<div class="col-md-12">
 									<a class="btn btn-danger rounded pull-right " href="{{ url('pms/product-management/category') }}"><i class="la la-times"></i>&nbsp;{{ __('Close') }}</a>
 									<button type="submit" class="btn btn-success rounded pull-right mr-3"><i class="la la-save"></i>&nbsp;{{ __('Save Category') }}</button>
 								</div>
 							</div>
-							
 						</form>
 					</div>
 				</div>
@@ -216,7 +247,7 @@
     function updateFinanceSection() {
     	var product_type = $('#product_type').val();
     	var is_service = $('#is_service').val();
-    	$('.ledgers-div').hide();
+    	$('.ledgers-div').hide();	
 
     	if(product_type == 'products'){
     		$('.fixed-asset-info').hide();

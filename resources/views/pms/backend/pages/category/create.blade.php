@@ -91,6 +91,7 @@
 										<input type="text" name="name" id="name" class="form-control rounded" aria-label="Large" placeholder="{{__('Category Name')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ old('name') }}">
 									</div>
 								</div>
+
 								{{-- <div class="col-md-2">
 									<p class="mb-1 font-weight-bold"><label for="is_fixed_asset">{{ __('Fixed Asset') }}:</label> {!! $errors->has('is_fixed_asset')? '<span class="text-danger text-capitalize">'. $errors->first('is_fixed_asset').'</span>':'' !!}</p>
 									<div class="select-search-group input-group input-group-md mb-3 d-">
@@ -100,19 +101,6 @@
 										</select>
 									</div>
 								</div> --}}
-
-								@if($departments->count() > 0)
-								<div class="col-md-12">
-									<p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Departments') }}</strong>:</label> {!! $errors->has('hr_department_id')? '<span class="text-danger text-capitalize">'. $errors->first('hr_department_id').'</span>':'' !!}</p>
-									<div class="select-search-group input-group input-group-md mb-3 d-">
-										<select name="hr_department_id[]" id="hr_department_id" class="form-control select2 hr-departments" multiple>
-											@foreach($departments as $key => $department)
-												<option value="{{ $department->hr_department_id }}">[{{ $department->hr_department_code}}] {{ $department->hr_department_name}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								@endif
 
 								<div class="col-md-12 mt-3">
 									<div class="row pr-3">
@@ -224,6 +212,26 @@
 	                                    </div>
 	                                </div>
 								</div>
+
+								@if($units->count() > 0)
+								<div class="col-md-12 mt-3 mb-3">
+									<div class="row">
+										@foreach($units as $unit)
+										<div class="col-md-2">
+											<h6><strong>{{ $unit->hr_unit_code }}</strong></h6>
+											@foreach($unit->departments as $department)
+											<div class="icheck-primary">
+			                                    <input type="checkbox" id="hr_department_id_{{ $department->hr_department_id }}" name="hr_department_id[]" value="{{ $department->hr_department_id }}" class="companies">
+			                                    <label for="hr_department_id_{{ $department->hr_department_id }}" class="text-primary">
+			                                      {{ $department->hr_department_name}}&nbsp;&nbsp;&nbsp;
+			                                    </label>
+			                                </div>
+			                                @endforeach
+										</div>
+										@endforeach
+									</div>
+								</div>
+								@endif
 
 								<div class="col-md-12">
 									<a class="btn btn-danger rounded pull-right" href="{{ url('pms/product-management/category') }}"><i class="la la-times"></i>&nbsp;{{ __('Close') }}</a>
