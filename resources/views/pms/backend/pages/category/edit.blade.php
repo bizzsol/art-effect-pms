@@ -207,10 +207,15 @@
 									<div class="row">
 										@foreach($units as $unit)
 										<div class="col-md-2">
-											<h6><strong>{{ $unit->hr_unit_code }}</strong></h6>
+											<div class="icheck-success">
+			                                    <input type="checkbox" id="hr_unit_id_{{ $unit->hr_unit_id }}" value="{{ $unit->hr_unit_id }}" class="units" {{ $unit->departments->count() == $unit->departments->whereIn('hr_department_id', $departmentsId)->count() ? 'checked' : '' }}>
+			                                    <label for="hr_unit_id_{{ $unit->hr_unit_id }}" class="text-success">
+			                                      <strong>{{ $unit->hr_unit_code }}&nbsp;&nbsp;&nbsp;</strong>
+			                                    </label>
+			                                </div>
 											@foreach($unit->departments as $department)
 											<div class="icheck-primary">
-			                                    <input type="checkbox" id="hr_department_id_{{ $department->hr_department_id }}" name="hr_department_id[]" value="{{ $department->hr_department_id }}" class="companies" {{ in_array($department->hr_department_id, $departmentsId) ? 'checked' : '' }}>
+			                                    <input type="checkbox" id="hr_department_id_{{ $department->hr_department_id }}" name="hr_department_id[]" value="{{ $department->hr_department_id }}" class="companies departments-{{ $unit->hr_unit_id }}" {{ in_array($department->hr_department_id, $departmentsId) ? 'checked' : '' }}>
 			                                    <label for="hr_department_id_{{ $department->hr_department_id }}" class="text-primary">
 			                                      {{ $department->hr_department_name}}&nbsp;&nbsp;&nbsp;
 			                                    </label>
@@ -240,6 +245,17 @@
     $(document).ready(function() {
         $.each($('.select-me'), function(index, val) {
             $(this).select2().val($(this).attr('data-selected')).trigger("change");
+        });
+
+        $.each($('.units'), function(index, val) {
+        	var element = $(this);
+        	element.change(function(event) {
+        		if(element.is(':checked')){
+        			$('.departments-'+element.val()).prop('checked', true);
+        		}else{
+        			$('.departments-'+element.val()).prop('checked', false);
+        		}
+        	});
         });
     });
 
