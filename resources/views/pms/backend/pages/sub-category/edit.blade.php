@@ -91,14 +91,14 @@
 			                        </div>
 			                    </div>
 								
-								<div class="col-md-5">
+								<div class="col-md-7">
 									<p class="mb-1 font-weight-bold"><label for="name"><strong>{{ __('Name') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('name')? '<span class="text-danger text-capitalize">'. $errors->first('name').'</span>':'' !!}</p>
 									<div class="input-group input-group-md mb-3 d-">
 										<input type="text" name="name" id="name" class="form-control rounded" aria-label="Large" placeholder="{{__('Category Name')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ ($category->name)?$category->name: old('name') }}">
 									</div>
 								</div>
 
-								<div class="col-md-12 mt-3">
+								<div class="col-md-12 mt-3" style="display: none">
 			                        <div class="row pr-3">
 			                            <div class="col-md-2">
 			                                <p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
@@ -167,7 +167,7 @@
 			                        </div>
 			                    </div>
 
-			                    <div class="col-md-12 mb-4 mt-4 fixed-asset-info">
+			                    <div class="col-md-12 mb-4 mt-4 fixed-asset-info" style="display: none">
 			                        <div class="card">
 			                            <div class="card-body bordered">
 			                                <h5 class="floating-title">Fixed Asset Information</h5>
@@ -278,46 +278,46 @@
         $('#is_service').select2().val(is_service).trigger("change");
     }
 
-    updateFinanceSection();
+    // updateFinanceSection();
     function updateFinanceSection() {
-        var product_type = $('#product_type').val();
-        var is_service = $('#is_service').val();
-        $('.ledgers-div').hide();
+        // var product_type = $('#product_type').val();
+        // var is_service = $('#is_service').val();
+        // $('.ledgers-div').hide();
 
-        if(product_type == 'products'){
-            $('.fixed-asset-info').hide();
+        // if(product_type == 'products'){
+        //     $('.fixed-asset-info').hide();
             
-            if(is_service == 1){
-                $('.inventory-div').hide();
-            }else{
-                $('.inventory-div').show();
-            }
+        //     if(is_service == 1){
+        //         $('.inventory-div').hide();
+        //     }else{
+        //         $('.inventory-div').show();
+        //     }
             
-            $('.consumption-div').show();
-            $('.sales-div').show();
-            $('.service-div').show();
-            $('.asset-div').hide();
+        //     $('.consumption-div').show();
+        //     $('.sales-div').show();
+        //     $('.service-div').show();
+        //     $('.asset-div').hide();
 
-            $('#inventory-title').html('Inventory Account');
-        }else if(product_type == 'fixed_asset'){
-            $('.fixed-asset-info').show();
-            $('.inventory-div').show();
-            $('.consumption-div').hide();
-            $('.sales-div').hide();
-            $('.service-div').hide();
-            $('.asset-div').hide();
+        //     $('#inventory-title').html('Inventory Account');
+        // }else if(product_type == 'fixed_asset'){
+        //     $('.fixed-asset-info').show();
+        //     $('.inventory-div').show();
+        //     $('.consumption-div').hide();
+        //     $('.sales-div').hide();
+        //     $('.service-div').hide();
+        //     $('.asset-div').hide();
 
-            $('#inventory-title').html('Asset Account');
-        }else if(product_type == 'cwip'){
-            $('.fixed-asset-info').show();
-            $('.inventory-div').show();
-            $('.consumption-div').hide();
-            $('.sales-div').hide();
-            $('.service-div').hide();
-            $('.asset-div').show();
+        //     $('#inventory-title').html('Asset Account');
+        // }else if(product_type == 'cwip'){
+        //     $('.fixed-asset-info').show();
+        //     $('.inventory-div').show();
+        //     $('.consumption-div').hide();
+        //     $('.sales-div').hide();
+        //     $('.service-div').hide();
+        //     $('.asset-div').show();
 
-            $('#inventory-title').html('CWIP Account');
-        }
+        //     $('#inventory-title').html('CWIP Account');
+        // }
     }
 </script>
 @endsection

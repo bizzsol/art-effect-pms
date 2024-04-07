@@ -388,7 +388,7 @@
     <br>
 
     @if(count($purchaseOrder->purchaseOrderRequisitions)>0)
-        <strong>Purpose:</strong>
+        {{-- <strong>Purpose:</strong>
         <div>
             @foreach($purchaseOrder->purchaseOrderRequisitions as $key=> $reqData)
                 <ul>
@@ -398,7 +398,7 @@
                 </ul>
             @endforeach
         </div>
-        <br>
+        <br> --}}
     @endif
     @if(!empty($purchaseOrder->remarks))
         <strong>Remarks:</strong>

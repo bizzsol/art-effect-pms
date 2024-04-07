@@ -43,78 +43,6 @@
             <div class="panel panel-info">
                 <div class="panel-body">
                     @include('yajra.datatable')
-                     {{-- <table  id="dataTable" class="table table-striped table-bordered table-head" border="1">
-
-                        <thead>
-                            <tr class="text-center">
-                                <th width="3.5%">{{__('SL')}}</th>
-                                <th width="10%">{{__('Main Category')}}</th>
-                                <th width="10%">{{__('Sub Category Code')}}</th>
-                                <th width="20%">{{__('Sub Category Name')}}</th>
-                                <th width="35%">{{__('Attributes')}}</th>
-                                 <th>{{__('Departments')}}</th> 
-                                <th width="11.5%" class="text-center">{{__('Option')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $sl = 0; @endphp
-                            @foreach($categories as $key => $category)
-                            @if($category->subCategory->count() > 0)
-                            @foreach($category->subCategory as $s_key => $subCategory)
-                            @php 
-                                $sl++;
-                                $categoryAttributes = \App\Models\PmsModels\CategoryAttribute::where('category_id', $subCategory->id)
-                                ->orderBy('serial', 'asc')
-                                ->get();
-                            @endphp
-                            <tr id="set{{ $subCategory->id }}">
-                                <td class="text-center">{{__($sl)}}</td>
-                                @if($s_key == 0)
-                                        <td width="10%" rowspan="{{ $category->subCategory->count() }}">{{ $category->name }}</td>
-                                @endif
-                                <td>{{ $subCategory->code }}</td>
-                                <td>{{ $subCategory->name }}</td>
-                                <td class="text-center">{{ $subCategory->is_fixed_asset == 1 ? 'Yes' : 'No' }}</td>
-                                <td>
-                                    @foreach($subCategory->departmentsList as $values)
-                                        <a href="javascript:void(0)"><span class="m-1 badge badge-primary">{{ $values->department->hr_department_name }}</span></a>
-                                    @endforeach
-                                </td> 
-                                <td>
-                                    @if(isset($categoryAttributes[0]))
-                                    <ul>
-                                        @foreach($categoryAttributes as $key => $categoryAttribute)
-                                        <li><strong>{{ $categoryAttribute->attribute->name }}:</strong> {{ \App\Models\PmsModels\AttributeOption::where('attribute_id', $categoryAttribute->attribute_id)->whereIn('id', (!empty($categoryAttribute->options) ? json_decode($categoryAttribute->options, true) : []))->pluck('name')->implode(', ') }}</li>
-                                        @endforeach
-                                    </ul>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" data-role="get" data-src="{{ url('pms/product-management/sub-category/'.$subCategory->id.'/create-attributes') }}" class="btn btn-success m-1 btn-xs attributeBtn"><i class="las la-sitemap"></i></a>
-                                    @php
-                                        $url = route('pms.product-management.sub-category.edit', $subCategory->id);
-                                        if(request()->has('fixed-assets')){
-                                            $url = url('pms/fixed-assets/sub-category/edit/'.$subCategory->id.'?fixed-assets');
-                                        }elseif(request()->has('cwip')){
-                                            $url = url('pms/cwip/sub-category/'.$subCategory->id.'/edit?cwip');
-                                        }
-                                    @endphp
-                                    <a href="{{ $url }}" class="btn btn-info m-1 btn-xs"><i class="las la-edit"></i></a>
-                                    <a href="javascript:void(0)" data-role="delete" data-src="{{ route('pms.product-management.sub-category.destroy', $subCategory->id) }}" class="btn btn-danger m-1 btn-xs deleteBtn"><i class="las la-trash"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @else
-                            @php $sl++; @endphp
-                            <tr id="set{{ $category->id }}">
-                                <td>{{__($sl)}}</td>
-                                <td colspan="5">{{ $category->name }}</td>
-                            </tr>
-                            @endif
-                            @endforeach
-                        </tbody>
-                    </table> --}}
-
                 </div>
             </div>
         </div>
@@ -122,8 +50,6 @@
 </div>
 </div>
 
-<!-- END WRAPPER CONTENT ------------------------------------------------------------------------->
-<!-- Modal ------------------------------------------------------------------------->
 <div class="modal fade" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content modal-lg">
@@ -141,9 +67,6 @@
 </div>
 
 
-<!-- END Modal ------------------------------------------------------------------------->
-
-<!--Upload Category Modal Start-->
 <div class="modal fade bd-example-modal-lg" id="categoryUploadModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -190,96 +113,9 @@
 <script>
     (function ($) {
         "use script";
-
         $('#uploadFile').on('click', function () {
             $('#categoryUploadModal').modal('show');
         });
-
-        // const tableContainer = document.getElementById('dataTable').querySelector('tbody');
-        // const showEmptyTable = () => {
-        //     if(tableContainer.querySelectorAll('tr').length === 0){
-        //         const row = document.createElement('tr');
-        //         row.id = 'emptyRow';
-        //         let colEmpty = document.createElement('td');
-        //         colEmpty.innerHTML = 'No data is available';
-        //         colEmpty.className = 'text-center';
-        //         colEmpty.colSpan = 6;
-        //         row.appendChild(colEmpty);
-        //         tableContainer.appendChild(row);
-        //     } else {
-        //         if(tableContainer.querySelector('#emptyRow')){
-        //             tableContainer.querySelector('#emptyRow').remove();
-        //         }
-        //     }
-        // };
-        // showEmptyTable();
-
-        const showAlert = (status, error) => {
-            swal({
-                icon: status,
-                text: error,
-                dangerMode: true,
-                buttons: {
-                    cancel: false,
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        closeModal: true
-                    },
-                },
-            }).then((value) => {
-                if(value) form.reset();
-            });
-        };
-
-        
-
-        // $('.attributeBtn').on('click', function () {
-        //     $.ajax({
-        //         type: 'get',
-        //         url: $(this).attr('data-src'),
-        //         data: {},
-        //     })
-        //     .done(function(response) {
-        //         $('#attributeModal').find('.modal-body').html(response);
-        //         $('#attributeModal').modal('show')
-        //     });
-        // })
-
-        // $('.deleteBtn').on('click', function () {
-        //     swal({
-        //         title: "{{__('Are you sure?')}}",
-        //         text: "{{__('Once you delete, You can not recover this data and related files.')}}",
-        //         icon: "warning",
-        //         dangerMode: true,
-        //         buttons: {
-        //             cancel: true,
-        //             confirm: {
-        //                 text: "Delete",
-        //                 value: true,
-        //                 visible: true,
-        //                 closeModal: true
-        //             },
-        //         },
-        //     }).then((value) => {
-        //         if(value){
-        //             $.ajax({
-        //                 type: 'DELETE',
-        //                 url: $(this).attr('data-src'),
-        //                 success:function (data) {
-        //                     if(data.success){
-        //                     location.reload();
-        //                     }else{
-        //                         showAlert('error', data.message);
-        //                         return;
-        //                     }
-        //                 },
-        //             });
-        //             showEmptyTable();
-        //         }
-        //     });
-        // })
     })(jQuery);
 
     function attributeBtn(e){

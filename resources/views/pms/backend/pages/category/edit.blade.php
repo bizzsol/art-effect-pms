@@ -67,6 +67,7 @@
 						<form action="{{ route('pms.product-management.category.update', $category->id) }}
 							" method="post">
 							@csrf
+							@method('PUT')
 							<div class="row">
 								<div class="col-md-3">
 									<p class="mb-1 font-weight-bold"><label for="code"><strong>{{ __('Code') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('code')? '<span class="text-danger text-capitalize">'. $errors->first('code').'</span>':'' !!}</p>
@@ -91,7 +92,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-12 mt-3">
+								<div class="col-md-12 mt-3" style="display: none">
 									<div class="row pr-3">
 										<div class="col-md-2">
 											<p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
@@ -160,7 +161,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-12 mb-4 mt-4 fixed-asset-info">
+								<div class="col-md-12 mb-4 mt-4 fixed-asset-info" style="display: none">
 									<div class="card">
 	                                    <div class="card-body bordered">
 	                                        <h5 class="floating-title">Fixed Asset Information</h5>
@@ -259,7 +260,7 @@
         });
     });
 
-    updateFinanceSection();
+    // updateFinanceSection();
     function updateFinanceSection() {
     	var product_type = $('#product_type').val();
     	var is_service = $('#is_service').val();

@@ -66,8 +66,7 @@
                             <input type="hidden" name="where_to_go" id="where_to_go" value="save">
                             <div class="form-row">
                                 <div class="col-md-2">
-                                    <p class="mb-1 font-weight-bold"><label for="sku"><strong>{{ __('Code') }}<span class="text-danger">&nbsp;*</span>
-                                            </strong></label> {!! $errors->has('sku')? '<span class="text-danger text-capitalize">'. $errors->first('sku').'</span>':'' !!}
+                                    <p class="mb-1 font-weight-bold"><label for="sku"><strong>{{ __('Code') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('sku')? '<span class="text-danger text-capitalize">'. $errors->first('sku').'</span>':'' !!}
                                     </p>
                                     <div class="input-group input-group-md mb-3 d-">
                                         <input type="text" name="sku" id="sku" class="form-control rounded"
@@ -78,9 +77,8 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <p class="mb-1 font-weight-bold"><label for="name"><strong>{{ __('Name') }}<span
-                                                        class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('name')? '<span class="text-danger text-capitalize">'. $errors->first('name').'</span>':'' !!}
+                                <div class="col-md-5">
+                                    <p class="mb-1 font-weight-bold"><label for="name"><strong>{{ __('Name') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('name')? '<span class="text-danger text-capitalize">'. $errors->first('name').'</span>':'' !!}
                                     </p>
                                     <div class="input-group input-group-md mb-3 d-">
                                         <input type="text" name="name" id="name" class="form-control rounded"
@@ -89,7 +87,7 @@
                                                value="{{ old('name') }}">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <p class="mb-1 font-weight-bold"><label for="category_type"><strong>Category Type<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('category_type')? '<span class="text-danger text-capitalize">'. $errors->first('category_type').'</span>':'' !!}
                                     </p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-" onchange="getSubCategories()">
@@ -99,15 +97,15 @@
                                             <option value="cwip">CWIP</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
+                                </div> --}}
+                                <div class="col-md-5">
                                     <p class="mb-1 font-weight-bold"><label for="category_id"><strong>Sub Category<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('category_id')? '<span class="text-danger text-capitalize">'. $errors->first('category_id').'</span>':'' !!}
                                     </p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-">
                                         <select name="category_id" id="category_id"
                                                 class="form-control rounded select2 sub-category" required
                                                 onchange="checkAttributes();getSubCategoryInformation()">
-
+                                                {!! $categoryOptions !!}
                                         </select>
                                     </div>
                                 </div>
@@ -122,7 +120,7 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <p class="mb-1 font-weight-bold"><label
                                                 for="supplier"><strong>{{ __('Safety Stock') }}</strong></label> {!! $errors->has('buffer_inventory')? '<span class="text-danger text-capitalize">'. $errors->first('buffer_inventory').'</span>':'' !!}
                                     </p>
@@ -131,12 +129,12 @@
                                                class="form-control rounded" aria-label="Large"
                                                placeholder="{{__('Safety Stock Limit')}}"
                                                aria-describedby="inputGroup-sizing-sm"
-                                               value="{{ old('buffer_inventory') }}"
+                                               value="{{ old('buffer_inventory', 0) }}"
                                                oninput="this.value = Math.abs(this.value)">
                                     </div>
                                 </div>
 
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <p class="mb-1 font-weight-bold"><label
                                                 for="product_unit_id"><strong>{{ __('UOM') }}<span class="text-danger">&nbsp;*</span></strong></label>
                                         {!! $errors->has('product_unit_id')? '<span class="text-danger text-capitalize">'. $errors->first('product_unit_id').'</span>':'' !!}
@@ -145,8 +143,8 @@
                                         {!! Form::Select('product_unit_id',$unit,old('product_unit_id'),['id'=>'product_unit_id', 'class'=>'form-control selectheighttype select2']) !!}
                                     </div>
                                 </div>
-                                <div class="col-md-3 row">
-                                    <div class="col-md-6">
+                                <div class="col-md-2 row">
+                                    <div class="col-md-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="unit_price"><strong>{{ __('Unit Price') }}<span
                                                             class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('unit_price')? '<span class="text-danger text-capitalize">'. $errors->first('unit_price').'</span>':'' !!}
@@ -156,10 +154,10 @@
                                                    class="form-control rounded mask-money" step="any" aria-label="Large"
                                                    placeholder="{{__('Item unit price')}}"
                                                    aria-describedby="inputGroup-sizing-sm" required
-                                                   value="{{ old('unit_price') }}">
+                                                   value="{{ old('unit_price', 0) }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="sales_price"><strong>{{ __('Sales Price') }}<span
                                                             class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('sales_price')? '<span class="text-danger text-capitalize">'. $errors->first('sales_price').'</span>':'' !!}
@@ -171,10 +169,10 @@
                                                    aria-describedby="inputGroup-sizing-sm" required
                                                    value="{{ old('sales_price') }}">
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
-                                <div class="col-md-4 row">
-                                    <div class="col-md-4">
+                                <div class="col-md-3 row">
+                                    {{-- <div class="col-md-4">
                                         <p class="mb-1 font-weight-bold"><label for="tax"><strong>{{ __('TAX') }}<span
                                                             class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('tax')? '<span class="text-danger text-capitalize">'. $errors->first('tax').'</span>':'' !!}
                                         </p>
@@ -185,9 +183,9 @@
                                                    aria-describedby="inputGroup-sizing-sm" required
                                                    value="{{ old('tax') }}">
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p class="mb-1 font-weight-bold"><label for="vat_type"><strong>{{ __('Type') }}<span class="text-danger">&nbsp;*</span></strong></label>
+                                    </div> --}}
+                                    <div class="col-md-6">
+                                        <p class="mb-1 font-weight-bold"><label for="vat_type"><strong>{{ __('VAT Type') }}<span class="text-danger">&nbsp;*</span></strong></label>
                                             {!! $errors->has('vat_type')? '<span class="text-danger text-capitalize">'. $errors->first('vat_type').'</span>':'' !!}
                                         </p>
                                         <div class="select-search-group  input-group input-group-md mb-3 d-">
@@ -195,16 +193,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <p class="mb-1 font-weight-bold"><label for="vat"><strong>{{ __('VAT') }}<span
-                                                            class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('vat')? '<span class="text-danger text-capitalize">'. $errors->first('vat').'</span>':'' !!}
+                                    <div class="col-md-6">
+                                        <p class="mb-1 font-weight-bold"><label for="vat"><strong>{{ __('VAT') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('vat')? '<span class="text-danger text-capitalize">'. $errors->first('vat').'</span>':'' !!}
                                         </p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="text" name="vat" step="any" id="vat"
                                                    class="form-control rounded mask-money" aria-label="Large"
                                                    placeholder="{{__('Item VAT(%)')}}"
                                                    aria-describedby="inputGroup-sizing-sm" required
-                                                   value="{{ old('vat') }}">
+                                                   value="{{ old('vat', 0) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -267,8 +264,8 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <p class="mb-1 font-weight-bold"><label for="supplier">{{ __('Supplier') }}
-                                            :</label> {!! $errors->has('supplier')? '<span class="text-danger text-capitalize">'. $errors->first('supplier').'</span>':'' !!}
+                                    <p class="mb-1 font-weight-bold"><label for="supplier"><strong>{{ __('Supplier') }}
+                                            :</strong></label> {!! $errors->has('supplier')? '<span class="text-danger text-capitalize">'. $errors->first('supplier').'</span>':'' !!}
                                     </p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-">
                                         {!! Form::Select('supplier[]',$suppliers,old('supplier'),['id'=>'supplier', 'class'=>'form-control rounded select2','multiple'=>'multiple','style'=>'width:100%']) !!}
@@ -312,7 +309,7 @@
                                     </div>
                                 </div> --}}
 
-                                <div class="col-md-12 mt-3">
+                                <div class="col-md-12 mt-5">
                                     <div class="row pr-3">
                                         <div class="col-md-2">
                                             <p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>

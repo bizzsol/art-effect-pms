@@ -102,7 +102,7 @@
 									</div>
 								</div> --}}
 
-								<div class="col-md-12 mt-3">
+								<div class="col-md-12 mt-3" style="display: none;">
 									<div class="row pr-3">
 										<div class="col-md-2">
 											<p class="mb-1 font-weight-bold"><label for="parent"><strong>{{ __('Product Type') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('product_type')? '<span class="text-danger text-capitalize">'. $errors->first('product_type').'</span>':'' !!}</p>
