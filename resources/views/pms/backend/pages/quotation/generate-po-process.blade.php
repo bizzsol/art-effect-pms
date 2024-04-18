@@ -169,6 +169,8 @@
                                                            value="{{$item->unit_price}}">
                                                     <input type="hidden" name="discount_percentage"
                                                            id="discount_percentage" value="{{$item->discount}}">
+                                                    <input type="hidden" name="vat_type" id="vat_type"
+                                                           value="{{$item->vat_type}}">
                                                     <input type="hidden" name="vat_percentage" id="vat_percentage"
                                                            value="{{$item->vat_percentage}}">
                                                 </td>
@@ -408,12 +410,18 @@
                 var po_qty = parseFloat($(this).val());
                 var unit_price = parseFloat($(this).parent().parent().find('#unit_price').val());
                 var discount_percentage = parseFloat($(this).parent().parent().find('#discount_percentage').val());
+                var vat_type = $(this).parent().parent().find('#vat_type').val();
                 var vat_percentage = parseFloat($(this).parent().parent().find('#vat_percentage').val());
                 var unit_total = (po_qty * unit_price);
                 var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
-                var discounted = (unit_total - discount)
-                var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
-                var total = (discounted + vat);
+                var discounted = (unit_total - discount);
+                if(vat_type == 'inclusive'){
+                    var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted*vat_percentage)/(100+vat_percentage)) : 0);
+                    var total = discounted;
+                }else if(vat_type == 'exclusive'){
+                    var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
+                    var total = (discounted + vat);
+                }
 
                 // console.log("po_qty: "+po_qty);
                 // console.log("unit_price: "+unit_price);

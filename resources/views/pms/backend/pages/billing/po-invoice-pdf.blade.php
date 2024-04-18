@@ -305,9 +305,10 @@
             <td style="text-align:  center;width: 10% !important"><strong>Qty</strong></td>
             <td style="text-align:  center;width: 10% !important"><strong>Unit Price</strong></td>
             @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
-                <td style="text-align:  center;width: 10% !important"><strong>Item Total</strong></td>
-                <td style="text-align:  center;width: 10% !important"><strong>Vat(%)</strong></td>
-                <td style="text-align:  center;width: 10% !important"><strong>Vat</strong></td>
+                <td style="text-align:  center;width: 7.5% !important"><strong>Item Total</strong></td>
+                <td style="text-align:  center;width: 7.5% !important"><strong>Vat Type</strong></td>
+                <td style="text-align:  center;width: 7.5% !important"><strong>Vat(%)</strong></td>
+                <td style="text-align:  center;width: 7.5% !important"><strong>Vat</strong></td>
             @endif
             <td style="text-align:  center;width: 15% !important"><strong>Total Amount</strong></td>
         </tr>
@@ -322,6 +323,7 @@
                 <td class="text-right">{{number_format($item->unit_price, 2)}}</td>
                 @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
                     <td class="text-right">{{number_format($item->sub_total_price, 2)}}</td>
+                    <td class="text-center">{{ucwords($item->vat_type)}}</td>
                     <td class="text-right">{{number_format($item->vat_percentage, 2)}}</td>
                     <td class="text-right">{{number_format($item->vat, 2)}}</td>
                 @endif
@@ -345,6 +347,7 @@
                 <td colspan="" class="text-right">
                     <strong>{{number_format($purchaseOrder->relPurchaseOrderItems->sum('sub_total_price'), 2)}}</strong>
                 </td>
+                <td></td>
                 <td></td>
                 <td colspan="" class="text-right">
                     <strong>{{number_format($purchaseOrder->relPurchaseOrderItems->sum('vat'), 2)}}</strong>

@@ -17,6 +17,12 @@
         .mask-money {
             text-align: right !important;
         }
+
+        .select2-container{
+            min-width: 100px !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
     </style>
 @endsection
 @section('main-content')
@@ -133,41 +139,38 @@
                                     <table class="table table-striped table-bordered table-head quotation-table"
                                            cellspacing="0" width="100%" id="dataTable">
                                         <thead>
-                                        <tr class="text-center">
-                                            <th style="width: 12.5%">Product</th>
-                                            <th style="width: 5%">UOM</th>
-                                            <th style="width: 10%">Unit Price</th>
-                                            <th style="width: 7.5%">Qty</th>
-                                            <th style="width: 10%">Gross Total</th>
-                                            <th style="width: 7.5%">Discount (%)</th>
-                                            <th style="width: 10%">Total Discount</th>
-                                            <th style="width: 10%">Net Total</th>
-                                            <th style="width: 7.5%">Vat (%)</th>
-                                            <th style="width: 10%">Vat Amount</th>
-                                            <th style="width: 10%">Final Total</th>
-                                            <th style="width: 10%" title="Technical Specification">Specs</th>
-                                        </tr>
+                                            <tr class="text-center">
+                                                <th style="width: 12.5%">Product</th>
+                                                <th style="width: 5%">UOM</th>
+                                                <th style="width: 10%">Unit Price</th>
+                                                <th style="width: 7.5%">Qty</th>
+                                                <th style="width: 10%">Gross Total</th>
+                                                <th style="width: 7.5%">Discount (%)</th>
+                                                <th style="width: 10%">Total Discount</th>
+                                                <th style="width: 10%">Net Total</th>
+                                                <th>VAT Type</th>
+                                                <th style="width: 7.5%">VAT (%)</th>
+                                                <th style="width: 10%">Vat Amount</th>
+                                                <th style="width: 10%">Final Total</th>
+                                                <th style="width: 10%" title="Technical Specification">Specs</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
 
                                         @if(isset($requestProposal->requestProposalDetails))
-
                                             @foreach($requestProposal->requestProposalDetails as $key=>$item)
                                                 <tr>
-
                                                     <td>
                                                         {{isset($item->product->name)?$item->product->name:''}}
                                                         ({{isset($item->product->sku)?$item->product->sku:''}}
                                                         ) {{ getProductAttributesFaster($item->product) }}
-                                                        <input type="hidden" name="product_id[]" class="form-control"
-                                                               value="{{$item->product->id}}">
+                                                        <input type="hidden" name="product_id[]" class="form-control" value="{{$item->product->id}}">
                                                     </td>
                                                     <td>
                                                         {{$item->product->productUnit->unit_name}}
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="unit_price[{{$item->product->id}}]"
-                                                               required class="form-control text-right" min="0.0"
+                                                        <input type="text" name="unit_price[{{$item->product->id}}]" required class="form-control text-right" min="0.0"
                                                                step='any' value="0.00"
                                                                id="unitPrice{{$item->product->id}}" placeholder="0.00"
                                                                onkeyup="calculateSubtotal({{$item->product->id}})"
@@ -218,6 +221,13 @@
                                                     <td class="text-right summation-after-discount-amount"
                                                         id="after_discount_amount_{{$item->product->id}}">0.00
                                                     </td>
+                                                    <td>
+                                                        <select class="form-control product_vat_type" name="product_vat_type[{{$item->product->id}}]" id="product_vat_type_{{$item->product->id}}"
+                                                               onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
+                                                            <option value="inclusive" {{ $item->product->vat_type == 'inclusive' ? 'selected' : '' }}>Inclusive</option>
+                                                            <option value="exclusive" {{ $item->product->vat_type == 'exclusive' ? 'selected' : '' }}>Exclusive</option>
+                                                        </select>
+                                                    </td>
                                                     <td class="text-right">
                                                         <input type="text" step="0.01"
                                                                name="product_vat[{{$item->product->id}}]"
@@ -228,12 +238,11 @@
                                                                onkeyup="calculateSumOfVatValue('{{$item->product->id}}', true)"
                                                                onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
                                                     </td>
-                                                    <td class="text-right"
-                                                        id="sub_total_vat_price{{$item->product->id}}_show"
-                                                        style="padding-right: 2.25rem !important;">0.00
+                                                    <td class="text-right vat_amounts" id="sub_total_vat_price{{$item->product->id}}_show">
+                                                        0.00
                                                     </td>
-                                                    <td class="text-right summation-gross-amount"
-                                                        id="item_gross_total_{{$item->product->id}}">0.00
+                                                    <td class="text-right summation-gross-amount" id="item_gross_total_{{$item->product->id}}">
+                                                        0.00
                                                     </td>
 
                                                     <td class="text-center">
@@ -253,35 +262,24 @@
                                         @endif
 
                                         <tr class="total-row">
-                                            <td colspan="3" class="text-right">
+                                            <td colspan="4" class="text-right">
                                                 <strong>Total: </strong>
                                             </td>
-                                            <td class="text-right" style="padding-right: 2.25rem !important;">
-
-                                            </td>
                                             <td>
-                                                <input type="text" name="sum_of_subtoal" readonly
-                                                       class="form-control mask-money" id="sumOfSubtoal"
-                                                       placeholder="0.00">
+                                                <input type="text" name="sum_of_subtotal" readonly class="form-control mask-money" id="sumOfSubtoal" placeholder="0.00">
                                             </td>
                                             <td class="text-right"></td>
                                             <td>
-                                                <input type="text" name="discount"
-                                                       class="form-control bg-white mask-money" step='any' id="discount"
-                                                       placeholder="0.00" value="0.00">
-                                                <input type="hidden" id="sub_total_with_discount"
-                                                       name="sub_total_with_discount" min="0" placeholder="0.00">
+                                                <input type="text" name="discount" class="form-control bg-white mask-money" step='any' id="discount" placeholder="0.00" value="0.00">
+                                                <input type="hidden" id="sub_total_with_discount" name="sub_total_with_discount" min="0" placeholder="0.00">
                                             </td>
                                             <td class="text-right total_value_after_discount"></td>
                                             <td class="text-right"></td>
-                                            <td>
-                                                <input type="text" step='any' name="vat"
-                                                       class="form-control bg-white mask-money" id="vat"
-                                                       placeholder="0.00" value="0.00">
-                                                <input type="hidden" name="gross_price" id="grossPrice">
-                                            </td>
                                             <td class="text-right"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-right" id="total_vat_amount"></td>
+                                            <td class="text-right" id="total_gross_amount"></td>
+                                            <td></td>
+                                            <input type="hidden" name="gross_price" id="grossPrice">
                                         </tr>
                                         </tbody>
                                     </table>
@@ -334,10 +332,11 @@
 @endsection
 @section('page-script')
     <script>
+        $('body').addClass('sidebar-main');
+
         "use strcit"
 
         summation();
-
         function calculateSubtotal(id) {
 
             var unit_price = parseFloat($('#unitPrice' + id).val());
@@ -359,7 +358,6 @@
 
             } else {
                 toastr.error('Please Enter Unit Price & Quentity');
-                // notify('Please Enter Unit Price & Quantity','error');
             }
 
             summation();
@@ -371,17 +369,11 @@
             distributeDiscount();
         });
 
-        // $('#discount_percent').on('keyup', function () {
-        //     distributeDiscount();
-        // });
-
         $('#checkAllDiscount:checkbox').on('change', function () {
             distributeDiscount();
         });
 
         function distributeDiscount() {
-            //console.log('distributeDiscount');
-
             var discount_parcent = ($('#discount_percent').val() != '' ? $('#discount_percent').val() : 0);
 
             if ($('#checkAllDiscount:checkbox').prop('checked')) {
@@ -400,7 +392,6 @@
                 calculateSumOfVatValue(item.getAttribute('data-id'));
             });
 
-
             summation();
         }
 
@@ -412,11 +403,12 @@
             $('#itemWiseDiscount_' + id).val(parseFloat(value).toFixed(2));
             $('#discount_amount_' + id).html(parseFloat(value).toFixed(2));
             $('#after_discount_amount_' + id).html(parseFloat(sub_total_price - value).toFixed(2));
-            //item wise sum
+
             var total = 0;
             $(".itemWiseDiscount").each(function () {
                 total += parseFloat($(this).val() != '' ? $(this).val() : 0);
             });
+
             $("#discount").val(parseFloat(total).toFixed(2));
 
             if (summ) {
@@ -427,77 +419,41 @@
         }
 
         function calculateSumOfVatValue(id, summ = false) {
-            //console.log('calculateSumOfVatValue');
 
             var sub_total_price = parseFloat($('#subTotalPrice_' + id).val() != '' ? $('#subTotalPrice_' + id).val() : 0).toFixed(2);
             var discount_amount = parseFloat($('#itemWiseDiscount_' + id).val() != "" ? $('#itemWiseDiscount_' + id).val() : 0).toFixed(2);
 
             var discounted = parseFloat(parseFloat(sub_total_price) - parseFloat(discount_amount)).toFixed(2);
             var product_vat = parseFloat($('#product_vat_' + id).val() != '' ? $('#product_vat_' + id).val() : 0);
-            var value = parseFloat(product_vat > 0 && discounted > 0 ? (discounted * (product_vat / 100)) : 0).toFixed(2);
-            $('#sub_total_vat_price' + id).val(parseFloat(value).toFixed(2));
-            $('#sub_total_vat_price' + id + '_show').html(parseFloat(value).toFixed(2));
+            var product_vat_type = $('#product_vat_type_' + id).val();
 
-            $('#item_gross_total_' + id).html(parseFloat(parseFloat(discounted) + parseFloat(value)).toFixed(2));
-            //item wise sum
-            var total = 0;
-            $(".calculateSumOfVat").each(function () {
-                total += parseFloat($(this).val() != '' ? $(this).val() : 0);
-            });
+            if(product_vat_type == 'inclusive'){
+                var vat_amount = parseFloat(product_vat > 0 && discounted > 0 ? ((discounted*product_vat)/(100+product_vat)) : 0).toFixed(2);
+                $('#item_gross_total_' + id).html(parseFloat(parseFloat(discounted)).toFixed(2));
+            }else if(product_vat_type == 'exclusive'){
+                var vat_amount = parseFloat(product_vat > 0 && discounted > 0 ? (discounted * (product_vat/100)) : 0).toFixed(2);
+                $('#item_gross_total_' + id).html(parseFloat(parseFloat(discounted) + parseFloat(vat_amount)).toFixed(2));
+            }
 
-            $("#vat").val(parseFloat(total).toFixed(2));
+            $('#sub_total_vat_price' + id).val(parseFloat(vat_amount).toFixed(2));
+            $('#sub_total_vat_price' + id + '_show').html(parseFloat(vat_amount).toFixed(2));
 
             if (summ) {
                 summation();
             }
         }
 
-        $('#vat').on('change', function () {
-            calculateVatValue();
-        });
-
-        // $('#vat').on('keyup', function () {
-        //     calculateVatValue();
-        // });
-
-        function calculateVatValue() {
-            //console.log('calculateVatValue');
-
-            $(".calculateProductVat").val(0);
-            $(".calculateSumOfVat").val(0);
-
-            var vat = parseFloat($('#vat').val() != '' ? $('#vat').val() : 0).toFixed(2);
-            var sumOfSubtoal = parseFloat($(".total_value_after_discount").text() != '' ? $(".total_value_after_discount").text() : 0).toFixed(2);
-            var vatPercetage = parseFloat(vat > 0 ? ((vat * 100) / sumOfSubtoal) : 0).toFixed(2);
-
-            $(".calculateProductVat").val(parseFloat(vatPercetage).toFixed(2));
-            ////console.log(vatPercetage);
-
-            var calculateProductVat = document.querySelectorAll('.calculateProductVat');
-            Array.from(calculateProductVat).map((item, key) => {
-                calculateSumOfVatValue(item.getAttribute('data-id'));
-            });
-
-            summation();
-        }
-
         $('#discount').on('change', function () {
             calculateDiscountValue();
         });
 
-        // $('#discount').on('keyup', function () {
-        //     calculateDiscountValue();
-        // });
-
         function calculateDiscountValue() {
-            //console.log('calculateDiscountValue');
-
             var discount = parseFloat($('#discount').val() != '' ? $('#discount').val() : 0).toFixed(2);
             var sumOfSubtoal = parseFloat($("#sumOfSubtoal").val() != '' ? $("#sumOfSubtoal").val() : 0).toFixed(2);
             var discountPercetage = parseFloat(discount > 0 ? (discount * 100) / sumOfSubtoal : 0).toFixed(2);
 
             $(".calculateDiscount").val(parseFloat(discountPercetage).toFixed(2));
-            ////console.log(discountPercetage);
+
             var calculateDiscount = document.querySelectorAll('.calculateDiscount')
             Array.from(calculateDiscount).map(item => {
                 var id = item.getAttribute('data-id');
@@ -519,29 +475,30 @@
         }
 
         function summation() {
-            //console.log('summation');
-
-            var qty = 0;
-            $.each($('.summation-qty'), function (index, val) {
-                qty += parseInt($(this).val());
-            });
-            $('.total-row').find('td:nth-child(2)').html(qty);
-
             var sumOfSubtoal = parseFloat($('#sumOfSubtoal').val() != '' ? $('#sumOfSubtoal').val() : 0).toFixed(2);
             var discount = parseFloat($('#discount').val() != '' ? $('#discount').val() : 0).toFixed(2);
             var discounted = parseFloat(parseFloat(sumOfSubtoal) - parseFloat(discount)).toFixed(2);
             $('#sub_total_with_discount').val(parseFloat(discounted).toFixed(2));
 
-            var vat = parseFloat($('#vat').val() != '' ? $('#vat').val() : 0).toFixed(2);
-            var total = parseFloat(parseFloat(discounted) + parseFloat(vat)).toFixed(2);
+            var inclusive_vat = 0;
+            var exclusive_vat = 0;
+            $(".calculateSumOfVat").each(function () {
+                if($(this).parent().parent().find('.product_vat_type').find(':selected').val() == 'inclusive'){
+                    inclusive_vat += parseFloat($(this).val() != '' ? $(this).val() : 0);
+                }else if($(this).parent().parent().find('.product_vat_type').find(':selected').val() == 'exclusive'){
+                    exclusive_vat += parseFloat($(this).val() != '' ? $(this).val() : 0);
+                }
+            });
 
-            $('.total-row').find('td:nth-child(6)').html(parseFloat(discounted).toFixed(2));
-            $('.total-row').find('td:nth-child(9)').html(parseFloat(total).toFixed(2));
+            var total = parseFloat(parseFloat(discounted) + parseFloat(exclusive_vat)).toFixed(2);
+
+            $('.total_value_after_discount').html(parseFloat(discounted).toFixed(2));
+            $('#total_vat_amount').html(parseFloat(inclusive_vat+exclusive_vat).toFixed(2));
+            $('#total_gross_amount').html(parseFloat(total).toFixed(2));
             $('#grossPrice').val(parseFloat(total).toFixed(2));
         }
 
         getSupplierInfo();
-
         function getSupplierInfo() {
             var supplier_id = $('#supplier_id').val();
             $.ajax({

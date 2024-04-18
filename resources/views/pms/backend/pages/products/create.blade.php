@@ -798,7 +798,7 @@
             }
         }
 
-        getSubCategories();
+        // getSubCategories();
         function getSubCategories() {
             $.ajax({
                 url: "{{ url('pms/product-management/product/create') }}?get-sub-categories&" + $('#category_type').val(),
