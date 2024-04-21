@@ -147,9 +147,11 @@
 
                                         <input type="hidden" name="item_discount_amount[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="item_wise_discount_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" class="itemWiseDiscount" value="{{$discount_amount}}">
                                         
+                                        <input type="hidden" name="vat_type[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="vat_type_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" data-id="{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->vat_type}}" class="form-control calculateProductVat" readonly>
+
                                         <input type="hidden" name="vat_percentage[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="vat_percentage_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" data-id="{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->vat_percentage}}" class="form-control calculateProductVat" readonly>
 
-                                        <input type="hidden" name="sub_total_vat_price[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" required class="form-control calculateSumOfVat" readonly id="sub_total_vat_price{{isset($item->relProduct->id)?$item->relProduct->id:0}}" placeholder="0.00" value="{{$vat_amount}}">
+                                        <input type="hidden" name="sub_total_vat_price[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" required class="form-control calculateSumOfVat" readonly id="sub_total_vat_price{{isset($item->relProduct->id)?$item->relProduct->id:0}}" placeholder="0.00" value="{{$vat_amount}}" data-vat-type="{{$item->vat_type}}">
                                     </tr>
                                     @endif
                                     @endforeach
@@ -272,11 +274,7 @@
 
         
         var SubPrice = item.querySelector('.calculateSumOfSubtotal');
-        // var SubPrice = item.querySelectorAll('td')[8];
         var DiscountPercentage = item.querySelector('.discountPercentage');
-        // var DiscountPercentage = item.querySelectorAll('td')[9];
-        var VatPercentage = item.querySelector('.calculateProductVat');
-        // var VatPercentage = item.querySelectorAll('td')[9];
 
         ReceivingQty.onkeyup = function (){
             validateData();
@@ -322,7 +320,6 @@
             DiscountCalculate();
             CalculateSumOfVat(ProductId);
         }
-
     }
 
     const getAllContent = () => {
@@ -349,16 +346,19 @@
 
     function CalculateSumOfVat(id) {
         var sub_total_price = parseFloat($('#sub_total_price_'+id).val() != "" ? $('#sub_total_price_'+id).val() : 0);
+        var vat_type= parseFloat($('#vat_type_'+id).val() != "" ? $('#vat_type_'+id).val() : 0);
         var vat_percentage= parseFloat($('#vat_percentage_'+id).val() != "" ? $('#vat_percentage_'+id).val() : 0);
 
-        console.log('sub_total_price='+sub_total_price)
-        console.log('vat_percentage='+vat_percentage)
+        if(sub_total_price != null && vat_percentage !=null){
+            if(vat_type == 'inclusive'){
+                var value = vat_percentage > 0 && sub_total_price > 0 ? ((sub_total_price*vat_percentage)/(100+vat_percentage)) : 0;
+            }else if(vat_type == 'exclusive'){
+                var value = vat_percentage > 0 ? (sub_total_price*(vat_percentage/100)) : 0;
+            }
 
-        if(sub_total_price !=null && vat_percentage !=null){
-
-            var value = (sub_total_price*(vat_percentage/100));
             $('#sub_total_vat_price'+id).val(parseFloat(value));
-            var total=0;
+            
+            var total = 0;
             $(".calculateSumOfVat").each(function(){
                 total += parseFloat($(this).val() != "" ? $(this).val() : 0);
             });
@@ -375,7 +375,15 @@
     const VatCalculate=()=> {
         var price = parseFloat($('#sub_total_with_discount').val());
         var vat = parseFloat($('#vat').val());
-        var total = parseFloat(price)+parseFloat(vat);
+        
+        var inclusive_vat = 0;
+        $(".calculateSumOfVat").each(function(){
+            if($(this).attr('data-vat-type') == 'inclusive'){
+                inclusive_vat += parseFloat($(this).val() != "" ? $(this).val() : 0);
+            }
+        });
+        
+        var total = parseFloat(price)+parseFloat(vat)-parseFloat(inclusive_vat);
         $('#grossPrice').val(parseFloat(total));
     }
     VatCalculate();

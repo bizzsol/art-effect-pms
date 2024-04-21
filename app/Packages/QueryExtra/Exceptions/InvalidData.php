@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'BFEOIW'); return 0;
-##!!!##xsYqHSkhLywdHyHc/SwsGAwdHycdIyEvGA0xIS41ATQwLh0YATQfISwwJSsqL/fGxjEvIdwBNB8hLDAlKyr3xsYfKB0vL9wFKjIdKCUgByE13CE0MCEqIC/cATQfISwwJSsqxjfG3Nzc3Ovm5sbc3Nzc3ObcDiEsKy4w3DAkIdwhNB8hLDAlKyrqxtzc3Nzc5sbc3Nzc3Obc/C4hMDEuKtwyKyUgxtzc3Nzc5uvG3Nzc3CwxHiglH9wiMSofMCUrKtwuISwrLjDk5cbc3NzcN8bc3NzcOcY5
+bolt_decrypt( __FILE__ , 'hNb35K'); return 0;
+##!!!##1dU5LDgwPjssLjDrDDs7JxssLjYsMjA+JxxAMD1EEEM/PSwnEEMuMDs/NDo5PgbV1UA+MOsQQy4wOz80OjkG1dUuNyw+PusUOUEsNzQvFjBE6zBDPzA5Lz7rEEMuMDs/NDo51UbV6+vr6/r19dXr6+vr6/XrHTA7Oj0/6z8zMOswQy4wOz80Ojn51evr6+vr9dXr6+vr6/XrCz0wP0A9OetBOjQv1evr6+vr9frV6+vr6ztALTc0LusxQDkuPzQ6Oes9MDs6PT/z9NXr6+vrRtXr6+vrSNVI

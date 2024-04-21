@@ -66,13 +66,13 @@
                                         <th style="width: 5%">SL</th>
                                         <th style="width: 10%">Ref No</th>
                                         <th style="width: 5%">Category</th>
-                                        <th style="width: 25%">Product</th>
+                                        <th style="width: 23%">Product</th>
                                         <th style="width: 10%">Unit Price
                                             ({{ isset($grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code)?$grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code:"" }}
                                             )
                                         </th>
                                         <th style="width: 10%">Qty</th>
-                                        <th style="width: 10%">Total Price
+                                        <th style="width: 12%">Total Price
                                             ({{ isset($grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code)?$grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code:'' }}
                                             )
                                         </th>
@@ -91,7 +91,9 @@
                                                 <td>{{isset($values->relGoodsReceivedItems->relProduct->name)?$values->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributesFaster($values->relGoodsReceivedItems->relProduct) }}</td>
 
                                                 <td class="text-right">{{number_format($values->unit_amount,2)}}</td>
-                                                <td><input type="text" name="id[{{$values->id}}]"
+                                                <td class="text-center">
+                                                    {{$values->received_qty}}
+                                                    <input type="hidden" name="id[{{$values->id}}]"
                                                            value="{{$values->received_qty}}" readonly
                                                            class="form-control rounded text-center"></td>
                                                 <td class="text-right">{{number_format($values->total_amount,2)}}</td>
