@@ -183,7 +183,7 @@
                                                                        class="form-control text-center item-quantities item-quantity-{{ $quotation->id }} itemized-quantity-{{ $item->id }}"
                                                                        data-quotation-id="{{ $quotation->id }}"
                                                                        data-item-id="{{ $item->id }}"
-                                                                       value="{{ $quotation->recommendation == 'yes' ? $item->qty : (request()->get('type')=='direct-purchase'?$item->qty:0) }}"
+                                                                       value="{{ request()->get('type') == 'direct-purchase' ? $item->qty : ($this_prices['recommended_quantity']) }}"
                                                                        data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
                                                                        data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
                                                                        data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
@@ -438,6 +438,10 @@
                         $('.quotation-radio-' + quotation_id).prop('checked', (checked_radios > 0 && (total_radios - checked_radios == 0)));
                     });
                 });
+            });
+
+            $.each($('.item-quantities'), function(index, val) {
+                checkQuantity($(this));
             });
 
             var form = $('.cs-from');

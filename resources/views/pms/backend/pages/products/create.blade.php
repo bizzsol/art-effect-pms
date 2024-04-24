@@ -340,6 +340,8 @@
                                             </div>
                                         </div>
 
+                                        @if(auth()->user()->hasPermissionTo('product-finance-information'))
+
                                         <div class="col-md-3 ledgers-div inventory-div">
                                             <label for="inventory_account_id"><strong><span id="inventory-title">Inventory Accounts</span>:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
@@ -380,9 +382,12 @@
                                             </div>
                                         </div>
 
+                                        @endif
+
                                     </div>
                                 </div>
 
+                                @if(auth()->user()->hasPermissionTo('product-finance-information'))
                                 <div class="col-md-12 mb-4 mt-4 fixed-asset-info" style="display: none">
                                     <div class="card">
                                         <div class="card-body bordered">
@@ -498,6 +503,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <div class="col-md-12 pb-5">
                                 <a class="btn btn-danger rounded pull-right ml-2"

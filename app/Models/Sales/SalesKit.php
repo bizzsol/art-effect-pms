@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'VHyf9p'); return 0;
+bolt_decrypt( __FILE__ , 'CWGoog'); return 0;
 ##!!!##MDCUh5OLmZaHiYtGZ5aWgnOViouSmYJ5h5KLmWEwMJuZi0ZvkpKbk4+Uh5qLgmqHmoeIh5mLgmuSlZebi5SagnOViouSYTAwiZKHmZlGeYeSi5lxj5pGi56ai5SKmUZzlYqLkjChMC+WmJWai4mai4pGSpqHiJKLRmNGTU1hMC+WmJWai4mai4pGSpaYj5OHmJ9xi59GY0ZNj4pNYTBGRkZGlpiVmouJmouKRkqNm4eYiouKRmNGgYNhMDBGRkZGlpiVmouJmouKRkqKh5qLmUZjRoEwRkZGRkZGRkZNiZiLh5qLioWHmk1SRk2bloqHmouKhYeaTTBGRkZGg2EwozA=
