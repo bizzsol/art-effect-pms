@@ -58,6 +58,7 @@
                     <th>SL</th>
                     <th>Category</th>
                     <th>Product</th>
+                    <th>Attributes</th>
                     <th>UOM</th>
                     @can('requisition-acknowledge')
                         <th>Stock Qty</th>
@@ -84,6 +85,7 @@
                         <td>{{isset($item->product->name)?$item->product->name:''}}
                             ( {{isset($item->product->sku)?$item->product->sku:''}}
                             ) {{ getProductAttributesFaster($item->product) }}</td>
+                        <td>{{ getProductAttributesFaster($item) }}</td>
                         <td>{{ isset($item->product->productUnit->unit_name)?$item->product->productUnit->unit_name:'' }}</td>
                         @can('requisition-acknowledge')
                             <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
@@ -108,7 +110,7 @@
 
                 @endforelse
                 <tr>
-                    <td colspan="4" class="text-right">Total</td>
+                    <td colspan="5" class="text-right">Total</td>
                     @can('requisition-acknowledge')
                         <td class="text-center">{{$total_stock_qty}}</td>
                     @endcan

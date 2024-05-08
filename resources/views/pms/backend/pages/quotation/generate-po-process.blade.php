@@ -261,12 +261,30 @@
                                     </table>
                                 </div>
                                 <div class="form-row">
+                                    <div class="col-md-12">
+                                        <h6 class="mb-2"><strong>Work Progresses</strong></h6>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 70%">Milestone</th>
+                                                    <th style="width: 20%">Payment Percentage (%)</th>
+                                                    <th style="width: 10%">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="milestones">
+                                                
+                                            </tbody>
+                                        </table>
+                                        <a class="btn btn-xs btn-success text-white pull-right" onclick="addMilestone()"><i class="las la-plus"></i>&nbsp;Add new Milstone</a>
+                                    </div>
+                                </div>
+                                <div class="form-row">
                                     <div class="col-12">
                                         <label for="remarks"><strong>{{ __('Notes') }}</strong></label>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <textarea name="remarks"
                                                       id="remarks"
-                                                      class="form-control rounded "
+                                                      class="form-control rounded summer-editor"
                                                       rows="2"
                                                       cols="5"
                                                       placeholder="Write here...">
@@ -473,6 +491,49 @@
                     });
             } else {
                 $('#cost_centre_id').html('<option value="0">Choose Cost Centre</option>');
+            }
+        }
+
+
+        addMilestone();
+        function addMilestone() {
+            $('#milestones').append('<tr>'+
+                                        '<td>'+
+                                            '<input type="text" name="milestone_names[]" class="form-control" required>'+
+                                        '</td>'+
+                                        '<td>'+
+                                            '<input type="number" name="milestone_percentages[]" min="0" max="100" value="0" class="form-control text-right milestones" onchange="calculateMilestone($(this))" onkeyup="calculateMilestone($(this))" required>'+
+                                        '</td>'+
+                                        '<td class="text-center">'+
+                                            '<a class="btn btn-xs btn-danger text-white" onclick="removeMilestone($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>'+
+                                        '</td>'+
+                                    '</tr>');
+        }
+
+        function removeMilestone(element) {
+            element.parent().parent().remove();
+        }
+
+        function calculateMilestone(element) {
+            var value = parseInt(element.val());
+            var max = parseInt(element.attr('max'));
+            var min = parseInt(element.attr('min'));
+
+            if(value > max){
+                element.val(max);
+            }
+
+            if(value < min){
+                element.val(min);
+            }
+
+            var milestone = 0;
+            $.each($('.milestones'), function(index, val) {
+                milestone += parseInt($(this).val());
+            });
+
+            if(milestone > max){
+                element.val(0);
             }
         }
     </script>

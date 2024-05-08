@@ -307,7 +307,7 @@
                         url: element.attr('data-src'),
                         success: function (response) {
                             if (response.success) {
-                                location.reload();
+                                
                                 swal({
                                     icon: 'success',
                                     text: 'Data duplicate successfully',
@@ -316,6 +316,8 @@
                                 setTimeout(() => {
                                     swal.close();
                                 }, 1500);
+
+                                reloadDatatable();
                             } else {
                                 showAlert('error', response.message);
                                 return;

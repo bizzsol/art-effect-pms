@@ -136,8 +136,8 @@
                                             <thead>
                                             <tr class="text-center">
                                                 <th style="width: 15%">Sub Category</th>
-                                                <th style="width: 40%">Product</th>
-                                                <th style="width: 35%">Attributes</th>
+                                                <th style="width: 30%">Product</th>
+                                                <th style="width: 45%">Attributes</th>
                                                 <th style="width: 10%">Quantity</th>
                                                 <th style="width: 5%" class="text-center">Action</th>
                                             </tr>
@@ -156,7 +156,7 @@
                                                         </td>
                                                         <td class="product-td">
                                                             <div class="input-group input-group-md">
-                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products"required  data-product-id="{{ $item['product_id'] }}">
+                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products"required  data-product-id="{{ $item['product_id'] }}" onchange="getAttributes($(this))">
                                                                     <option value="{{ null }}" data-uom="">{{ __('Product') }}</option>
                                                                 </select>
                                                             </div>
@@ -201,13 +201,13 @@
                                                     <td class="product-td">
                                                         <div class="input-group input-group-md">
                                                             <select name="product_id[]" id="product_1"
-                                                                    class="form-control product requisition-products" data-product-id="" required>
+                                                                    class="form-control product requisition-products" data-product-id="" required onchange="getAttributes($(this))">
                                                                 <option value="{{ null }}" data-uom="">{{ __('Select Product') }}</option>
                                                             </select>
                                                         </div>
                                                     </td>
                                                     <td class="product-attributes">
-                                                            
+                                                        
                                                     </td>
                                                     <td>
                                                         <div class="input-group input-group-md">
@@ -451,13 +451,15 @@
                     '                                            <td class="product-td">\n' +
                     '\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <select name="product_id[]" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required>\n' +
+                    '                                                    <select name="product_id[]" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required onchange="getAttributes($(this))">\n' +
                     '                                                        <option value="{{ null }}">{{ __("Select Product") }}</option>\n' +
                     '                                                    </select>\n' +
                     '                                                </div>\n' +
                     '\n' +
                     '                                            </td>\n' +
-                    '<td class="product-attributes"></td>'+
+                    '<td class="product-attributes">'+
+                        
+                    '</td>'+
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
                     '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="">\n' +
@@ -592,6 +594,34 @@
                 toastr.error(errors);
 
                 excel_button.prop('disabled', false).html(excel_button_content);
+            });
+        }
+
+
+        function getAttributes(element) {
+            var product_id = parseInt(element.find(':selected').val());
+            if(product_id > 0){
+                $.ajax({
+                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id,
+                    type: 'GET',
+                    data: {},
+                })
+                .done(function(response) {
+                    element.parent().parent().parent().find('.product-attributes').html(response);
+                });
+            }else{
+                element.parent().parent().parent().find('.product-attributes').html('');
+            }
+        }
+
+        function showAttributeoptions(element) {
+            var attributes = element.parent().parent().find('.attributes:checked').map(function () {
+                return this.value;
+            }).get();
+
+            element.parent().parent().parent().parent().find('.attribute-option-div').hide();
+            $.each(attributes, function(index, attribute) {
+                element.parent().parent().parent().parent().find('.attribute-option-div-'+attribute).show();
             });
         }
     </script>

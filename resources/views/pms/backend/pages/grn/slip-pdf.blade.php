@@ -13,7 +13,7 @@
                 header: page-header;
                 footer: page-footer;
 
-                background: url('assets/idcard/letterhead/{{ getUnitCode($purchaseOrder->id) }}.png') no-repeat 0 0;
+                background: url({{ getUnitPad($purchaseOrder->Unit) }}) no-repeat 0 0;
                 background-image-resize: 6;
             }
 

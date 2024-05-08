@@ -116,26 +116,22 @@
                                 <table class="table table-striped table-bordered miw-500 dac_table" cellspacing="0" width="100%" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>{{__('Sub Category')}}</th>
-                                            <th width="50%">{{__('Product')}}</th>
-                                            <th width="10%">{{__('UOM')}}</th>
-                                            <th width="10%">{{__('Qty')}}</th>
+                                            <th style="width: 10%">Sub Category</th>
+                                            <th style="width: 25%">Product</th>
+                                            <th style="width: 40%">Attributes</th>
+                                            <th style="width: 10%">Qty</th>
                                             @can('department-requisition-edit')
-                                            <th width="10%">{{__('Approved Qty')}}</th>
-                                            @php 
-                                            $modifiedName=true;
-                                            @endphp
+                                            <th style="width: 10%">Approved Qty</th>
+                                            @php $modifiedName = true; @endphp
                                             @endcan
-
-                                            <th class="text-center">{{__('Action')}}</th>
+                                            <th style="width: 5%" class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="field_wrapper">
-
                                         @php
                                         $oldProductIds=[];
                                         @endphp
-                                        @forelse($requisition->requisitionItems as $key=>$requisitionItem)
+                                        @forelse($requisition->items as $key=>$requisitionItem)
                                         <tr>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -152,16 +148,14 @@
                                                     @if($requisition->status==1)
                                                     <input type="text" name="category_id" value="{{isset($requisitionItem->product->name)?$requisitionItem->product->name:''}}" class="form-control" readonly>
                                                     @else
-                                                    <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" onchange="getUOM()" required>
+                                                    <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" required onchange="getAttributes($(this))" data-item-id="{{ $requisitionItem->id }}">
                                                         
                                                     </select>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="product-uom text-center">
-                                                 @if($requisition->status==1)
-                                                    <input type="text" name="category_id" value="{{isset($requisitionItem->product->productUnit->unit_name)?$requisitionItem->product->productUnit->unit_name:''}}" class="form-control" readonly>
-                                                    @endif
+                                            <td class="product-attributes">
+
                                             </td>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -179,7 +173,6 @@
 
                                             <td>
                                                 @if($requisition->status !=1)
-
                                                 <a href="javascript:void(0);" id="remove_{{$key}}" class="remove_button btn btn-danger btn-sm" style="margin-right:17px;" title="Remove" >
                                                     <i class="las la-trash"></i>
                                                 </a>
@@ -191,7 +184,7 @@
 
                                     </tbody>
                                 </table>
-                                @if(auth::user()->id ==$requisition->author_id)
+                                @if(auth::user()->id == $requisition->author_id)
                                      @if($requisition->status !=1)
                                     <a href="javascript:void(0);" style="margin-right:27px;" class="add_button btn btn-sm btn-primary pull-right" title="Add More Product">
                                         <i class="las la-plus"></i>
@@ -257,8 +250,7 @@
                                 
                             </div>
                             <div class="col-6">
-                                <button type="button" onclick="updateRequisition()" class="btn btn-primary rounded pull-right"><i
-                                                    class="la la-plus"></i> {{ __('Update Requisition') }}</button>
+                                <button type="button" onclick="updateRequisition()" class="btn btn-primary rounded pull-right"><i class="la la-plus"></i> {{ __('Update Requisition') }}</button>
                             </div>
 
                         </div>
@@ -308,7 +300,7 @@
 
         var maxField = 500;
         var addButton = $('.add_button');
-        var x = parseInt("{{ $requisition->requisitionItems->count()+1 }}"); 
+        var x = parseInt("{{ $requisition->items->count()+1 }}"); 
         var wrapper = $('.field_wrapper');
         $(addButton).click(function(){
             x++;
@@ -324,12 +316,12 @@
             '                                            <td>\n' +
             '\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-            '                                                    <select name="product_id[]" id="product_'+x+'" class="form-control select2 product requisition-products" onchange="getUOM()" required>\n' +
+            '                                                    <select name="product_id[]" id="product_'+x+'" class="form-control select2 product requisition-products" required onchange="getAttributes($(this))" data-item-id="0">\n' +
             '                                                        <option value="{{ null }}">{{ __("--Select Product--") }}</option>\n' +
             '                                                    </select>\n' +
             '                                                </div>\n' +
             '\n' +
-            '                                            </td><td class="product-uom text-center"></td>\n' +
+            '                                            <td class="product-attributes"></td>' +
             '                                            <td>\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
             '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_'+x+'" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}">\n' +
@@ -429,6 +421,7 @@
             })
             .done(function(response) {
                 $('#product_' + incrementNumber).html(response).change();
+                getAttributes($('#product_' + incrementNumber));
             });
         }
 
@@ -449,13 +442,6 @@
                 }
             });
         })(jQuery);
-
-        getUOM();
-        function getUOM() {
-            $.each($('.product'), function(index, val) {
-                $(this).parent().parent().next().html($(this).find(':selected').attr('data-uom'));
-            });
-        }
 
         function updateRequisition() {
             var error_count = 0;
@@ -486,6 +472,34 @@
             if(error_count == 0){
                 $('#editRequisitionForm').submit();
             }
+        }
+
+        function getAttributes(element) {
+            var product_id = parseInt(element.find(':selected').val());
+            var item_id = parseInt(element.attr('data-item-id'));
+            if(product_id > 0){
+                $.ajax({
+                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&item_id="+item_id,
+                    type: 'GET',
+                    data: {},
+                })
+                .done(function(response) {
+                    element.parent().parent().parent().find('.product-attributes').html(response);
+                });
+            }else{
+                element.parent().parent().parent().find('.product-attributes').html('');
+            }
+        }
+
+        function showAttributeoptions(element) {
+            var attributes = element.parent().parent().find('.attributes:checked').map(function () {
+                return this.value;
+            }).get();
+
+            element.parent().parent().parent().parent().find('.attribute-option-div').hide();
+            $.each(attributes, function(index, attribute) {
+                element.parent().parent().parent().parent().find('.attribute-option-div-'+attribute).show();
+            });
         }
     </script>
     @endsection

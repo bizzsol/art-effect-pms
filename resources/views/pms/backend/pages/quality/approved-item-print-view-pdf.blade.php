@@ -15,7 +15,8 @@ $contactPersonSales = \App\Models\PmsModels\SupplierContactPerson::where(['suppl
 				header: page-header;
 				footer: page-footer;
 
-				background: url('assets/idcard/letterhead/{{ getUnitCode(isset($quotation->relPurchaseOrder->id) ? $quotation->relPurchaseOrder->id : 0) }}.png)no-repeat 0 0; background-image-resize: 6;
+				background: url({{ getUnitPad(isset($quotation->relPurchaseOrder->id) ? $quotation->relPurchaseOrder->Unit : false) }}) no-repeat 0 0;
+				background-image-resize: 6;
 			}
 
 			html, body, p  {

@@ -252,7 +252,7 @@ width:  100% !important;
 </tr>
 </thead>
 <tbody class="field_wrapper">
-@forelse($supplier->relPaymentTerms as $relPaymentTerm)
+@forelse($supplier->relPaymentTerms->where('source', 'profile') as $relPaymentTerm)
 <tr>
 <td>
 <div class="input-group input-group-md mb-12 d-">

@@ -12,7 +12,7 @@
                 header: page-header;
                 footer: page-footer;
 
-                background: url('assets/idcard/letterhead/{{ getUnitCode(isset($note->relPurchaseOrder->id) ? $note->relPurchaseOrder->id : 0) }}.png') no-repeat 0 0;
+                background: url({{ getUnitPad(isset($note->relPurchaseOrder->id) ? $note->relPurchaseOrder->Unit : 0) }}) no-repeat 0 0;
                 background-image-resize: 6;
             }
             

@@ -184,38 +184,27 @@
                                     <div class="card-body bordered">
                                         <h5 class="floating-title">Payment Terms</h5>
                                         <div class="row">
-                                            <div class="col-md-12 mb-4">
-                                                <h5 class="mb-2">Currencies:</h5>
-                                                <div>
-                                                    {!! $supplier->suppleierCurrencies->pluck('currency.name')->implode(', ') !!}
-                                                </div>
+                                            <div class="col-md-12 mb-2">
+                                                <h6 class="mb-2">Currencies:</h6>
+                                                <ul>
+                                                    @if($supplier->suppleierCurrencies->count() > 0)
+                                                    @foreach($supplier->suppleierCurrencies as $currency)
+                                                    <li>{{ $currency->currency->name }}</li>
+                                                    @endforeach
+                                                    @endif
+                                                </ul>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <table class="table table-striped table-bordered miw-500 dac_table mb-3" cellspacing="0" width="100%" id="dataTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>{{ __('Payment Term') }}</th>
-                                                            <th  width="15%">{{ __('Payment Percent') }}</th>
-                                                            <th width="15%">{{__('Day Duration')}}</th>
-                                                            <th  width="15%">{{__('Type')}}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="field_wrapper">
-                                                    @forelse($supplier->relPaymentTerms as $relPaymentTerm)
-                                                        <tr>
-                                                            <td>{{ $relPaymentTerm->relPaymentTerm->term }}</td>
-                                                            <td>{{$relPaymentTerm->payment_percent}}</td>
-                                                            <td>{{$relPaymentTerm->day_duration}}</td>
-                                                            <td>
-                                                                {{ ($relPaymentTerm->type==\App\Models\PmsModels\SupplierPaymentTerm::ADVANCE) == 1 ? "Account Payee-cheque" : "Cash Cheque" }}
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                    @endforelse
-                                                    </tbody>
-                                                </table>
+                                                <h6 class="mb-2">Payment Terms:</h6>
+                                                <ul>
+                                                    @if($supplier->relPaymentTerms->where('parent_id', 0)->where('source', 'profile')->count() > 0)
+                                                    @foreach($supplier->relPaymentTerms->where('parent_id', 0)->where('source', 'profile') as $key => $term)
+                                                        <li>{{ makePaymentTermsString($term->id) }}</li>
+                                                    @endforeach
+                                                    @endif
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
