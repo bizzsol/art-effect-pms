@@ -555,8 +555,8 @@
                                                     '</td>'+
                                                     '<td>'+
                                                         '<select name="payment_types[]" class="form-control payment-types" required>'+
-                                                            '<option value="paid">Account Payee-cheque</option>'+
-                                                            '<option value="due">Cash Cheque</option>'+
+                                                            '<option value="paid">Advance</option>'+
+                                                            '<option value="due">Due</option>'+
                                                         '</select>'+
                                                     '</td>'+
                                                     '<td class="text-center">'+

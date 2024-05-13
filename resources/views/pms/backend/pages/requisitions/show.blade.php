@@ -67,7 +67,8 @@
                     @if($requisition->status==1)
                         <th>Approved Qty</th>
                     @endif
-
+                    <th>Unit Price</th>
+                    <th>Estimated Amoount</th>
                 </tr>
                 </thead>
 
@@ -78,7 +79,6 @@
                     $total_approved_qty = 0;
                 @endphp
                 @forelse($requisition->items as $key=>$item)
-
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
                         <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
@@ -94,6 +94,8 @@
                         @if($requisition->status==1)
                             <td class="text-center">{{$item->qty}}</td>
                         @endif
+                        <td class="text-right">{{ systemMoneyFormat($item->product->unit_price) }}</td>
+                        <td class="text-right">{{ systemMoneyFormat($item->product->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
                     @can('requisition-acknowledge')
                         @php
@@ -107,23 +109,11 @@
                         $total_approved_qty += $item->qty;
                     @endphp
                 @empty
-
                 @endforelse
-                <tr>
-                    <td colspan="5" class="text-right">Total</td>
-                    @can('requisition-acknowledge')
-                        <td class="text-center">{{$total_stock_qty}}</td>
-                    @endcan
-                    <td class="text-center">{{$total_requisition_qty}}</td>
-                    @if($requisition->status==1)
-                        <td class="text-center">{{$total_approved_qty}}</td>
-                    @endif
-
-                </tr>
                 </tbody>
             </table>
 
-            @if(auth()->user()->hasRole('Department-Head'))
+            @if(auth()->user()->hasRole('Department-Head') || auth()->user()->hasRole('Accounts') || auth()->user()->hasRole('Management'))
                 <div>
                     <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat(estimatedValue($requisition))}}
                     BDT
@@ -143,9 +133,7 @@
                     <strong> Holding Reason: </strong>
                     {!!$requisition->admin_remark!!}
                 </div>
-
             @endif
-
         </div>
     </div>
 </div>
