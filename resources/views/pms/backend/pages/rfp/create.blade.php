@@ -88,8 +88,8 @@
                                         @foreach($products as $key=> $values)
                                             @php
                                                 $sumOfSendRFP = sumOfSendRFP($values->id, 0, false);
-                                                $sumOfRFP = collect($values->requisitionItem)->where('requisition.status', 1)->where('is_send','no')->whereIn('requisition_id',$requisitionIds)->sum('qty');
-                                                $sumOfRequisitionQty = collect($values->requisitionItem)->where('requisition.status', 1)->where('is_send','no')->whereIn('requisition_id',$requisitionIds)->sum('requisition_qty');
+                                                $sumOfRFP = collect($values->requisitionItem)->where('requisition.status', 1)->where('is_send','no')->whereIn('requisition_id',$requisitionIds)->where('requisition.assigned_user_id', auth()->user()->id)->sum('qty');
+                                                $sumOfRequisitionQty = collect($values->requisitionItem)->where('requisition.status', 1)->where('is_send','no')->whereIn('requisition_id',$requisitionIds)->where('requisition.assigned_user_id', auth()->user()->id)->sum('requisition_qty');
                                                 $total_sumOfRequisitionQty += $sumOfRequisitionQty;
                                                 $total_sumOfRFP += $sumOfRFP;
                                             @endphp

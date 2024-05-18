@@ -61,9 +61,10 @@
                     <thead>
                     <tr class="text-center">
                         <th>SL</th>
-                        <th>Category</th>
                         <th>Product</th>
-                        <th>Technical Specification</th>
+                        <th>Attributes</th>
+                        <th>Description</th>
+                        <th>Specs</th>
                         <th>UOM</th>
                         <th>Unit Price ({{ $quotations->exchangeRate->currency->code }})</th>
                         <th>Qty</th>
@@ -83,10 +84,11 @@
                     @foreach($quotationItems as $key=>$item)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
                             <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}}
                                 ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}
                                 ) {{ getProductAttributesFaster($item->relProduct) }}</td>
+                            <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                            <td>{{ $item->description }}</td>
                             <td class="text-center">
                                 @if($item->technical_specification_file)
                                     <a href="{{asset($item->technical_specification_file)}}"
@@ -104,33 +106,30 @@
                     @endforeach
 
                     <tr>
-                        <td colspan="6" class="text-right">Total</td>
-                        <td colspan=""
-                            class="text-center">{{number_format($quotations->relQuotationItems->sum('qty'),0)}}</td>
-                        <td colspan=""
-                            class="text-right">{{number_format($quotations->relQuotationItems->sum('sub_total_price'),2)}}</td>
+                        <td colspan="7" class="text-right">Total</td>
+                        <td class="text-center">{{number_format($quotations->relQuotationItems->sum('qty'),0)}}</td>
+                        <td class="text-right">{{number_format($quotations->relQuotationItems->sum('sub_total_price'),2)}}</td>
                         @if(!$same)
-                            <td colspan=""
-                                class="text-right">{{number_format($quotations->relQuotationItems->sum('sub_total_price')*$exchangeRate,2)}}</td>
+                            <td class="text-right">{{number_format($quotations->relQuotationItems->sum('sub_total_price')*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
 
                     <tr>
-                        <td colspan="7" class="text-right">(-) Discount</td>
+                        <td colspan="8" class="text-right">(-) Discount</td>
                         <td class="text-right">{{number_format($quotations->discount,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotations->discount*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
                     <tr>
-                        <td colspan="7" class="text-right">(+) Vat</td>
+                        <td colspan="8" class="text-right">(+) Vat</td>
                         <td class="text-right">{{number_format($quotations->vat,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotations->vat*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
                     <tr>
-                        <td colspan="7" class="text-right">Total Amount</td>
+                        <td colspan="8" class="text-right">Total Amount</td>
                         <td class="text-right">{{number_format($quotations->gross_price,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotations->gross_price*$exchangeRate,2)}}</td>
@@ -140,14 +139,14 @@
                     @if(isset($quotations->remarks))
                         <tr>
                             <td class="text-left">Notes</td>
-                            <td colspan="7">{{$quotations->remarks}}</td>
+                            <td colspan="8">{{$quotations->remarks}}</td>
                         </tr>
                     @endif
 
                     @if(isset($quotations->note))
                         <tr>
                             <td class="text-left">Notes</td>
-                            <td class="text-left" colspan="7">{{$quotations->note}}</td>
+                            <td class="text-left" colspan="8">{{$quotations->note}}</td>
                         </tr>
                     @endif
 

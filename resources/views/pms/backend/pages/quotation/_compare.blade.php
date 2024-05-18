@@ -15,7 +15,7 @@
         }
 
         .select2-container {
-            width: 240px !important;
+            width: 100% !important;
         }
 
         @if(count($quotations)>2)
@@ -76,15 +76,11 @@
                                     @endif
                                 @endforeach
                                 <div class="col-md-12">
-
                                     <div class="panel panel-info">
-
                                         <div class="table-responsive">
-
                                             <table class="table table-bordered table-hover ">
-
                                                 <tr>
-                                                    <th colspan="5">Party Name</th>
+                                                    <th colspan="6">Party Name</th>
                                                     @if(isset($quotations[0]))
                                                         @foreach($quotations as $quotation)
                                                         @php
@@ -129,8 +125,9 @@
                                                 </tr>
                                                 <tr class="text-center">
                                                     <th width="1%" class="text-center">SL</th>
-                                                    <th>Category</th>
                                                     <th>Product</th>
+                                                    <th>Attributes</th>
+                                                    <th>Description</th>
                                                     <th>UOM</th>
                                                     <th class="text-center">Qty</th>
                                                     @if(isset($quotations[0]))
@@ -162,12 +159,10 @@
                                                         @foreach($quotation->relQuotationItems as $key=>$item)
                                                             <tr>
                                                                 <td>{{$key+1}}</td>
-                                                                <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
-
                                                                 <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-
+                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                                                                <td>{{ $item->description }}</td>
                                                                 <td>{{ isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
-
                                                                 <td class="text-center max-quantity">{{$item->qty}}</td>
                                                                 @if(isset($quotations[0]))
                                                                     @foreach($quotations as $quotation_key => $quotation)
@@ -212,7 +207,7 @@
                                                         @endforeach
                                                     @endif
                                                     <tr>
-                                                        <td colspan="4" class="text-right"><strong>Total</strong></td>
+                                                        <td colspan="5" class="text-right"><strong>Total</strong></td>
                                                         <td class="text-center"><strong>{{$total_qty}}</strong></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
@@ -232,7 +227,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-right"></td>
+                                                        <td colspan="6" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 @php
@@ -254,7 +249,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td colspan="5" class="text-right"></td>
+                                                        <td colspan="6" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                             @php
@@ -274,7 +269,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-right"></td>
+                                                        <td colspan="6" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                             @php
@@ -295,7 +290,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td colspan="5"></td>
+                                                        <td colspan="6"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td class="text-left"
@@ -308,7 +303,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5"></td>
+                                                        <td colspan="6"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td colspan="{{ ($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : '')) ? 4 : 3 }}">
@@ -319,7 +314,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5"></td>
+                                                        <td colspan="6"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td colspan="{{ ($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : '')) ? 4 : 3 }}">
@@ -335,17 +330,37 @@
                                                 </tbody>
                                             </table>
                                         </div>
-
+                                    </div>
+                                    <div class="panel panel-info">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 90%">Approver</th>
+                                                            <th style="width: 10%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="approvers">
+                                                        
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="5" class="text-right">
+                                                                <a class="btn btn-xs btn-success text-white" onclick="newApprover()"><i class="las la-plus"></i>&nbsp;New Approver</a>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success submit-button"><i
-                                                    class="la la-check"></i>&nbsp;Send for Management Approval
+                                        <button type="submit" class="btn btn-success submit-button"><i class="la la-check"></i>&nbsp;Send for Management Approval
                                         </button>
-                                        <a type="button" class="btn btn-danger"
-                                           href="{{route('pms.quotation.quotations.cs.analysis')}}">Close</a>
+                                        <a type="button" class="btn btn-danger" href="{{route('pms.quotation.quotations.cs.analysis')}}">Close</a>
                                     </div>
                                 </div>
-
                         </div>
                         @endif
 
@@ -488,6 +503,27 @@
 
             $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
             $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+        }
+
+        newApprover();
+        function newApprover() {
+            var approvers = '';
+            $.each(<?php echo json_encode($approvers); ?>, function(index, approver) {
+                approvers += '<option value="'+approver.id+'">'+approver.name+'</option>';
+            });
+            $('#approvers').append('<tr>'+
+                                        '<td>'+
+                                            '<select class="form-control select2" name="approvers[]">'+approvers+'</select>'+
+                                        '</td>'+
+                                        '<td class="text-center">'+
+                                            '<a class="btn btn-xs btn-danger text-white" onclick="removeApprover($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>'+
+                                        '</td>'+
+                                    '</tr>');
+            $('.select2').select2();
+        }
+
+        function removeApprover(element) {
+            element.parent().parent().remove();
         }
     </script>
 @endsection

@@ -181,7 +181,7 @@
                                             @foreach($grn->relGoodsReceivedItems as $key=>$item)
                                             <tr>
 
-                                                <td>{{isset($item->relProduct->name) ?$item->relProduct->name  : ''}} {{ getProductAttributes($item->product_id) }}</td>
+                                                <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->product) }} {{ getProductAttributesFaster($item) }}</td>
                                                 <td >{{isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : ''}}</td>
 
                                                 <td class="text-center">{{number_format($item->qty,0)}}</td>

@@ -56,13 +56,6 @@
                                     {{ Form::text('challan', '', ['class'=>'form-control', 'placeholder'=>'Enter Challan Number here','id'=>'challan','required'=>'required']) }}
                                 </div>
                             </div>
-
-                            {{-- <div class="col-md-2 col-sm-12">
-                                <p class="mb-1 font-weight-bold"><label for="challanFile">{{ __('Challan Photo') }} *:</label></p>
-                                <div class="input-group input-group-md mb-3 d-">
-                                    <input type="file" name="challan_file" id="challanFile" class="form-control rounded" aria-label="Large" aria-describedby="inputGroup-sizing-sm" value="" accept="image/*">
-                                </div>
-                            </div> --}}
                             <input type="hidden" name="purchase_order_id" value="{{$purchaseOrder->id}}">
                         </div>
 
@@ -71,8 +64,8 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>SL</th>
-                                        <th>Category</th>
                                         <th>Product</th>
+                                        <th>Desription</th>
                                         <th>UOM</th>
                                         <th>Unit Price</th>
                                         <th>Po Qty</th>
@@ -83,12 +76,12 @@
                                 </thead>
                                 <tbody>
                                     @php 
-                                    $totalReceiveQty=0;
-                                    $totalPrice=0;
-                                    $discount_amount=0;
-                                    $total_discount_amount=0;
-                                    $vat_amount=0;
-                                    $total_vat_amount=0;
+                                        $totalReceiveQty=0;
+                                        $totalPrice=0;
+                                        $discount_amount=0;
+                                        $total_discount_amount=0;
+                                        $vat_amount=0;
+                                        $total_vat_amount=0;
                                     @endphp
                                     @if(isset($purchaseOrder->relPurchaseOrderItems))
                                     @foreach($purchaseOrder->relPurchaseOrderItems as $key=>$item)
@@ -114,16 +107,14 @@
                                     @if($leftQty > 0)
                                     <tr class="grnItemContent">
                                         <td class="text-center">{{$key+1}}</td>
-                                        <td>{{isset($item->relProduct->category)?$item->relProduct->category->name:''}}</td>
                                         <td>
-                                            {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}
+                                            {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
                                             <input type="hidden" name="product_id[]" class="form-control" value="{{isset($item->relProduct->id)?$item->relProduct->id:0}}">
                                         </td>
-
+                                        <td>{{ $item->description }}</td>
                                         <td>
                                             {{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                                         </td>
-
                                         <td>
                                             <input type="text" name="unit_price[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" class="form-control text-right"   min="0.0"  id="unit_price_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->unit_price}}" readonly placeholder="0">
                                         </td>
@@ -165,7 +156,6 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>SL</th>
-                                        <th>Category</th>
                                         <th>Product</th>
                                         <th>UOM</th>
                                         <th>Replace Qty</th>
@@ -205,7 +195,6 @@
                                     @if($leftQty != 0)
                                     <tr class="grnItemContent">
                                         <td class="text-center">{{$key+1}}</td>
-                                        <td>{{isset($item->relProduct->category)?$item->relProduct->category->name:''}}</td>
                                         <td>
                                             {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}
                                         </td>

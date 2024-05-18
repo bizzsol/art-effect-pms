@@ -142,11 +142,14 @@
                                         <thead>
                                         <tr class="text-center">
                                             <th style="width: 3%">#</th>
-                                            <th style="width: 5%">Category</th>
-                                            <th style="width: 15%">Product</th>
-                                            <th style="width: 3.5%">UOM</th>
-                                            <th style="width: 5%">Unit Price ({{ $currency }})</th>
-                                            <th style="width: 7%">Discount (%)</th>
+                                            {{-- <th style="width: 5%">Category</th> --}}
+                                            <th style="width: 22%">Product</th>
+                                            <th style="width: 30%">Description</th>
+                                            <th style="width: 7.5%">UOM</th>
+                                            <th style="width: 7.5%">Quantity</th>
+                                            <th style="width: 15%">Unit Price ({{ $currency }})</th>
+                                            <th style="width: 15%">Unit Total ({{ $currency }})</th>
+                                            {{-- <th style="width: 7%">Discount (%)</th>
                                             <th style="width: 7.5%">Unit Price after Discount ({{ $currency }})</th>
                                             <th style="width: 5%">Quotation Qty</th>
                                             <th style="width: 5%">Unit Total ({{ $currency }})</th>
@@ -155,7 +158,7 @@
                                             <th style="width: 8.5%">Requisition Qty</th>
                                             <th style="width: 7.5%">PO Qty</th>
                                             <th style="width: 7.5%">PO Amount ({{ $currency }})</th>
-                                            <th style="width: 7.5%">PO Amount ({{ $systemCurrency->code }})</th>
+                                            <th style="width: 7.5%">PO Amount ({{ $systemCurrency->code }})</th> --}}
                                         </tr>
                                         </thead>
                                         <tbody id="fetchQuotation">
@@ -163,30 +166,36 @@
                                             <tr>
                                                 <td class="text-center">
                                                     {{$key+1}}
-                                                    <input type="hidden" name="product_id[]"
-                                                           value="{{$item->product_id}}">
-                                                    <input type="hidden" name="unit_price" id="unit_price"
-                                                           value="{{$item->unit_price}}">
-                                                    <input type="hidden" name="discount_percentage"
-                                                           id="discount_percentage" value="{{$item->discount}}">
-                                                    <input type="hidden" name="vat_type" id="vat_type"
-                                                           value="{{$item->vat_type}}">
-                                                    <input type="hidden" name="vat_percentage" id="vat_percentage"
-                                                           value="{{$item->vat_percentage}}">
+                                                    <input type="hidden" name="product_id[]" value="{{$item->product_id}}">
+                                                    <input type="hidden" name="unit_price" id="unit_price" value="{{$item->unit_price}}">
+                                                    <input type="hidden" name="discount_percentage[{{ $item->id }}]" id="discount_percentage" value="{{$item->discount}}" class="discount_percentage">
+                                                    <input type="hidden" name="vat_type[{{ $item->id }}]" id="vat_type" value="{{$item->vat_type}}">
+                                                    <input type="hidden" name="vat_percentage[{{ $item->id }}]" id="vat_percentage" value="{{$item->vat_percentage}}">
                                                 </td>
-                                                <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td>
+                                                {{-- <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td> --}}
                                                 <td>
                                                     @if(isset($item->relProduct->name))
-                                                        {{$item->relProduct->name}} {{ getProductAttributes($item->relProduct->id) }}
+                                                        {{$item->relProduct->name}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td>{{ $item->description }}</td>
+                                                <td class="text-center">
                                                     @if(isset($item->relProduct->name))
                                                         {{$item->relProduct->productUnit->unit_name}}
                                                     @endif
                                                 </td>
-                                                <td class="text-right">{{$item->unit_price}}</td>
-                                                <td class="text-right">{{$item->discount}}</td>
+                                                <td class="text-center">
+                                                    <input type="hidden" id="po-{{ $item->id }}"
+                                                           name="po_qty[{{$item->product_id}}]"
+                                                           class="form-control bg-white po-qty check-po-qty"
+                                                           data-id="{{$item->product_id}}"
+                                                           onkeypress="return isNumberKey(event);"
+                                                           onchange="checkPOQty()" onkeyup="checkPOQty()">
+                                                    <span class="view-data">0</span>
+                                                </td>
+                                                <td class="text-right">{{ systemDoubleValue($item->unit_price, 2) }}</td>
+                                                <td class="text-right"><span class="po-amount">0.00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                {{-- <td class="text-right">{{$item->discount}}</td>
                                                 <td class="text-right">
                                                     {{ $item->unit_price-($item->discount > 0 ? ($item->unit_price*($item->discount/100)) : 0) }}
                                                 </td>
@@ -216,11 +225,34 @@
                                                     <span class="view-data">0</span>
                                                 </td>
                                                 <td class="text-right po-amount">0.00</td>
-                                                <td class="text-right po-amount-system-currency">0.00</td>
+                                                <td class="text-right po-amount-system-currency">0.00</td> --}}
                                             </tr>
                                         @endforeach
 
                                         <tr>
+                                            <td colspan="6" class="text-right"><strong>Sub Total</strong></td>
+                                            <td class="text-right"><strong class="po-sub-total">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" class="text-right"><strong>Discount</strong></td>
+                                            <td class="text-right">
+                                                <input type="number" step="any" min="0" value="0" class="form-control text-right po-discount" style="font-weight: bold;" onchange="distributeDiscount()" onkeyup="distributeDiscount()">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" class="text-right"><strong>After Discount</strong></td>
+                                            <td class="text-right"><strong class="po-after-discount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" class="text-right"><strong>VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }} {{ $quotation->relQuotationItems->first()->vat_percentage > 0 ? ', '.systemDoubleValue($quotation->relQuotationItems->first()->vat_percentage, 2).'%' : '' }})</strong></td>
+                                            <td class="text-right"><strong class="po-vat-amount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" class="text-right"><strong>PO Total Amount</strong></td>
+                                            <td class="text-right"><strong class="total-po-amount"></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+
+                                        {{-- <tr>
                                             <td colspan="7" class="text-right">Quotation Total</td>
                                             <td class="text-center">
                                                 {{$quotation->relQuotationItems->sum('qty')}}
@@ -253,10 +285,9 @@
                                             <td colspan="2" class="text-right">PO Total Amount</td>
                                             <td class="text-right total-po-amount">0.00</td>
                                             <td class="text-right total-po-amount-system-currency">0.00</td>
-                                        </tr>
+                                        </tr> --}}
 
-                                        <input type="hidden" class="quotation-id" name="quotation_id"
-                                               value="{{$quotation->id}}">
+                                        <input type="hidden" class="quotation-id" name="quotation_id" value="{{$quotation->id}}">
                                         </tbody>
                                     </table>
                                 </div>
@@ -419,9 +450,11 @@
             calculatePayAmount();
         }
 
-        function calculatePayAmount() {
+        function calculatePayAmount(show_discount = true) {
             var exchangeRate = parseFloat("{{ $exchangeRate }}");
             var sub_total = 0;
+            var total_discount = 0;
+            var total_discounted = 0;
             var total_vat = 0;
             var grand_total = 0;
             $.each($('.check-po-qty'), function (event) {
@@ -433,38 +466,53 @@
                 var unit_total = (po_qty * unit_price);
                 var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
                 var discounted = (unit_total - discount);
+
                 if(vat_type == 'inclusive'){
                     var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted*vat_percentage)/(100+vat_percentage)) : 0);
                     var total = discounted;
                 }else if(vat_type == 'exclusive'){
                     var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
                     var total = (discounted + vat);
+                }else{
+                    var vat = 0;
+                    var total = discounted;
                 }
 
-                // console.log("po_qty: "+po_qty);
-                // console.log("unit_price: "+unit_price);
-                // console.log("discount_percentage: "+discount_percentage);
-                // console.log("vat_percentage: "+vat_percentage);
-                // console.log("unit_total: "+unit_total);
-                // console.log("discount: "+discount);
-                // console.log("discounted: "+discounted);
-                // console.log("vat: "+vat);
-                // console.log("total: "+total);
-
-                sub_total += discounted;
+                sub_total += unit_total;
+                total_discount += discount;
+                total_discounted += discounted;
                 total_vat += vat;
                 grand_total += total;
 
-                $(this).parent().parent().find('.po-amount').html(parseFloat(discounted).toFixed(2));
-                $(this).parent().parent().find('.po-amount-system-currency').html(parseFloat(discounted * exchangeRate).toFixed(2));
+                $(this).parent().parent().find('.po-amount').html(parseFloat(unit_total).toFixed(2));
+                // $(this).parent().parent().find('.po-amount-system-currency').html(parseFloat(discounted * exchangeRate).toFixed(2));
             });
 
-            $('.total-po-item-amount').html(parseFloat(sub_total).toFixed(2));
-            $('.total-po-item-amount-system-currency').html(parseFloat(sub_total * exchangeRate).toFixed(2));
-            $('.total-po-vat-amount').html(parseFloat(total_vat).toFixed(2));
-            $('.total-po-vat-amount-system-currency').html(parseFloat(total_vat * exchangeRate).toFixed(2));
+            $('.po-sub-total').html(parseFloat(sub_total).toFixed(2));
+            if(show_discount){
+                $('.po-discount').val(parseFloat(total_discount).toFixed(2));
+            }
+            $('.po-after-discount').html(parseFloat(total_discounted).toFixed(2));
+            $('.po-vat-amount').html(parseFloat(total_vat).toFixed(2));
             $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));
-            $('.total-po-amount-system-currency').html(parseFloat(grand_total * exchangeRate).toFixed(2));
+
+            // $('.total-po-item-amount').html(parseFloat(sub_total).toFixed(2));
+            // $('.total-po-item-amount-system-currency').html(parseFloat(sub_total * exchangeRate).toFixed(2));
+            // $('.total-po-vat-amount').html(parseFloat(total_vat).toFixed(2));
+            // $('.total-po-vat-amount-system-currency').html(parseFloat(total_vat * exchangeRate).toFixed(2));
+            // $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));
+            // $('.total-po-amount-system-currency').html(parseFloat(grand_total * exchangeRate).toFixed(2));
+        }
+
+        function distributeDiscount() {
+            var discount = parseFloat($('.po-discount').val());
+            var sub_total = parseFloat($('.po-sub-total').text());
+
+            var percentage = discount > 0 && sub_total > 0 ? (discount/sub_total)*100 : 0;
+            console.log(percentage);
+
+            $('.discount_percentage').val(percentage);
+            calculatePayAmount(false);
         }
 
         function getCostCentres() {

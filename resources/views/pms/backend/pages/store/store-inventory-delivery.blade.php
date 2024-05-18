@@ -77,8 +77,8 @@
     <thead>
         <tr class="text-center">
             <th>SL</th>
-            <th>Category</th>
             <th>Product</th>
+            <th>Attributes</th>
             <th>UOM</th>
             <th>Stock Qty</th>
             <th>Req. Qty</th>
@@ -103,8 +103,8 @@
                         @endphp
                             <tr id="SelectedRow{{$item->product->id}}">
                                 <td>{{$key+1}}</td>
-                                <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
                                 <td>{{isset($item->product->name)?$item->product->name:''}} {{ getProductAttributesFaster($item->product) }}</td>
+                                <td>{{ getProductAttributesFaster($item) }}</td>
                                 <td class="text-center">
                                     {{ $item->product->productUnit->unit_name }}
                                 </td>

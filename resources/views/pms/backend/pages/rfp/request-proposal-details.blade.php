@@ -27,6 +27,7 @@
                         <th>SL</th>
                         <th>Category</th>
                         <th>Product</th>
+                        <th>Attributes</th>
                         <th>Qty</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                         <td class="text-center">{{$key+1}}</td>
                         <td>{{isset($requestProposalDetail->product->category->name)?$requestProposalDetail->product->category->name:''}}</td>
                         <td>{{isset($requestProposalDetail->product->name)?$requestProposalDetail->product->name:''}} ({{isset($requestProposalDetail->product->sku)?$requestProposalDetail->product->sku:''}}) {{ isset($requestProposalDetail->product_id)? getProductAttributesFaster($requestProposalDetail->product) :''}}</td>
+                        <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $requestProposalDetail->product_id)->first()) }}</td>
                         <td class="text-center">{{$requestProposalDetail->request_qty}}</td>
                     </tr>
                     @php
@@ -49,7 +51,7 @@
                     @endforeach
                     @endif
                     <tr class="text-center">
-                        <td colspan="3">Total</td>
+                        <td colspan="4">Total</td>
                         <td>{{$requestQty}}</td>
                     </tr>
                 </tbody>

@@ -136,8 +136,9 @@
                                             <thead>
                                             <tr class="text-center">
                                                 <th style="width: 15%">Sub Category</th>
-                                                <th style="width: 30%">Product</th>
-                                                <th style="width: 45%">Attributes</th>
+                                                <th style="width: 20%">Product</th>
+                                                <th style="width: 40%">Attributes</th>
+                                                <th style="width: 10%">Unit price</th>
                                                 <th style="width: 10%">Quantity</th>
                                                 <th style="width: 5%" class="text-center">Action</th>
                                             </tr>
@@ -163,6 +164,21 @@
                                                         </td>
                                                         <td class="product-attributes">
                                                             
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group input-group-md">
+                                                                <input type="number" name="unit_price[]"
+                                                                   min="0"
+                                                                   step="any"
+                                                                   id="unit_price_{{ $key+1 }}" class="form-control requisition-unit_price"
+                                                                   aria-label="Large"
+                                                                   aria-describedby="inputGroup-sizing-sm"
+                                                                   required data-input="recommended"
+                                                                   oninput="this.value = Math.abs(this.value)"
+                                                                   data-unit-price="{{ $item['unit_price'] }}"
+                                                                   value="0"
+                                                                >
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-md">
@@ -208,6 +224,21 @@
                                                     </td>
                                                     <td class="product-attributes">
                                                         
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group input-group-md">
+                                                            <input type="number" name="unit_price[]"
+                                                               min="0"
+                                                               step="any"
+                                                               id="unit_price_1" class="form-control requisition-unit_price"
+                                                               aria-label="Large"
+                                                               aria-describedby="inputGroup-sizing-sm"
+                                                               required data-input="recommended"
+                                                               oninput="this.value = Math.abs(this.value)"
+                                                               data-unit-price=""
+                                                               value="0"
+                                                            >
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div class="input-group input-group-md">
@@ -347,6 +378,7 @@
 @section('page-script')
 
     <script type="text/javascript">
+        $('body').addClass('sidebar-main');
 
         "use strict";
         var selectedProductIds = [];
@@ -460,6 +492,11 @@
                     '<td class="product-attributes">'+
                         
                     '</td>'+
+                    '                                            <td>\n' +
+                    '                                                <div class="input-group input-group-md">\n' +
+                    '                                                    <input type="number" name="unit_price[]" min="0" step="any" id="unit_price_' + x + '" class="form-control requisition-unit_price" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-unit-price="" value="0">\n' +
+                    '                                                </div>\n' +
+                    '                                            </td>\n' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
                     '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="">\n' +

@@ -290,6 +290,9 @@
 
     $(document).ready(function() {
       $('.summer-editor').summernote();
+      $('.summernote-air').summernote({
+        airMode: true
+      });
       CKEDITOR.replaceAll( 'summernote');
     });
 </script>

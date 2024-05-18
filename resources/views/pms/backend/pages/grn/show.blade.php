@@ -2,13 +2,13 @@
 
 <div class="row">
 
-<?php 
+@php 
     $TS = systemDoubleValue($grn->relPurchaseOrder->relQuotation->relSuppliers->SupplierRatings->sum('total_score'),2);
     $TC = $grn->relPurchaseOrder->relQuotation->relSuppliers->SupplierRatings->count();
 
     $totalScore = isset($TS)?$TS:0;
     $totalCount = isset($TC)?$TC:0;
-?>
+@endphp
 
 <div class="col-md-12">
     <div class="panel panel-info">
@@ -67,7 +67,7 @@
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
                         <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
-                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
+                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($item) }}</td>
                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
                         @if(!auth()->user()->hasRole('Gate Permission'))
                         <td class="text-right"> {{systemMoneyFormat($item->unit_amount)}}</td>

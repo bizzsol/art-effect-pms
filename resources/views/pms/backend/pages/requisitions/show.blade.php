@@ -67,8 +67,8 @@
                     @if($requisition->status==1)
                         <th>Approved Qty</th>
                     @endif
-                    <th>Unit Price</th>
-                    <th>Estimated Amoount</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Estimated Amount</th>
                 </tr>
                 </thead>
 
@@ -77,8 +77,12 @@
                     $total_stock_qty = 0;
                     $total_requisition_qty = 0;
                     $total_approved_qty = 0;
+                    $totalEstimation = 0;
                 @endphp
                 @forelse($requisition->items as $key=>$item)
+                @php
+                    $totalEstimation += ($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty));
+                @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
                         <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
@@ -94,8 +98,8 @@
                         @if($requisition->status==1)
                             <td class="text-center">{{$item->qty}}</td>
                         @endif
-                        <td class="text-right">{{ systemMoneyFormat($item->product->unit_price) }}</td>
-                        <td class="text-right">{{ systemMoneyFormat($item->product->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
+                        <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
+                        <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
                     @can('requisition-acknowledge')
                         @php
@@ -113,12 +117,12 @@
                 </tbody>
             </table>
 
-            @if(auth()->user()->hasRole('Department-Head') || auth()->user()->hasRole('Accounts') || auth()->user()->hasRole('Management'))
+            {{-- @if(auth()->user()->hasRole('Department-Head') || auth()->user()->hasRole('Accounts') || auth()->user()->hasRole('Management')) --}}
                 <div>
-                    <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat(estimatedValue($requisition))}}
+                    <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat($totalEstimation)}}
                     BDT
                 </div>
-            @endif
+            {{-- @endif --}}
 
             <div>
                 <strong> Explanations: </strong>

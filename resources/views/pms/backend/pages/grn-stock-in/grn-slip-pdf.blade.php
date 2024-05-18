@@ -179,7 +179,7 @@
                                         @foreach($items as $key=>$item)
                                         <tr>
                                             <td>
-                                                {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributes($item->product_id) }}
+                                                {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($item) }}
                                             </td>
                                             <td >
                                                 {{isset($item->relGoodsReceivedItemStockIn[0]->relWarehouse->name) ? $item->relGoodsReceivedItemStockIn[0]->relWarehouse->name : ''}}

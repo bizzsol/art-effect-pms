@@ -88,7 +88,7 @@
                                                     <td rowspan="{{$grn_stock_in_lists->count()}}">{{isset($values->relGoodsReceivedItems->relGoodsReceivedNote->reference_no)? ucfirst($values->relGoodsReceivedItems->relGoodsReceivedNote->reference_no):''}}</td>
                                                 @endif
                                                 <td>{{isset($values->relGoodsReceivedItems->relProduct->category->name)?$values->relGoodsReceivedItems->relProduct->category->name:''}}</td>
-                                                <td>{{isset($values->relGoodsReceivedItems->relProduct->name)?$values->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributesFaster($values->relGoodsReceivedItems->relProduct) }}</td>
+                                                <td>{{isset($values->relGoodsReceivedItems->relProduct->name)?$values->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributesFaster($values->relGoodsReceivedItems->relProduct) }} {{ getProductAttributesFaster($values->relGoodsReceivedItems) }}</td>
 
                                                 <td class="text-right">{{number_format($values->unit_amount,2)}}</td>
                                                 <td class="text-center">

@@ -54,8 +54,8 @@
                 <thead>
                     <tr class="text-center">
                         <th>SL</th>
-                        <th>Category</th>
                         <th>Product</th>
+                        <th>Attributes</th>
                         <th>UOM</th>
                         <th>Stock Qty</th>
                         <th>Requisition Qty</th>
@@ -79,8 +79,8 @@
                     @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
-                        <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
                         <td>{{isset($item->product->name)?$item->product->name:''}} {{ getProductAttributesFaster(isset($item->product)?$item->product:'') }}</td>
+                        <td>{{ getProductAttributesFaster($item) }}</td>
                         <td>{{isset($item->product->productUnit->unit_name)?$item->product->productUnit->unit_name:''}}</td>
                         <td class="text-center">{{$stockQty}}</td>
                         <td class="text-center">{{number_format($item->requisition_qty,0)}}</td>

@@ -84,7 +84,7 @@
                                         <table class="table table-bordered table-hover ">
                                             <thead>
                                             <tr>
-                                                <th colspan="6">Party Name</th>
+                                                <th colspan="7">Party Name</th>
                                                 @foreach($quotations as $q_key => $quotation)
                                                     @php
                                                         $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
@@ -118,8 +118,9 @@
                                             </tr>
                                             <tr class="text-center">
                                                 <th>SL</th>
-                                                <th>Category</th>
                                                 <th>Product</th>
+                                                <th>Attributes</th>
+                                                <th>Description</th>
                                                 <th>UOM</th>
                                                 <th class="text-center">Qty</th>
                                                 <th class="text-center">Left Qty</th>
@@ -157,8 +158,9 @@
                                                 @foreach($quotation->relQuotationItems as $key => $item)
                                                     <tr>
                                                         <td class="text-right">{{$key+1}}</td>
-                                                        <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
-                                                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{isset($item->relProduct->id)? getProductAttributesFaster($item->relProduct):''}}</td>
+                                                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
+                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                                                        <td>{{ $item->description }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                         <td class="text-center">{{$item->qty}}</td>
                                                         <td class="text-center left-quantity left-quantity-{{ $item->id }}">
@@ -183,7 +185,7 @@
                                                                        class="form-control text-center item-quantities item-quantity-{{ $quotation->id }} itemized-quantity-{{ $item->id }}"
                                                                        data-quotation-id="{{ $quotation->id }}"
                                                                        data-item-id="{{ $item->id }}"
-                                                                       value="{{ request()->get('type') == 'direct-purchase' ? $item->qty : ($this_prices['recommended_quantity']) }}"
+                                                                       value="{{ $item->is_approved == 'approved' ? (request()->get('type') == 'direct-purchase' ? $item->qty : ($this_prices['approved_qty'])) : (request()->get('type') == 'direct-purchase' ? $item->qty : ($this_prices['recommended_quantity'])) }}"
                                                                        data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
                                                                        data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
                                                                        data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
@@ -215,7 +217,7 @@
                                             @endif
 
                                             <tr>
-                                                <td colspan="4" class="text-right"><strong>Total</strong></td>
+                                                <td colspan="5" class="text-right"><strong>Total</strong></td>
                                                 <td class="text-center"><strong>{{$total_qty}}</strong></td>
                                                 <td class="text-center total-left-quantity"><strong>0</strong></td>
                                                 @foreach($quotations as $key => $quotation)
@@ -232,7 +234,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="6" class="text-right"></td>
+                                                <td colspan="7" class="text-right"></td>
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>(-) Discount</strong></td>
                                                     <td class="text-right">
@@ -247,7 +249,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="6" class="text-right"></td>
+                                                <td colspan="7" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>(+) Vat </strong></td>
@@ -262,7 +264,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right"></td>
+                                                <td colspan="7" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>Gross Total</strong></td>
@@ -278,7 +280,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="6"></td>
+                                                <td colspan="7"></td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}"
                                                         class="text-left">
@@ -288,7 +290,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right"></td>
+                                                <td colspan="7" class="text-right"></td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         Delivery Date:
@@ -297,7 +299,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Notes</td>
+                                                <td colspan="7" class="text-right">Notes</td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <span>
@@ -312,7 +314,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Remarks</td>
+                                                <td colspan="7" class="text-right">Remarks</td>
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <textarea class="form-control" name="remarks" rows="1"
@@ -323,7 +325,7 @@
                                             </tr>
                                             @if(request()->get('type')=='direct-purchase')
                                             <tr>
-                                                <td colspan="6" class="text-right">Choose Cost Centre</td>
+                                                <td colspan="7" class="text-right">Choose Cost Centre</td>
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
 
@@ -344,17 +346,17 @@
                                     <button type="submit" class="btn btn-success cs-button"><i class="la la-check"></i>&nbsp;Approve
                                     </button>
                                     @if(request()->get('type')=='direct-purchase')
-                                        <a type="button" class="btn btn-warning"
+                                        {{-- <a type="button" class="btn btn-warning"
                                            onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject All</a>
+                                                    class="la la-ban"></i>&nbsp;Reject All</a> --}}
 
                                         <a type="button" class="btn btn-danger"
                                            href="{{route('pms.quotation.quotations.estimate.approval.list')}}"><i
                                                     class="la la-times"></i>&nbsp;Close</a>
                                     @else
-                                        <a type="button" class="btn btn-warning"
+                                        {{-- <a type="button" class="btn btn-warning"
                                            onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject All</a>
+                                                    class="la la-ban"></i>&nbsp;Reject All</a> --}}
 
                                         <a type="button" class="btn btn-danger"
                                            href="{{route('pms.quotation.approval.list')}}"><i class="la la-times"></i>&nbsp;Close</a>

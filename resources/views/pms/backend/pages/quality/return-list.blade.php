@@ -74,7 +74,7 @@
                                 <tr id="removeApprovedRow{{$item->id}}">
                                     <td>{{$key+1}}</td>
                                     <td>{{isset($item->relGoodsReceivedItems->relProduct->category->name)?$item->relGoodsReceivedItems->relProduct->category->name:''}}</td>
-                                    <td>{{isset($item->relGoodsReceivedItems->relProduct->name)?$item->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributes($item->relGoodsReceivedItems->relProduct->id) }}</td>
+                                    <td>{{isset($item->relGoodsReceivedItems->relProduct->name)?$item->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributesFaster($item->relGoodsReceivedItems->relProduct) }} {{ getProductAttributesFaster($item->relGoodsReceivedItems) }}</td>
                                     <td>{{isset($item->relGoodsReceivedItems->relProduct->productUnit->unit_name)?$item->relGoodsReceivedItems->relProduct->productUnit->unit_name:''}}</td>
                                     <td class="text-right">{{isset($item->relGoodsReceivedItems->unit_amount)?$item->relGoodsReceivedItems->unit_amount:''}}</td>
                                     <td class="text-center">{{systemDoubleValue($item->relGoodsReceivedItems->qty,0)}}</td>

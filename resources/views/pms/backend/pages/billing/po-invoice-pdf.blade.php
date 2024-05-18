@@ -229,6 +229,8 @@
                 </div>
                 <br>
                 <br>
+                <strong>PO Reference:</strong> {{ $purchaseOrder->reference_no }}
+                <br>
                 <strong>Date:</strong> {{ date('d-M-y', strtotime($purchaseOrder->po_date)) }}
                 <br>
                 <strong>Div./Dept:</strong> {{ $purchaseOrder->purchaseOrderRequisitions->first()->requisition->relUsersList->employee->department->hr_department_name }}
@@ -354,38 +356,62 @@
         <thead>
         <tr class="text-center">
             <td style="text-align:  center;width: 5% !important"><strong>Item No.</strong></td>
-            <td style="text-align:  center;width: 20% !important"><strong>Description</strong></td>
-            <td style="text-align:  center;width: 5% !important"><strong>Unit</strong></td>
+            <td style="text-align:  center;width: 15% !important"><strong>Product</strong></td>
+            <td style="text-align:  center;width: 30% !important"><strong>Description</strong></td>
             <td style="text-align:  center;width: 10% !important"><strong>Quantity</strong></td>
             <td style="text-align:  center;width: 10% !important"><strong>Unit Price</strong></td>
-            @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
+            {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
                 <td style="text-align:  center;width: 7.5% !important"><strong>Item Total</strong></td>
                 <td style="text-align:  center;width: 7.5% !important"><strong>Vat Type</strong></td>
                 <td style="text-align:  center;width: 7.5% !important"><strong>Vat(%)</strong></td>
                 <td style="text-align:  center;width: 7.5% !important"><strong>Vat</strong></td>
-            @endif
+            @endif --}}
             <td style="text-align:  center;width: 15% !important"><strong>Total Amount</strong></td>
         </tr>
         </thead>
         <tbody>
         @foreach($purchaseOrder->relPurchaseOrderItems as $key=>$item)
             <tr>
-                <td class="text-center">{{$key+1}}</td>
-                <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-                <td style="text-align: center">{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
-                <td style="text-align: center">{{number_format($item->qty, 0)}}</td>
-                <td class="text-right">{{number_format($item->unit_price, 2)}}</td>
-                @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
-                    <td class="text-right">{{number_format($item->sub_total_price, 2)}}</td>
+                <td class="text-center">{{ $key+1}}</td>
+                <td>
+                    {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }} ({{ isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : '' }})
+                </td>
+                <td style="text-align: center">{{ $item->description }}</td>
+                <td style="text-align: center">{{ $item->qty }}</td>
+                <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
+                {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
+                    <td class="text-right">{{systemMoneyFormat($item->sub_total_price)}}</td>
                     <td class="text-center">{{ucwords($item->vat_type)}}</td>
-                    <td class="text-right">{{number_format($item->vat_percentage, 2)}}</td>
-                    <td class="text-right">{{number_format($item->vat, 2)}}</td>
-                @endif
-                <td class="text-right">{{number_format($item->total_price, 2)}}</td>
+                    <td class="text-right">{{systemMoneyFormat($item->vat_percentage)}}</td>
+                    <td class="text-right">{{systemMoneyFormat($item->vat, 2)}}</td>
+                @endif --}}
+                <td class="text-right">{{ systemMoneyFormat($item->sub_total_price) }}</td>
             </tr>
         @endforeach
 
         <tr>
+            <td colspan="5" class="text-right">
+                <strong>Total</strong>
+            </td>
+            <td class="text-right"><strong>{{ systemMoneyFormat($purchaseOrder->relPurchaseOrderItems->sum('sub_total_price')) }}</strong></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="text-right">
+                <strong>VAT ({{ ucwords($purchaseOrder->relPurchaseOrderItems->first()->vat_type) }} {{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage > 0 ? ', '.$purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' : '' }})</strong>
+            </td>
+            <td class="text-right"><strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                Total In word: <strong>{{ inWordBn(systemDoubleValue($purchaseOrder->relPurchaseOrderItems->sum('total_price'), 2), true, $purchaseOrder->relQuotation->exchangeRate->currency->name, $purchaseOrder->relQuotation->exchangeRate->currency->hundreds) }} only</strong>
+            </td>
+            <td class="text-right">
+                <strong>Grand Total</strong>
+            </td>
+            <td class="text-right"><strong>{{ systemMoneyFormat($purchaseOrder->gross_price) }}</strong></td>
+        </tr>
+
+        {{-- <tr>
             <td colspan="4">
                 Total In word: <strong>{{ inWordBn(systemDoubleValue($purchaseOrder->relPurchaseOrderItems->sum('total_price'), 2), true, $purchaseOrder->relQuotation->exchangeRate->currency->name, $purchaseOrder->relQuotation->exchangeRate->currency->hundreds) }} only</strong>
             </td>
@@ -406,7 +432,7 @@
             <td class="text-right">
                 <strong>{{isset($purchaseOrder->relPurchaseOrderItems)? number_format($purchaseOrder->relPurchaseOrderItems->sum('total_price'), 2):0}}</strong>
             </td>
-        </tr>
+        </tr> --}}
         </tbody>
     </table>
 
@@ -416,7 +442,7 @@
                 <td style="width: 75% !important">
                     <strong>Payment Mode:&nbsp;{{ makePaymentTermsString($purchaseOrder->relQuotation->supplier_payment_terms_id) }}</strong>
                 </td>
-                <td style="width: 25% !important">
+                <td style="width: 25% !important" class="text-right">
                     Currency:&nbsp;<strong>{{ isset($purchaseOrder->relQuotation->exchangeRate->currency->name)?$purchaseOrder->relQuotation->exchangeRate->currency->name:'' }} ({{ isset($purchaseOrder->relQuotation->exchangeRate->currency->code)?$purchaseOrder->relQuotation->exchangeRate->currency->code:'' }})</strong>
                 </td>
             </tr>
@@ -484,6 +510,13 @@
             {!! isset($purchaseOrder->terms) ? $purchaseOrder->terms : '' !!}
         </div>
     @endif
+
+    <pagebreak></pagebreak>
+    <h3 class="text-center"><strong>General Conditions:</strong></h3>
+    <div>
+        {!! session()->get('system-information')['general_conditions'] !!}
+    </div>
+
 </div>
 </body>
 </html>																																																								

@@ -116,12 +116,13 @@
                                 <table class="table table-striped table-bordered miw-500 dac_table" cellspacing="0" width="100%" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10%">Sub Category</th>
-                                            <th style="width: 25%">Product</th>
+                                            <th style="width: 15%">Sub Category</th>
+                                            <th style="width: 20%">Product</th>
                                             <th style="width: 40%">Attributes</th>
-                                            <th style="width: 10%">Qty</th>
+                                            <th style="width: 10%">Unit price</th>
+                                            <th style="width: 10%">Quantity</th>
                                             @can('department-requisition-edit')
-                                            <th style="width: 10%">Approved Qty</th>
+                                            <th style="width: 10%">Approved Quantity</th>
                                             @php $modifiedName = true; @endphp
                                             @endcan
                                             <th style="width: 5%" class="text-center">Action</th>
@@ -156,6 +157,11 @@
                                             </td>
                                             <td class="product-attributes">
 
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group-md mb-3 d-">
+                                                    <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control {{ !$modifiedName ? 'requisition-unit_price' : ''  }}" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}}>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -284,7 +290,7 @@
 @endsection
 @section('page-script')
 <script type="text/javascript">
-
+    $('body').addClass('sidebar-main');
 
     var selectedProductIds=["{{ implode(",",$oldProductIds) }}"];
 
@@ -322,6 +328,11 @@
             '                                                </div>\n' +
             '\n' +
             '                                            <td class="product-attributes"></td>' +
+            '                                            <td>\n' +
+            '                                                <div class="input-group input-group-md mb-3 d-">\n' +
+            '                                                    <input type="number" name="unit_price[]" min="0" value="0" step="any" id="unit_price_'+x+'" class="form-control requisition-unit_price" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("unit_price") }}">\n' +
+            '                                                </div>\n' +
+            '                                            </td>\n'+
             '                                            <td>\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
             '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_'+x+'" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}">\n' +

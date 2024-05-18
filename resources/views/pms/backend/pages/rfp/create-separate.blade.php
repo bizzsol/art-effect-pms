@@ -90,22 +90,22 @@
                             <div class="table-responsive style-scroll">
                                 <table class="table table-striped table-bordered miw-500 dac_table" cellspacing="0" width="100%" id="dataTable">
                                     <thead>
-                                    <tr class="text-center">
-                                        <th width="5%">{{__('SL')}}</th>
-                                        <th>{{__('Requisition No')}}</th>
-                                        <th>{{__('Product Name')}}</th>
-                                        <th width="10%">{{__('Approved Qty')}}</th>
-                                        <th>{{__('UOM')}}</th>
-                                        <th class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="chkbx_all_first"
-                                                       id="checkAllProduct" onclick="return CheckAll()">
-                                                <label class="form-check-label mt-8" for="checkAllProduct">
-                                                    <strong>All</strong>
-                                                </label>
-                                            </div>
-                                        </th>
-                                    </tr>
+                                        <tr class="text-center">
+                                            <th style="width: 5%">SL</th>
+                                            <th style="width: 20%">Requisitions</th>
+                                            <th style="width: 20%">Products</th>
+                                            <th style="width: 40%">Attributes</th>
+                                            <th style="width: 5%">Quantity</th>
+                                            <th style="width: 5%">UOM</th>
+                                            <th style="width: 5%" class="text-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="chkbx_all_first" id="checkAllProduct" onclick="return CheckAll()">
+                                                    <label class="form-check-label mt-8" for="checkAllProduct">
+                                                        <strong>All</strong>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                     @php
@@ -127,62 +127,45 @@
                                     @endphp
                                     <tr>
                                         @if($rsl == 1)
-                                        <td class="text-center" rowspan="{{ $requisition->requisitionItems->where('is_send','no')->count()}}">
-                                            {{$key + 1}} 
-                                        </td>
-                                        <td rowspan="{{ $requisition->requisitionItems->where('is_send','no')->count()}}">
+                                            <td class="text-center" rowspan="{{ $requisition->requisitionItems->where('is_send','no')->count()}}">
+                                                {{$key + 1}} 
+                                            </td>
+                                            <td rowspan="{{ $requisition->requisitionItems->where('is_send','no')->count()}}">
                                                 <a href="javascript:void(0)"
                                                    data-src="{{route('pms.requisition.list.view.show',$requisition->id)}}"
                                                    class="btn btn-link requisition m-1 rounded showRequistionDetails">{{ $requisition->reference_no }}</a>
                                             </td>
                                         @endif
 
-                                                        <td>
-                                                            {{isset($values->product->name)?$values->product->name:''}} ({{isset($values->product->sku)?$values->product->sku:''}}) {{ getProductAttributesFaster($values->product) }}
-                                                        </td>
+                                            <td>
+                                                {{isset($values->product->name)?$values->product->name:''}} ({{isset($values->product->sku)?$values->product->sku:''}}) {{ getProductAttributesFaster($values->product) }}
+                                            </td>
+                                            <td>
+                                                {{ getProductAttributesFaster($values) }}
+                                            </td>
 
-                                                        <td>
-                                                            <input type="number"
-                                                                   name="request_qty[{{$values->product_id}}&{{$values->id}}][]"
-                                                                   min="1" max="99999999"
-                                                                   value="{{($sumOfSendRFP>0)?number_format($values->qty-$sumOfSendRFP,0): $values->qty}}"
-                                                                   disabled
-                                                                   class="form-control rounded request_qty text-center"
-                                                                   onchange="calculateTotal()" readonly
-                                                                   onkeyup="calculateTotal()">
+                                            <td>
+                                                {{ ($sumOfSendRFP>0) ? number_format($values->qty-$sumOfSendRFP,0) : $values->qty }}
 
-                                                            @if($sumOfSendRFP >0)
-                                                                <input type="hidden"
-                                                                       name="qty[{{$values->product_id}}&{{$values->id}}][]"
-                                                                       value="{{$values->qty-$sumOfSendRFP}}">
-                                                            @else
-                                                                <input type="hidden"
-                                                                       name="qty[{{$values->product_id}}&{{$values->id}}][]"
-                                                                       value="{{$values->qty}}">
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            {{isset($values->product->productUnit->unit_name)?$values->product->productUnit->unit_name:''}}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" name="requisition_item_id[]"
-                                                                   class="element_first" value="{{$values->id}}"
-                                                                   onclick="getRequestProposalCombineInfo()">
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
+                                                <input type="hidden" name="request_qty[{{$values->product_id}}&{{$values->id}}][]" min="1" max="99999999" value="{{ ($sumOfSendRFP>0) ? number_format($values->qty-$sumOfSendRFP,0) : $values->qty }}" class="request_qty"/>
+
+                                                @if($sumOfSendRFP > 0)
+                                                    <input type="hidden" name="qty[{{$values->product_id}}&{{$values->id}}][]" value="{{$values->qty-$sumOfSendRFP}}">
+                                                @else
+                                                    <input type="hidden" name="qty[{{$values->product_id}}&{{$values->id}}][]" value="{{$values->qty}}">
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{isset($values->product->productUnit->unit_name)?$values->product->productUnit->unit_name:''}}
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" name="requisition_item_id[]" class="element_first" value="{{$values->id}}" onclick="getRequestProposalCombineInfo()">
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     @endif
-
-                                    <tr>
-                                        <td colspan="3">Total:</td>
-
-                                        <td class="text-center" id="request_qty"></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
+                                @endforeach
+                            @endif
                                     </tbody>
                                 </table>
                             </div>

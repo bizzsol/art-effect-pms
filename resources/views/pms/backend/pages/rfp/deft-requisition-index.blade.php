@@ -13,7 +13,6 @@
     @include('yajra.css')
 @endsection
 @section('main-content')
-
     <div class="main-content">
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -38,10 +37,8 @@
                             <div class="card">
                                 <div class="card-header bg-primary p-0" id="headingOne">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" data-toggle="collapse" data-target="#filter"
-                                                aria-expanded="true" aria-controls="filter">
-                                            <h5 class="text-white"><strong><i
-                                                            class="las la-chevron-circle-right la-spin"></i>&nbsp;Filters</strong>
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#filter" aria-expanded="true" aria-controls="filter">
+                                            <h5 class="text-white"><strong><i class="las la-chevron-circle-right la-spin"></i>&nbsp;Filters</strong>
                                             </h5>
                                         </button>
                                     </h5>
@@ -168,54 +165,18 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('page-script')
     @include('yajra.js')
     <script>
         function convertToRfp(element) {
-            let requisition_id = element.attr('data-id');
-
-            if (requisition_id != '') {
-                swal({
-                    title: "{{__('Are you sure?')}}",
-                    text: "",
-                    icon: "warning",
-                    dangerMode: false,
-                    buttons: {
-                        cancel: true,
-                        confirm: {
-                            text: 'Prepare To RFP',
-                            value: true,
-                            visible: true,
-                            closeModal: true,
-                            className: 'bg-success'
-                        },
-                    },
-                }).then((value) => {
-                    if (value) {
-
-                        $.ajax({
-                            type: 'POST',
-                            url: element.attr('data-src'),
-                            dataType: "json",
-                            data: {_token: '{!! csrf_token() !!}', requisition_id: requisition_id},
-                            success: function (data) {
-                                if (data.result === 'success') {
-                                    //$('#row'+requisition_id).hide();
-                                    element.parent().parent().parent().parent().parent().remove();
-                                    notify(data.message, 'success');
-                                } else {
-                                    notify(data.message, data.result);
-                                }
-                            }
-                        });
-                        return false;
-                    }
-                });
-            } else {
-                notify('Please Select Requisition!!', 'error');
-            }
+            $.dialog({
+                title: 'Assign Person',
+                content: "url:{{ url('pms/rfp/requisitions') }}?send-to-rfp&requisition_id="+element.attr('data-id'),
+                animation: 'scale',
+                columnClass: 'col-md-12',
+                closeAnimation: 'scale',
+            });
         }
 
         function openModal(requisitionId) {

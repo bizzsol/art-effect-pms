@@ -1,13 +1,12 @@
 @if(isset($purchaseOrder))
-
 <div class="row">
-<?php 
+@php 
     $TS = systemDoubleValue($purchaseOrder->relQuotation->relSuppliers->SupplierRatings->sum('total_score'),2);
     $TC = $purchaseOrder->relQuotation->relSuppliers->SupplierRatings->count();
 
     $totalScore = isset($TS)?$TS:0;
     $totalCount = isset($TC)?$TC:0;
-?>
+@endphp
 
 <div class="col-md-12">
     <div class="panel panel-info">
@@ -27,21 +26,21 @@
                             </div>
                             <h5 class="review-count"></h5>
                         </li>
-                        <li><strong>{{__('Supplier') }} :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name)?$purchaseOrder->relQuotation->relSuppliers->name:''}}</li>
-                        <li><strong>{{__('Code') }} :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->code)?$purchaseOrder->relQuotation->relSuppliers->code:''}}</li>
-                        <li><strong>{{__('Email')}} :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->email)?$purchaseOrder->relQuotation->relSuppliers->email:''}}</li>
-                        <li><strong>{{__('Phone')}} :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->phone)?$purchaseOrder->relQuotation->relSuppliers->phone:''}}</li>
-                        <li><strong>{{__('Mobile')}} :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->mobile_no)?$purchaseOrder->relQuotation->relSuppliers->mobile_no:''}}</li>
+                        <li><strong>Supplier :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name)?$purchaseOrder->relQuotation->relSuppliers->name:''}}</li>
+                        <li><strong>Code :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->code)?$purchaseOrder->relQuotation->relSuppliers->code:''}}</li>
+                        <li><strong>Email :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->email)?$purchaseOrder->relQuotation->relSuppliers->email:''}}</li>
+                        <li><strong>Phone :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->phone)?$purchaseOrder->relQuotation->relSuppliers->phone:''}}</li>
+                        <li><strong>Mobile :</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->mobile_no)?$purchaseOrder->relQuotation->relSuppliers->mobile_no:''}}</li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <ul class="list-unstyled mb0 pull-right">
-                        <li><strong>{{__('Date')}} :</strong> {{date('d-m-Y',strtotime($purchaseOrder->po_date))}}</li>
+                        <li><strong>Date :</strong> {{date('d-m-Y',strtotime($purchaseOrder->po_date))}}</li>
                         @if(isset($purchaseOrder->relQuotation->delivery_date))
-                        <li><strong>{{__('Delivery Date')}} :</strong> {{date('d-m-Y',strtotime($purchaseOrder->relQuotation->delivery_date))}}</li>
+                        <li><strong>Delivery Date :</strong> {{date('d-m-Y',strtotime($purchaseOrder->relQuotation->delivery_date))}}</li>
                         @endif
-                        <li><strong>{{__('Reference No')}}:</strong> {{$purchaseOrder->reference_no}}</li>
-                        <li><strong>{{__('Quotation No')}}:</strong> {{isset($purchaseOrder->relQuotation->reference_no)?$purchaseOrder->relQuotation->reference_no:''}}</li>
+                        <li><strong>Reference No:</strong> {{$purchaseOrder->reference_no}}</li>
+                        <li><strong>Quotation No:</strong> {{isset($purchaseOrder->relQuotation->reference_no)?$purchaseOrder->relQuotation->reference_no:''}}</li>
                     </ul>
                 </div>
             </div>
@@ -52,8 +51,8 @@
                 <thead>
                     <tr class="text-center">
                         <th>SL</th>
-                        <th>Category</th>
                         <th>Product</th>
+                        <th>Description</th>
                         <th>UOM</th>
                         <th>Unit Price ({{ $currency }})</th>
                         <th>Qty</th>
@@ -68,8 +67,8 @@
                     @foreach($purchaseOrder->relPurchaseOrderItems as $key=>$item)
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
-                        <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
-                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }}</td>
+                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                        <td>{{ $item->description }}</td>
                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
                         <td class="text-right">{{systemMoneyFormat($item->unit_price)}}</td>
                         <td class="text-center">{{systemMoneyFormat($item->qty)}}</td>

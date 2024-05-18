@@ -8,13 +8,13 @@
                     <div class="well col-6">
                         <ul class="list-unstyled mb0">
                             <li>
-                                    <?php
+                                @php
                                     $TS = number_format($quotation->quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
                                     $TC = $quotation->quotation->relSuppliers->SupplierRatings->count();
 
                                     $totalScore = isset($TS) ? $TS : 0;
                                     $totalCount = isset($TC) ? $TC : 0;
-                                    ?>
+                                @endphp
                                 @if($quotation->type !=='direct-purchase')
                                     <div class="ratings">
                                         <a href="{{route('pms.supplier.profile',$quotation->quotation->relSuppliers->id)}}"
@@ -23,18 +23,15 @@
                                     <h5 class="review-count"></h5>
                                 @endif
                             </li>
-                            <li><strong>{{__('Supplier')}} :</strong> {{$quotation->quotation->relSuppliers->name}}</li>
-                            <li><strong>{{__('Code')}} :</strong> {{$quotation->quotation->relSuppliers->code}}</li>
-                            <li><strong>{{__('Email')}} :</strong> {{$quotation->quotation->relSuppliers->email}}</li>
-                            <li><strong>{{__('Phone')}} :</strong> {{$quotation->quotation->relSuppliers->phone}}</li>
-                            <li><strong>{{__('Mobile No')}}
-                                    :</strong> {{$quotation->quotation->relSuppliers->mobile_no}}</li>
+                            <li><strong>Supplier: </strong> {{$quotation->quotation->relSuppliers->name}}</li>
+                            <li><strong>Code: </strong> {{$quotation->quotation->relSuppliers->code}}</li>
+                            <li><strong>Email: </strong> {{$quotation->quotation->relSuppliers->email}}</li>
+                            <li><strong>Phone: </strong> {{$quotation->quotation->relSuppliers->phone}}</li>
+                            <li><strong>Mobile No:</strong> {{$quotation->quotation->relSuppliers->mobile_no}}</li>
                             @if(isset($quotation->quotation->relSupplierPaymentTerm->id))
-                                <li><strong>{{__('Payment Term')}}
-                                        :</strong> {{makePaymentTermsString($quotation->quotation->relSupplierPaymentTerm->id)}}
+                                <li><strong>Payment Term:</strong> {{makePaymentTermsString($quotation->quotation->relSupplierPaymentTerm->id)}}
                                 </li>
-                                @endif
-                                </tr>
+                            @endif
                         </ul>
                     </div>
                     <div class="col-6">
@@ -72,9 +69,10 @@
                     <thead>
                     <tr class="text-center">
                         <th>SL</th>
-                        <th>Category</th>
                         <th>Product</th>
-                        <th>Technical Specification</th>
+                        <th>Attributes</th>
+                        <th>Description</th>
+                        <th>Specs</th>
                         <th>UOM</th>
                         <th>Unit Price ({{ $quotation->exchangeRate->currency->code }})</th>
                         <th>Qty</th>
@@ -88,10 +86,11 @@
                     @foreach($quotation->items as $key=>$item)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
                             <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}}
                                 ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}
                                 ) {{ getProductAttributesFaster($item->relProduct) }}</td>
+                            <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                            <td>{{ $item->description }}</td>
                             <td class="text-center">
                                 @if($item->technical_specification_file)
                                     <a href="{{asset($item->technical_specification_file)}}"
@@ -109,33 +108,30 @@
                     @endforeach
 
                     <tr>
-                        <td colspan="6" class="text-right">Total</td>
-                        <td colspan=""
-                            class="text-center">{{number_format($quotation->items->sum('qty'),0)}}</td>
-                        <td colspan=""
-                            class="text-right">{{number_format($quotation->items->sum('sub_total_price'),2)}}</td>
+                        <td colspan="7" class="text-right">Total</td>
+                        <td class="text-center">{{number_format($quotation->items->sum('qty'),0)}}</td>
+                        <td class="text-right">{{number_format($quotation->items->sum('sub_total_price'),2)}}</td>
                         @if(!$same)
-                            <td colspan=""
-                                class="text-right">{{number_format($quotation->items->sum('sub_total_price')*$exchangeRate,2)}}</td>
+                            <td class="text-right">{{number_format($quotation->items->sum('sub_total_price')*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
 
                     <tr>
-                        <td colspan="7" class="text-right">(-) Discount</td>
+                        <td colspan="8" class="text-right">(-) Discount</td>
                         <td class="text-right">{{number_format($quotation->discount,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotation->discount*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
                     <tr>
-                        <td colspan="7" class="text-right">(+) Vat</td>
+                        <td colspan="8" class="text-right">(+) Vat</td>
                         <td class="text-right">{{number_format($quotation->vat,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotation->vat*$exchangeRate,2)}}</td>
                         @endif
                     </tr>
                     <tr>
-                        <td colspan="7" class="text-right">Total Amount</td>
+                        <td colspan="8" class="text-right">Total Amount</td>
                         <td class="text-right">{{number_format($quotation->gross_price,2)}}</td>
                         @if(!$same)
                             <td class="text-right">{{number_format($quotation->gross_price*$exchangeRate,2)}}</td>
@@ -145,14 +141,14 @@
                     @if(isset($quotation->remarks))
                         <tr>
                             <td class="text-left">Notes</td>
-                            <td colspan="7">{{$quotation->remarks}}</td>
+                            <td colspan="8">{{$quotation->remarks}}</td>
                         </tr>
                     @endif
 
                     @if(isset($quotation->note))
                         <tr>
                             <td class="text-left">Notes</td>
-                            <td class="text-left" colspan="7">{{$quotation->note}}</td>
+                            <td class="text-left" colspan="8">{{$quotation->note}}</td>
                         </tr>
                     @endif
                     </tbody>

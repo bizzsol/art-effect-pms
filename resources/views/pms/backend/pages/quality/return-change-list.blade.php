@@ -69,7 +69,7 @@
                                 <tr id="removeApprovedRow{{$item->id}}">
                                     <td class="text-center">{{$key+1}}</td>
                                     <td>{{isset($item->relGoodsReceivedItems->relProduct->category->name)?$item->relGoodsReceivedItems->relProduct->category->name:''}}</td>
-                                    <td>{{isset($item->relGoodsReceivedItems->relProduct->name)?$item->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributes($item->relGoodsReceivedItems->relProduct->id) }}</td>
+                                    <td>{{isset($item->relGoodsReceivedItems->relProduct->name)?$item->relGoodsReceivedItems->relProduct->name:''}} {{ getProductAttributesFaster($item->relGoodsReceivedItems->relProduct) }} {{ getProductAttributesFaster($item->relGoodsReceivedItems) }}</td>
                                     <td class="text-center">
                                         <input type="number" readonly class="form-control text-right" id="unitAmount{{$item->id}}" value="{{$item->relGoodsReceivedItems->unit_amount}}">
                                     </td>

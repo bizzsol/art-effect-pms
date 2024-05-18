@@ -120,7 +120,7 @@
                                                     <tr id="removeApprovedRow{{$item->id}}">
                                                         <td>{{$key+1}}</td>
                                                         <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
-                                                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }}</td>
+                                                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }}{{ getProductAttributesFaster($item) }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
                                                         <td class="text-right">{{number_format($item->unit_amount,2)}}</td>
                                                         <td class="text-center">{{number_format($item->qty,0)}}</td>
