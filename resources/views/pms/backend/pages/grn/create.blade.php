@@ -111,7 +111,7 @@
                                             {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
                                             <input type="hidden" name="product_id[]" class="form-control" value="{{isset($item->relProduct->id)?$item->relProduct->id:0}}">
                                         </td>
-                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first()->description }}</td>
                                         <td>
                                             {{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                                         </td>

@@ -376,7 +376,7 @@
                 <td>
                     {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }} ({{ isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : '' }})
                 </td>
-                <td style="text-align: center">{{ $item->description }}</td>
+                <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first()->description }}</td>
                 <td style="text-align: center">{{ $item->qty }}</td>
                 <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                 {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
