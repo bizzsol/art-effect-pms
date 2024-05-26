@@ -197,9 +197,7 @@
                             @if($key==0)
                                 <div class="col-md-6 well" style="width: 50%; float:left;padding-top: 10px;">
                                     <ul class="list-unstyled mb0">
-                                        <li><strong>{{__('Request Proposal No')}} :</strong>
-                                            {{$quotation->relRequestProposal->reference_no}}
-                                        </li>
+                                        <li><strong>CS Number: </strong>{{$quotation->relRequestProposal->reference_no}}</li>
                                         <li><strong>Project Name:</strong></li>
                                     </ul>
                                 </div>
@@ -376,7 +374,7 @@
                             <td colspan="6" class="text-right"></td>
 
                             @foreach($quotations as $key=>$quotation)
-                                <td colspan="2"><strong>(+) Vat </strong></td>
+                                <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
                                 <td class="text-right">
                                     <strong>{{ number_format($quotationInfo[$quotation->id]['vat'], 2) }}</strong>
                                 </td>
@@ -447,6 +445,12 @@
                         </thead>
                         <tbody>
                             @if(isset($quotations->first()->relRequestProposal->approvals[0]))
+                            <tr>
+                                <td class="text-center"></td>
+                                <td>CS Raised at</td>
+                                <td class="text-center">Raised</td>
+                                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($quotations->first()->relRequestProposal->approvals->first()->created_at)) }}</td>
+                            </tr>
                             @foreach($quotations->first()->relRequestProposal->approvals as $key => $approval)
                             <tr>
                                 <td class="text-center">{{ $approval->priority }}</td>

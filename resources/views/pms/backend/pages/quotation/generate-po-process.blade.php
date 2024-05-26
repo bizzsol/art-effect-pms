@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
-                                                    for="rfp_reference_no"><strong>{{ __('RFP Ref No') }} <span
+                                                    for="rfp_reference_no"><strong>CS Number <span
                                                             class="text-danger">*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="text" name="rfp_reference_no" id="rfp_reference_no"
@@ -416,7 +416,7 @@
                 .done(function (response) {
                     var requisition = '';
                     $.each(response, function (index, val) {
-                        requisition += '<option value="' + val.id + '">' + val.reference_no + '</option>';
+                        requisition += '<option value="' + val.id + '" selected>' + val.reference_no + '</option>';
                     });
                     $('#requisition_id').html(requisition).change();
                     $('.po-qty').val(0);

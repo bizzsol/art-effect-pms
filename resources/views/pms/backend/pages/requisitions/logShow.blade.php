@@ -130,7 +130,8 @@
 
             <div>
                 <strong> Explanations: </strong>
-                {{ !empty($requisition->explanations) ? implode(', ', json_decode($requisition->explanations, true)) : '' }}
+                {{-- {{ !empty($requisition->explanations) ? implode(', ', json_decode($requisition->explanations, true)) : '' }} --}}
+                {{ !empty($requisition->explanations) ? $requisition->explanations : '' }}
             </div>
             <div>
                 <strong> Notes: </strong>

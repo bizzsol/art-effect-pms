@@ -4,27 +4,22 @@
             <div class="invoice-details mt25 row">
                 <div class="well col-6">
                     <ul class="list-unstyled mb0">
-                        <li><strong>{{__('Name') }}
-                                :</strong> {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}
+                        <li><strong>Name:</strong> {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}
                         </li>
 
-                        <li><strong>{{__('Unit')}}
-                                :</strong> {{isset($requisition->relUsersList->employee->unit->hr_unit_short_name)?$requisition->relUsersList->employee->unit->hr_unit_short_name:''}}
+                        <li><strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
                         </li>
-                        <li><strong>{{__('Location')}}
-                                :</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
+                        <li><strong>Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
                         </li>
-                        <li><strong>{{__('Department')}}
-                                :</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
+                        <li><strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
                         </li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <ul class="list-unstyled mb0 pull-right">
-
-                        <li><strong>{{__('Date')}}
-                                :</strong> {{date('d-m-Y',strtotime($requisition->requisition_date))}}</li>
-                        <li><strong>{{__('Reference No')}}:</strong> {{$requisition->reference_no}}</li>
+                        <li><strong>Date:</strong> {{date('d-m-Y',strtotime($requisition->requisition_date))}}</li>
+                        <li><strong>Reference No:</strong> {{$requisition->reference_no}}</li>
+                        <li><strong>Saleable:</strong> {{ ucwords($requisition->saleable) }}</li>
                     </ul>
                 </div>
             </div>
@@ -67,7 +62,7 @@
                     @if($requisition->status==1)
                         <th>Approved Qty</th>
                     @endif
-                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Budgeted Price</th>
                     <th class="text-right">Estimated Amount</th>
                 </tr>
                 </thead>
@@ -126,7 +121,8 @@
 
             <div>
                 <strong> Explanations: </strong>
-                {{ !empty($requisition->explanations) ? implode(', ', json_decode($requisition->explanations, true)) : '' }}
+                {{-- {{ !empty($requisition->explanations) ? implode(', ', json_decode($requisition->explanations, true)) : '' }} --}}
+                {{ !empty($requisition->explanations) ? $requisition->explanations : '' }}
             </div>
             <div>
                 <strong> Notes: </strong>

@@ -35,7 +35,7 @@
                     @csrf
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-3 col-sm-6">
+                            <div class="col-md-2 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="reference">{{ __('Reference No.') }}:</label></p>
                                 <div class="input-group input-group-md mb-3 d-">
                                     <input type="text" name="reference_no" id="reference" class="form-control rounded" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required readonly value="{{ old('reference_no',$requisition->reference_no) }}">
@@ -47,14 +47,40 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3 col-sm-6">
+                            <div class="col-md-2 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="date">{{ __('Date') }}:</label> </p>
                                 <div class="input-group input-group-md mb-3 d-">
-                                    <input type="text" name="requisition_date" id="date" class="form-control rounded air-datepicker" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ date('Y-m-d',strtotime($requisition->requisition_date)) }}" >
+                                    <input type="datetime-local" name="requisition_date" id="date" class="form-control rounded" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ date('Y-m-d H:i:s', strtotime($requisition->requisition_date)) }}" >
                                 </div>
                             </div>
 
-                            <div class="col-md-3 col-sm-6">
+                            <div class="col-md-2 col-sm-6">
+                                <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span class="text-danger">&nbsp;*</span></strong></label></p>
+                                <div class="input-group input-group-md mb-3 d-">
+                                    <select name="hr_unit_id" id="hr_unit_id" class="form-control">
+                                        @if($requisition->author_id == auth()->user()->id)
+                                            @if(isset($units[0]))
+                                            @foreach($units as $unit)
+                                            <option value="{{ $unit->hr_unit_id }}" {{ $requisition->hr_unit_id == $unit->hr_unit_id ? 'selected' : '' }}>{{ $unit->hr_unit_short_name }}</option>
+                                            @endforeach
+                                            @endif
+                                        @else
+                                            <option value="{{ $requisition->hr_unit_id }}">{{ $requisition->unit->hr_unit_short_name }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-6">
+                                <p class="mb-1 font-weight-bold"><label for="saleable"><strong>Saleable ?<span class="text-danger">&nbsp;*</span></strong></label></p>
+                                <div class="input-group input-group-md mb-3 d-">
+                                    <select name="saleable" id="saleable" class="form-control">
+                                        <option value="yes" {{ $requisition->saleable == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $requisition->saleable == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="category_id">{{ __('Category') }}:</label> </p>
                                 <div class="input-group input-group-md mb-3 d-">
                                     @if($requisition->status==1)
@@ -119,7 +145,7 @@
                                             <th style="width: 15%">Sub Category</th>
                                             <th style="width: 20%">Product</th>
                                             <th style="width: 40%">Attributes</th>
-                                            <th style="width: 10%">Unit price</th>
+                                            <th style="width: 10%">Budgeted Price</th>
                                             <th style="width: 10%">Quantity</th>
                                             @can('department-requisition-edit')
                                             <th style="width: 10%">Approved Quantity</th>
@@ -199,35 +225,37 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-9 mt-3">
-                                <p class="mb-1 font-weight-bold"><label for="explanations">Explanations:</label> {!!
-                                    $errors->has('explanations')? '<span class="text-danger text-capitalize">'.
-                                    $errors->first('explanations').'</span>':'' !!}</p>
-                                <div class="form-group form-group-lg mb-3 d-">
-                                    <select name="explanations[]" id="explanations" multiple class="form-control">
-                                        @if(isset($explanations[0]))
-                                        @foreach($explanations as $key => $explanation)
-                                        <option {{ in_array($explanation->explanation, json_decode(!empty($requisition->explanations) ? $requisition->explanations : '', true)) ? 'selected' : '' }}>{{ $explanation->explanation }}</option>
-                                        @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mt-3">
+                            <div class="col-md-12 mt-3">
                                 <p class="mb-1 font-weight-bold">
-                                    <label for="edit_file">{{ __('Attachment') }}:</label>
+                                    <label for="edit_file"><strong>Attachment:</strong></label>
                                     @if(!empty($requisition->attachment) && file_exists(public_path($requisition->attachment)))
                                         <a class="text-primary" href="{{ url($requisition->attachment) }}" target="_blank">View Existing Attachment</a>
                                     @endif 
                                     {!! $errors->has('edit_file')? '<span class="text-danger text-capitalize">'. $errors->first('edit_file').'</span>':'' !!}
                                 </p>
                                 <div class="form-group form-group-lg mb-3 d-">
-                                    <input type="file" name="edit_file" id="edit_file" class="">
+                                    <input type="file" name="edit_file" id="edit_file" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                                <p class="mb-1 font-weight-bold"><label for="explanations"><strong>Explanations:</strong><strong class="text-danger">*</strong></label> {!!
+                                    $errors->has('explanations')? '<span class="text-danger text-capitalize">'.
+                                    $errors->first('explanations').'</span>':'' !!}</p>
+                                <div class="form-group form-group-lg mb-3 d-">
+                                    {{-- <select name="explanations[]" id="explanations" multiple class="form-control">
+                                        @if(isset($explanations[0]))
+                                        @foreach($explanations as $key => $explanation)
+                                        <option {{ in_array($explanation->explanation, json_decode(!empty($requisition->explanations) ? $requisition->explanations : '', true)) ? 'selected' : '' }}>{{ $explanation->explanation }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select> --}}
+                                    <textarea rows="3" name="explanations" id="explanations" class="form-control rounded word-restrictions" aria-label="Large" aria-describedby="inputGroup-sizing-sm" data-input="recommended" required>{!! old('explanations', $requisition->explanations) !!}</textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
-                                <p class="mb-1 font-weight-bold"><label for="remarks">{{ __('Notes') }}:</label> {!! $errors->has('remarks')? '<span class="text-danger text-capitalize">'. $errors->first('remarks').'</span>':'' !!}</p>
+                                <p class="mb-1 font-weight-bold"><label for="remarks"><strong>Notes:</strong></label> {!! $errors->has('remarks')? '<span class="text-danger text-capitalize">'. $errors->first('remarks').'</span>':'' !!}</p>
                                 <div class="form-group form-group-lg mb-3 d-">
                                     <textarea rows="3" name="remarks" id="remarks" class="form-control rounded word-restrictions" aria-label="Large" aria-describedby="inputGroup-sizing-sm" data-input="recommended">{!! old('remarks',$requisition->remarks) !!}</textarea>
                                 </div>
@@ -456,9 +484,9 @@
 
         function updateRequisition() {
             var error_count = 0;
-            if($('#remarks').val() == ""){
+            if($('#explanations').val() == ""){
                 error_count++;
-                toastr.error("Please write a Remarks.");
+                toastr.error("Please write explanations.");
             }
 
             if($('#category_id').find(':selected').val() == ""){

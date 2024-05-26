@@ -58,8 +58,7 @@
                                     @if($key==0)
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>{{__('Request Proposal No')}}
-                                                        :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                                                <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}</li>
                                                 <li><strong>Project Name:</strong></li>
                                             </ul>
                                         </div>
@@ -256,7 +255,7 @@
                                                                 $total_price = $quotation->relQuotationItems->sum('sub_total_price');
                                                                 $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
                                                             @endphp
-                                                                <td colspan="2"><strong>(+) Vat</strong></td>
+                                                                <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
                                                                 <td class="text-right">
                                                                     <strong
                                                                 id="total-vat-amount-{{ $quotation->id }}"> {{$quotation->vat}}</strong></td>

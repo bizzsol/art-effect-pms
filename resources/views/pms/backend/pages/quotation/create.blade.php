@@ -198,7 +198,7 @@
                                                         <input type="hidden" name="product_id[]" class="form-control" value="{{$item->product->id}}">
                                                     </td>
                                                     <td>
-                                                        <textarea name="product_description[{{$item->product->id}}]" class="form-control" style="min-height: 80px;"></textarea>
+                                                        <textarea name="product_description[{{$item->product->id}}]" class="form-control" style="min-height: 80px;">{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</textarea>
                                                     </td>
                                                     <td class="text-center">
                                                         {{$item->product->productUnit->unit_name}}
@@ -459,7 +459,6 @@
 
         summation();
         function calculateSubtotal(id) {
-
             var unit_price = parseFloat($('#unitPrice' + id).val());
             var qty = parseFloat($('#qty' + id).val());
 

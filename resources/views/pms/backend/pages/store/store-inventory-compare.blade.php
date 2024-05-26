@@ -8,7 +8,7 @@
                             {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}</li>
 
                         <li><strong>{{__('Unit')}} :</strong>
-                            {{isset($requisition->relUsersList->employee->unit->hr_unit_short_name)?$requisition->relUsersList->employee->unit->hr_unit_short_name:''}}
+                            {{ $requisition->unit->hr_unit_short_name }}
                         </li>
                         <li><strong>{{__('Location')}} :</strong>
                             {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
@@ -20,10 +20,10 @@
                 </div>
                 <div class="col-6">
                     <ul class="list-unstyled mb0 pull-right">
-
                         <li><strong>{{__('Date')}} :</strong>
-                            {{date('d-m-Y',strtotime($requisition->requisition_date))}}</li>
+                            {{date('d-m-Y', strtotime($requisition->requisition_date))}}</li>
                         <li><strong>{{__('Reference No')}}:</strong> {{$requisition->reference_no}}</li>
+                        <li><strong>Saleable:</strong> {{ ucwords($requisition->saleable) }}</li>
                     </ul>
                 </div>
             </div>

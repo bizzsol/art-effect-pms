@@ -60,8 +60,7 @@
 
                                                         <div class="col-md-6 well">
                                                             <ul class="list-unstyled mb0">
-                                                                <li><strong>{{__('Request Proposal No')}}
-                                                                        :</strong> {{$quotation->relRequestProposal->reference_no}}
+                                                                <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}
                                                                 </li>
                                                                 <li><strong>Project Name:</strong></li>
                                                             </ul>
@@ -158,7 +157,9 @@
                                                 @foreach($quotation->relQuotationItems as $key => $item)
                                                     <tr>
                                                         <td class="text-right">{{$key+1}}</td>
-                                                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
+                                                        <td>
+                                                            <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->product_id }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
+                                                        </td>
                                                         <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
                                                         <td>{{ $item->description }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
@@ -252,7 +253,7 @@
                                                 <td colspan="7" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
-                                                    <td colspan="2"><strong>(+) Vat </strong></td>
+                                                    <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
                                                     <td class="text-right"><strong
                                                                 id="total-vat-amount-{{ $quotation->id }}">{{$quotation->vat}}</strong>
                                                     </td>
@@ -346,19 +347,19 @@
                                     <button type="submit" class="btn btn-success cs-button"><i class="la la-check"></i>&nbsp;Approve
                                     </button>
                                     @if(request()->get('type')=='direct-purchase')
-                                        {{-- <a type="button" class="btn btn-warning"
-                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject All</a> --}}
-
                                         <a type="button" class="btn btn-danger"
+                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
+                                                    class="la la-ban"></i>&nbsp;Reject</a>
+
+                                        <a type="button" class="btn btn-dark"
                                            href="{{route('pms.quotation.quotations.estimate.approval.list')}}"><i
                                                     class="la la-times"></i>&nbsp;Close</a>
                                     @else
-                                        {{-- <a type="button" class="btn btn-warning"
-                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject All</a> --}}
-
                                         <a type="button" class="btn btn-danger"
+                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
+                                                    class="la la-ban"></i>&nbsp;Reject</a>
+
+                                        <a type="button" class="btn btn-dark"
                                            href="{{route('pms.quotation.approval.list')}}"><i class="la la-times"></i>&nbsp;Close</a>
                                     @endif
                                 </div>
@@ -573,6 +574,17 @@
 
             $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
             $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+        }
+
+        function productLogs(product_id) {
+            $.dialog({
+                title: 'Product CS logs',
+                content: "url:"+location.href+"&get-product-logs&request_proposal_id={{ $requestProposalId }}&product_id="+product_id,
+                animation: 'scale',
+                columnClass: 'col-md-12',
+                closeAnimation: 'scale',
+                backgroundDismiss: true,
+            });
         }
     </script>
 @endsection

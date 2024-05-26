@@ -23,8 +23,7 @@
                     <li class="top-nav-btn">
                         <a class="btn btn-sm btn-success text-white" title="Upload Excel" data-toggle="modal" data-target="#uploadExcel"><i class="las la-upload"></i>&nbsp;Upload Excel</a>
                         <a href="javascript:history.back()" class="btn btn-sm btn-warning text-white"
-                           data-toggle="tooltip"
-                           title="Back"> <i class="las la-chevron-left"></i>Back</a>
+                           data-toggle="tooltip" title="Back"> <i class="las la-chevron-left"></i>Back</a>
                     </li>
                 </ul>
             </div>
@@ -38,7 +37,7 @@
                             @csrf
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-6">
+                                    <div class="col-md-2 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="reference"><strong>{{ __('Reference No.') }} <span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="text" name="reference_no" id="reference"
@@ -53,14 +52,35 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 col-sm-6">
+                                    <div class="col-md-2 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="requisition_date"><strong>{{ __('Date') }}:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="datetime-local" name="requisition_date" id="requisition_date" class="form-control rounded" required value="{{ old('requisition_date', date('Y-m-d H:i:s')) }}">
                                         </div>
                                     </div>
+                                    <div class="col-md-2 col-sm-6">
+                                        <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control">
+                                                @if(isset($units[0]))
+                                                @foreach($units as $unit)
+                                                <option value="{{ $unit->hr_unit_id }}">{{ $unit->hr_unit_short_name }}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6">
+                                        <p class="mb-1 font-weight-bold"><label for="saleable"><strong>Saleable ?<span class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <select name="saleable" id="saleable" class="form-control">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <div class="col-md-{{ !empty($task) ? 3 : 6 }} col-sm-{{ !empty($task) ? 3 : 6 }}">
+                                    <div class="col-md-4 col-sm-4">
                                         <p class="mb-1 font-weight-bold"><label for="category_id"><strong>{{ __('Category') }}:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
 
@@ -138,7 +158,7 @@
                                                 <th style="width: 15%">Sub Category</th>
                                                 <th style="width: 20%">Product</th>
                                                 <th style="width: 40%">Attributes</th>
-                                                <th style="width: 10%">Unit price</th>
+                                                <th style="width: 10%">Budgeted Price</th>
                                                 <th style="width: 10%">Quantity</th>
                                                 <th style="width: 5%" class="text-center">Action</th>
                                             </tr>
@@ -272,48 +292,38 @@
                                            style="margin-right:17px;" title="Add More Product">
                                             <i class="las la-plus"></i>
                                         </a>
-
                                     </div>
 
-                                    <div class="col-md-9 mt-3">
-                                        <p class="mb-1 font-weight-bold"><label for="explanations">Explanations:</label> {!!
-        $errors->has('explanations')? '<span class="text-danger text-capitalize">'.
-        $errors->first('explanations').'</span>':'' !!}</p>
+                                    <div class="col-md-12 mt-3">
+                                        <p class="mb-1 font-weight-bold"><label for="file"><strong>Attachment:</strong></label>
+                                            {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
+                                            $errors->first('file').'</span>':'' !!}</p>
                                         <div class="form-group form-group-lg mb-3 d-">
-                                            <select name="explanations[]" id="explanations" multiple
+                                            <input type="file" name="file" id="file" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <p class="mb-1 font-weight-bold"><label for="explanations"><strong>Explanations:</strong><strong class="text-danger">*</strong></label> {!! $errors->has('explanations')? '<span class="text-danger text-capitalize">'.$errors->first('explanations').'</span>':'' !!}</p>
+                                        <div class="form-group form-group-lg mb-3 d-">
+                                            {{-- <select name="explanations[]" id="explanations" multiple
                                                     class="form-control">
                                                 @if(isset($explanations[0]))
                                                     @foreach($explanations as $key => $explanation)
                                                         <option>{{ $explanation->explanation }}</option>
                                                     @endforeach
                                                 @endif
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mt-3">
-                                        <p class="mb-1 font-weight-bold"><label for="file">{{ __('Attachment') }}
-                                                :</label>
-                                            {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
-                                            $errors->first('file').'</span>':'' !!}</p>
-                                        <div class="form-group form-group-lg mb-3 d-">
-                                            <input type="file" name="file" id="file" class="">
+                                            </select> --}}
+                                            <textarea rows="3" name="explanations" id="explanations" class="form-control rounded word-restrictions" aria-label="Large" aria-describedby="inputGroup-sizing-sm" data-input="recommended" required>{!! old('explanations') !!}</textarea>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
-                                        <p class="mb-1 font-weight-bold"><label for="remarks">{{ __('Notes') }}
-                                                :&nbsp;<strong class="text-danger">*</strong></label> {!!
-        $errors->has('remarks')? '<span class="text-danger text-capitalize">'.
-        $errors->first('remarks').'</span>':'' !!}</p>
+                                        <p class="mb-1 font-weight-bold"><label for="remarks"><strong>Notes:</strong></label> {!! $errors->has('remarks')? '<span class="text-danger text-capitalize">'.$errors->first('remarks').'</span>':'' !!}</p>
                                         <div class="form-group form-group-lg mb-3 d-">
-            <textarea rows="3" name="remarks" id="remarks"
-                      class="form-control rounded word-restrictions" aria-label="Large"
-                      aria-describedby="inputGroup-sizing-sm" data-input="recommended"
-                      required>{!! old('remarks') !!}</textarea>
+                                            <textarea rows="3" name="remarks" id="remarks" class="form-control rounded word-restrictions" aria-label="Large" aria-describedby="inputGroup-sizing-sm" data-input="recommended">{!! old('remarks') !!}</textarea>
                                         </div>
                                     </div>
-
-                                    <input type="hidden" name="hr_unit_id" value="{{$unitId}}">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -426,9 +436,9 @@
             $('#where_to_go').val(where_to_go);
 
             var error_count = 0;
-            if ($('#remarks').val() == "") {
+            if ($('#explanations').val() == "") {
                 error_count++;
-                toastr.error("Please write a Remarks.");
+                toastr.error("Please write explanations.");
             }
 
             if ($('#category_id').find(':selected').val() == "") {
