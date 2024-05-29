@@ -36,9 +36,6 @@
                                             <th>Reference</th>
                                             <th>Supplier</th>
                                             <th>Quotation Reference</th>
-                                            {{-- <th>Total Price</th>
-                                            <th>Vat</th>
-                                            <th>Gross Price</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,9 +44,6 @@
                                             <td>{{ $purchaseOrder->reference_no }}</td>
                                             <td>{{ isset($purchaseOrder->relQuotation->relSuppliers) ? (isset($purchaseOrder->relQuotation->relSuppliers->name) ? $purchaseOrder->relQuotation->relSuppliers->name.' ('.$purchaseOrder->relQuotation->relSuppliers->code.')' : '') : '' }}</td>
                                             <td>{{ isset($purchaseOrder->relQuotation->reference_no) ? $purchaseOrder->relQuotation->reference_no : '' }}</td>
-                                            {{-- <td class="text-right">{{ ((isset($purchaseOrder->relQuotation->exchangeRate->currency->symbol)?$purchaseOrder->relQuotation->exchangeRate->currency->symbol:'').' '.systemMoneyFormat($purchaseOrder->total_price)) }}</td>
-                                            <td class="text-right">{{ ((isset($purchaseOrder->relQuotation->exchangeRate->currency->symbol)?$purchaseOrder->relQuotation->exchangeRate->currency->symbol:'').' '.systemMoneyFormat($purchaseOrder->vat)) }}</td>
-                                            <td class="text-right">{{ ((isset($purchaseOrder->relQuotation->exchangeRate->currency->symbol)?$purchaseOrder->relQuotation->exchangeRate->currency->symbol:'') .' '.systemMoneyFormat($purchaseOrder->gross_price)) }}</td> --}}
                                         </tr>
                                     </tbody>
                                 </table>
@@ -60,26 +54,20 @@
                                     <thead>
                                         <tr class="text-center">
                                             <th style="width: 5%">SL</th>
-                                            <th style="width: 15%">Category</th>
-                                            <th style="width: 30%">Service</th>
-                                            <th style="width: 10%">UOM</th>
-                                            <th style="width: 20%">Previously Confirmed</th>
-                                            <th style="width: 20%">Confirming Now</th>
-                                            {{-- <th>Unit Price</th>
-                                            <th>Sub Total</th>
-                                            <th>Vat</th>
-                                            <th>Total Price</th> --}}
+                                            <th style="width: 10%">Category</th>
+                                            <th style="width: 10%">Service</th>
+                                            <th style="width: 20%">Attributes</th>
+                                            <th style="width: 30%">Description</th>
+                                            <th style="width: 5%">UOM</th>
+                                            <th style="width: 10%">Previously Confirmed</th>
+                                            <th style="width: 10%">Confirming Now</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php 
-                                            // $sub_total_price = 0;
-                                        @endphp
                                         @if(isset($purchaseOrder->relPurchaseOrderItems))
                                         @foreach($purchaseOrder->relPurchaseOrderItems as $key => $item)
                                         @if($item->relProduct->is_service == 1)
                                         @php
-                                            // $sub_total_price += $item->unit_price*$item->qty;
                                             $received_qty = 0;
                                             if($purchaseOrder->relGoodReceiveNote->count() > 0){
                                                 foreach($purchaseOrder->relGoodReceiveNote as $key => $grn){
@@ -91,8 +79,14 @@
                                         <tr>
                                             <td class="text-center">{{$key+1}}</td>
                                             <td class="text-center">{{ isset($item->relProduct->category)?$item->relProduct->category->name:'' }}</td>
-                                            <td class="text-center">
+                                            <td>
                                                 {{ isset($item->relProduct->name)?$item->relProduct->name:'' }} {{ getProductAttributesFaster($item->relProduct) }}
+                                            </td>
+                                            <td>
+                                                {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
+                                            </td>
+                                            <td>
+                                                {{ $purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first()->description }}
                                             </td>
                                             <td class="text-center">
                                                 {{ isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}
@@ -103,36 +97,11 @@
                                             <td class="text-center">
                                                 <input type="number" name="received_qty[{{ $item->id }}]" id="received_qty_{{ $item->id }}" value="{{ $item->qty-$received_qty }}" class="form-control text-right" min="0" max="{{ $item->qty-$received_qty }}">
                                             </td>
-                                            {{-- <td class="text-right">
-                                                {{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat($item->unit_price) }}
-                                            </td>
-                                            <td class="text-right">
-                                                {{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat(($item->unit_price*$item->qty)) }}
-                                            </td>
-                                            <td class="text-right">
-                                                {{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat($item->vat) }}
-                                            </td>
-                                            <td class="text-right">
-                                                {{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat(($item->unit_price*$item->qty)+$item->vat) }}
-                                            </td> --}}
                                         </tr>
                                         @endif
                                         @endif
                                         @endforeach
                                         @endif
-
-                                        {{-- <tr>
-                                            <td colspan="5" class="text-right"><strong>Total:</strong></td>
-                                            <td class="text-right">
-                                                <strong>{{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat($sub_total_price) }}</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong>{{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat($purchaseOrder->relPurchaseOrderItems->sum('vat')) }}</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong>{{ $purchaseOrder->relQuotation->exchangeRate->currency->symbol }} {{ systemMoneyFormat($sub_total_price+$purchaseOrder->relPurchaseOrderItems->sum('vat')) }}</strong>
-                                            </td>
-                                        </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -144,16 +113,6 @@
                                                 <label for="date"><strong>Date <span class="text-danger">*</span></strong></label>
                                                 <input type="date" name="date" id="date" value="{{ date('Y-m-d') }}" class="form-control">
                                             </div>
-
-                                            {{-- <div class="col-md-3">
-                                                <label for="challan"><strong>Challan <span class="text-danger">*</span></strong></label>
-                                                <input type="text" name="challan" id="challan" placeholder="Write challan number" class="form-control">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="challan_file"><strong>Challan File</strong></label>
-                                                <input type="file" name="challan_file" id="challan_file" placeholder="Write challan number" class="form-control">
-                                            </div> --}}
-
                                             <div class="col-md-10">
                                                 <label for="note"><strong>Note</strong></label>
                                                 <input type="text" name="note" id="note" class="form-control">

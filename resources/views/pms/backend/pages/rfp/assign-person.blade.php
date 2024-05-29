@@ -6,7 +6,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-9">
-                    <select class="form-control select2" name="user_id" id="user_id">
+                    <select class="form-control select2_" name="user_id" id="user_id">
                         @if(isset($users[0]))
                         @foreach($users as $user)
                         <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -167,7 +167,7 @@
 </div>
 
 <script type="text/javascript">
-    $(".select2").each(function() {
+    $(".select2_").each(function() {
         $(this).select2({
           dropdownParent: $(this).parent()
         });

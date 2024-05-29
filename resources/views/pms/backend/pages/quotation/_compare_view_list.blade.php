@@ -199,7 +199,9 @@
                                                                 <span style="display: none"
                                                                       class="this-discount-amount discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount'] : 0 }}</span>
                                                                 <span style="display: none"
-                                                                      class="this-exchange-discount-amount exchange-discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) ? $this_prices['discount_amount']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
+                                                                      class="this-exchange-discount-amount exchange-discount-amount-{{ $quotation->id }}">{{ isset($this_prices['discount_amount']) && $this_prices['discount_amount'] > 0 ? $this_prices['discount_amount']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
+                                                                <span style="display: none"
+                                                                      class="vat-type-{{ $quotation->id }}">{{ isset($this_prices['vat_type']) ? $this_prices['vat_type'] : 0 }}</span>
                                                                 <span style="display: none"
                                                                       class="this-vat-amount vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat'] : 0 }}</span>
                                                                 <span style="display: none"
@@ -346,19 +348,16 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success cs-button"><i class="la la-check"></i>&nbsp;Approve
                                     </button>
-                                    @if(request()->get('type')=='direct-purchase')
-                                        <a type="button" class="btn btn-danger"
+
+                                    <a type="button" class="btn btn-danger"
                                            onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
                                                     class="la la-ban"></i>&nbsp;Reject</a>
-
+                                                    
+                                    @if(request()->get('type')=='direct-purchase')
                                         <a type="button" class="btn btn-dark"
                                            href="{{route('pms.quotation.quotations.estimate.approval.list')}}"><i
                                                     class="la la-times"></i>&nbsp;Close</a>
                                     @else
-                                        <a type="button" class="btn btn-danger"
-                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject</a>
-
                                         <a type="button" class="btn btn-dark"
                                            href="{{route('pms.quotation.approval.list')}}"><i class="la la-times"></i>&nbsp;Close</a>
                                     @endif
@@ -554,13 +553,21 @@
             });
 
             var total_vat = 0;
+            var exclusive_vat = 0;
             $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_vat += parseFloat($(this).text().split(",").join(""));
+                if($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive'){
+                    exclusive_vat += parseFloat($(this).text().split(",").join(""));
+                }
             });
 
             var total_exchange_vat = 0;
+            var exchange_exclusive_vat = 0;
             $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_vat += parseFloat($(this).text().split(",").join(""));
+                if($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive'){
+                    exchange_exclusive_vat += parseFloat($(this).text().split(",").join(""));
+                }
             });
 
             $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
@@ -572,8 +579,8 @@
             $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
             $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
 
-            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
-            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + exclusive_vat).toFixed(2));
+            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + exchange_exclusive_vat).toFixed(2));
         }
 
         function productLogs(product_id) {
