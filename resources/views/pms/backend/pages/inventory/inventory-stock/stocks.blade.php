@@ -4,14 +4,14 @@
     @endphp
     @foreach($products as $key => $product)
         @php
-            $qty = $inventoryDetails->where('product_id', $product->id)->sum('qty');
+            $qty = $inventoryLogs->where('product_id', $product->id)->sum('available');
             $total += $qty;
         @endphp
         <tr>
             <td class="text-center">{{ $key+1 }}</td>
             <td>{{ isset($product->category->name)?$product->category->name:'' }}</td>
-            <td><a onclick="showWarehouseStocks('{{ $product->id }}')" class="text-primary">{{ $product->name }}</a></td>
-            <td>{!! selectedProductAttributes($product->id, $attributeOptions) !!}</td>
+            <td><a onclick="showWarehouseStocks('{{ $product->id }}')" class="text-primary">{{ $product->name }} {!! getProductAttributesFaster($product) !!}</a></td>
+            <td class="text-center">{{ $product->productUnit->unit_name }}</td>
             <td class="text-center">{{ $qty }}</td>
         </tr>
     @endforeach

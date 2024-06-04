@@ -3,9 +3,6 @@
 @section('page-css')
 @endsection
 @section('main-content')
-@php
-use App\Models\PmsModels\InventoryModels\InventorySummary;
-@endphp
 <div class="main-content">
 	<div class="main-content-inner">
 		<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -21,7 +18,7 @@ use App\Models\PmsModels\InventoryModels\InventorySummary;
 				<li class="top-nav-btn">
 
 				</li>
-			</ul><!-- /.breadcrumb -->
+			</ul>
 		</div>
 
 		<div class="page-content">
@@ -62,10 +59,10 @@ use App\Models\PmsModels\InventoryModels\InventorySummary;
 								<thead>
 									<tr class="text-center">
 										<th style="width: 5%">{{__('SL')}}</th>
-										<th style="width: 15%">{{__('Category')}}</th>
-										<th style="width: 30%">{{__('Product')}}</th>
-										<th style="width: 40%">{{__('Attributes')}}</th>
-										<th style="width: 15%">{{__('Stock')}}</th>
+										<th style="width: 25%">{{__('Category')}}</th>
+										<th style="width: 40%">{{__('Product')}}</th>
+										<th style="width: 10%">{{__('UOM')}}</th>
+										<th style="width: 20%">{{__('Stock')}}</th>
 									</tr>
 								</thead>
 								<tbody id="stocks">

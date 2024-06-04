@@ -99,7 +99,8 @@
                 @if(isset($item->product->id))
                         @if($item->qty != $item->delivery_qty)
                         @php
-                            $left = floor($item->qc_qty<$item->item_stock_sum ? $item->qc_qty-$item->delivery_qty : $item->item_stock_sum);
+                            $stock = isset($stocks[$item->id]) ? array_sum(array_values($stocks[$item->id])) : 0;
+                            $left = floor(($item->purchase_qty > 0 ? $item->qc_qty : $item->qty) < $stock ? ($item->purchase_qty > 0 ? $item->qc_qty : $item->qty)-$item->delivery_qty : $stock);
                         @endphp
                             <tr id="SelectedRow{{$item->product->id}}">
                                 <td>{{$key+1}}</td>
@@ -108,7 +109,7 @@
                                 <td class="text-center">
                                     {{ $item->product->productUnit->unit_name }}
                                 </td>
-                                <td class="text-center">{{$item->item_stock_sum}}</td>
+                                <td class="text-center">{{ $stock }}</td>
                                 <td class="text-center">{{$item->qty}}</td>
                                 <td class="text-center">{{$item->purchase_qty}}</td>
                                 <td class="text-center">{{$item->qc_qty}}</td>
@@ -132,11 +133,9 @@
                                 </td>
                                 <td>
                                     <select class="form-control not-select2 warehouse_id" name="warehouse_id[{{$item->product->id}}]" id="warehouse_{{$item->product->id}}" onchange="updateDeliveryQuantity($(this))">
-                                        @if(isset($item->product->relInventoryDetails))
-                                            @foreach($item->product->relInventoryDetails as $data)
-                                                @if(in_array($data->warehouse_id, auth()->user()->relUsersWarehouse->pluck('id')->toArray()))
-                                                <option value="{{$data->warehouse_id}}" data-remaining="{{$data->item_warehouse_stock_sum}}"> {!! (isset($data->relWarehouse->name)?$data->relWarehouse->name:'') . ' ('.$data->item_warehouse_stock_sum.' '.$item->product->productUnit->unit_name.')' !!}</option>
-                                                @endif
+                                        @if($warehouses->whereIn('id', array_keys($stocks[$item->id]))->count() > 0)
+                                            @foreach($warehouses->whereIn('id', array_keys($stocks[$item->id])) as $warehouse)
+                                                <option value="{{$warehouse->id}}" data-remaining="{{ $stocks[$item->id][$warehouse->id] }}"> {!! $warehouse->name. ' ('.$stocks[$item->id][$warehouse->id].' '.$item->product->productUnit->unit_name.')' !!}</option>
                                             @endforeach
                                         @endif
                                     </select>

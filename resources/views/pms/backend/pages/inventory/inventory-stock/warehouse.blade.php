@@ -1,7 +1,7 @@
 <ul class="pl-3">
     <li>Category: <strong>{{ isset($product->category->name)?$product->category->name:'' }}</strong></li>
-    <li>Product Name: <strong>{{ $product->name }}</strong></li>
-    <li>Attributes: {!! selectedProductAttributes($product->id, $attributeOptions) !!}</li>
+    <li>Product Name: <strong>{{ $product->name }} {!! getProductAttributesFaster($product) !!}</strong></li>
+    <li>Attributes: </li>
 </ul>
 
 <table class="table table-bordered table-striped">
