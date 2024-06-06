@@ -300,7 +300,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 sale-item-div">
+                                        {{-- <div class="col-md-2 sale-item-div">
                                             <p class="mb-1 font-weight-bold"><label for="is_sale_item"><strong>{{ __('Sale Item ?') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('is_sale_item')? '<span class="text-danger text-capitalize">'. $errors->first('is_sale_item').'</span>':'' !!}</p>
                                             <div class="select-search-group input-group input-group-md mb-3 d-">
                                                 <select name="is_sale_item" id="is_sale_item" class="form-control select2 types" onchange="updateFinanceSection()">
@@ -308,7 +308,7 @@
                                                     <option value="1" {{ $product->is_sale_item == 1 ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         @if(auth()->user()->hasPermissionTo('product-finance-information'))
                                         <div class="col-md-3 ledgers-div inventory-div">

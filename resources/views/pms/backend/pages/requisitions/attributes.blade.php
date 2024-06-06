@@ -35,5 +35,7 @@
 </div>
 
 <script type="text/javascript">
-    $('.attribute-select2-{{ $product->id }}').select2();
+    $('.attribute-select2-{{ $product->id }}').select2({
+        tags: true
+    });
 </script>

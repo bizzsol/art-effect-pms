@@ -105,16 +105,17 @@
 
                                                                 <p>
                                                                 <div class="form-check">
+                                                                    <input type="hidden" name="quotation_id[]" value="{{$quotation->id}}">
                                                                     <input class="form-check-input setRequiredOnSupplierPaymentTerm setRequiredOnSupplierPaymentTerm-{{$quotation->id}}"
-                                                                           type="checkbox" name="quotation_id[]"
+                                                                           type="checkbox" name="quotation_recommendations[]"
                                                                            id="is_approved_{{$quotation->id}}"
-                                                                           value="{{$quotation->id}}" {{ $quotation->is_approved == 'pre-processing' ? 'checked' : '' }} onchange="checkRecommendationFields($(this))">
+                                                                           value="{{$quotation->id}}" {{ $quotation->recommendation == 'yes' ? 'checked' : '' }} onchange="checkRecommendationFields($(this))">
                                                                     <input type="hidden" name="request_proposal_id"
                                                                            value="{{$quotation->request_proposal_id}}">
                                                                     <label class="form-check-label"
                                                                            for="is_approved_{{$quotation->id}}"
                                                                            style="cursor: pointer">
-                                                                        <strong>Request For Approval</strong>
+                                                                        <strong>Recommendation</strong>
                                                                     </label>
                                                                 </div>
                                                                 </p>
@@ -178,7 +179,7 @@
                                                                                data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
                                                                                data-vat-percentage="{{ isset($this_prices['vat_percentage']) ? $this_prices['vat_percentage'] : 0 }}"
 
-                                                                                class="form-control recommendations recommendations-{{ $quotation->id }}" onchange="checkRecommendation($(this))" onkeyup="checkRecommendation($(this))" readonly
+                                                                                class="form-control recommendations recommendations-{{ $quotation->id }}" onchange="checkRecommendation($(this))" onkeyup="checkRecommendation($(this))"
                                                                             >
 
                                                                             <span style="display: none"
@@ -407,11 +408,11 @@
         });
 
         function checkRecommendationFields(element){
-            if(element.is(':checked')){
-                $('.recommendations-'+element.val()).prop('readonly', false);
-            }else{
-                $('.recommendations-'+element.val()).prop('readonly', true);
-            }
+            // if(element.is(':checked')){
+            //     $('.recommendations-'+element.val()).prop('readonly', false);
+            // }else{
+            //     $('.recommendations-'+element.val()).prop('readonly', true);
+            // }
         }
 
         function checkRecommendation(element) {

@@ -68,21 +68,21 @@
                                                         <label class="mb-1" for="attribute-{{ $attribute->id }}">
                                                             <strong>{{ $attribute->name }}:</strong>
                                                         </label>
-                                                        <div class="input-group input-group-md mb-3 d-">
-                                                            <select name="attributeOptions[{{ $attribute->id }}][]" id="attribute-{{ $attribute->id }}" class="form-control rounded select2" multiple>
-                                                                @if(isset($attribute->options[0]))
-                                                                @foreach($attribute->options as $key => $option)
-                                                                    <option value="{{ $option->id }}" {{ isset($options[0]) && in_array($option->id, $options) ? 'selected' : '' }}>{{ $option->name }}</option>
-                                                                @endforeach
-                                                                @endif
-                                                            </select>
+                                                        <div class="input-group input-group-md">
+                                                            @if(isset($attribute->options[0]))
+                                                            @foreach($attribute->options as $key => $option)
+                                                            <label for="attribute-{{ $attribute->id }}-{{ $option->id }}" style="cursor: pointer;">
+                                                                <input type="checkbox" name="attributeOptions[{{ $attribute->id }}][]" id="attribute-{{ $attribute->id }}-{{ $option->id }}" value="{{ $option->id }}"  {{ isset($options[0]) && in_array($option->id, $options) ? 'checked' : '' }} style="cursor: pointer;"/>&nbsp{{ $option->name }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            </label>
+                                                            @endforeach
+                                                            @endif
                                                         </div> 
                                                     </div>
                                                     <div class="col-md-3 pl-0">
                                                         <label class="mb-1" for="attribute-serial-{{ $attribute->id }}">
                                                             <strong>Serial:</strong>
                                                         </label>
-                                                        <div class="input-group input-group-md mb-3 d-">
+                                                        <div class="input-group input-group-md">
                                                             <input type="number" name="attributeSerials[{{ $attribute->id }}]" id="attribute-serial{{ $attribute->id }}" value="{{ isset($categoryAttribute->serial) ? $categoryAttribute->serial : 1 }}" class="form-control text-right" min="1">
                                                         </div> 
                                                     </div>

@@ -154,14 +154,18 @@
                                                cellspacing="0"
                                                width="100%" id="dataTable">
                                             <thead>
-                                            <tr class="text-center">
-                                                <th style="width: 15%">Sub Category</th>
-                                                <th style="width: 20%">Product</th>
-                                                <th style="width: 40%">Attributes</th>
-                                                <th style="width: 10%">Budgeted Price</th>
-                                                <th style="width: 10%">Quantity</th>
-                                                <th style="width: 5%" class="text-center">Action</th>
-                                            </tr>
+                                                <tr class="text-center">
+                                                    <th style="width: 10%" rowspan="2">Sub Category</th>
+                                                    <th style="width: 20%" rowspan="2">Product</th>
+                                                    <th style="width: 35%" rowspan="2">Attributes</th>
+                                                    <th style="width: 10%" rowspan="2">Quantity</th>
+                                                    <th style="width: 20%" colspan="2">Budgeted Amount</th>
+                                                    <th style="width: 5%" rowspan="2" class="text-center">Action</th>
+                                                </tr>
+                                                <tr class="text-center">
+                                                    <th style="width: 10%">Unit Amount</th>
+                                                    <th style="width: 10%">Total Amount</th>
+                                                </tr>
                                             </thead>
                                             <tbody class="field_wrapper">
 
@@ -187,23 +191,8 @@
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-md">
-                                                                <input type="number" name="unit_price[]"
-                                                                   min="0"
-                                                                   step="any"
-                                                                   id="unit_price_{{ $key+1 }}" class="form-control requisition-unit_price"
-                                                                   aria-label="Large"
-                                                                   aria-describedby="inputGroup-sizing-sm"
-                                                                   required data-input="recommended"
-                                                                   oninput="this.value = Math.abs(this.value)"
-                                                                   data-unit-price="{{ $item['unit_price'] }}"
-                                                                   value="0"
-                                                                >
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="input-group input-group-md">
                                                                 <input type="number" name="qty[]" min="1" max="99999999"
-                                                                       id="qty_{{ $key+1 }}" class="form-control requisition-qty"
+                                                                       id="qty_{{ $key+1 }}" class="form-control requisition-qty text-right calculate-total"
                                                                        aria-label="Large"
                                                                        aria-describedby="inputGroup-sizing-sm"
                                                                        onKeyPress="if(this.value.length==6) return false;"
@@ -211,9 +200,31 @@
                                                                        required data-input="recommended"
                                                                        oninput="this.value = Math.abs(this.value)"
                                                                        data-quantity="{{ $item['quantity'] }}"
+
+                                                                       onchange="calculateTotal($(this))"
+                                                                       onkeyup="calculateTotal($(this))"
                                                                        >
                                                             </div>
                                                         </td>
+                                                        <td>
+                                                            <div class="input-group input-group-md">
+                                                                <input type="number" name="unit_price[]"
+                                                                   min="0"
+                                                                   step="any"
+                                                                   id="unit_price_{{ $key+1 }}" class="form-control requisition-unit_price text-right calculate-total"
+                                                                   aria-label="Large"
+                                                                   aria-describedby="inputGroup-sizing-sm"
+                                                                   required data-input="recommended"
+                                                                   oninput="this.value = Math.abs(this.value)"
+                                                                   data-unit-price="{{ $item['unit_price'] }}"
+                                                                   value="0"
+
+                                                                    onchange="calculateTotal($(this))"
+                                                                    onkeyup="calculateTotal($(this))"
+                                                                >
+                                                            </div>
+                                                        </td>
+                                                        <td class="total-amount text-right">0.00</td>
                                                         <td class="text-center">
                                                             <a href="javascript:void(0);" id="remove_{{ $key+1 }}"
                                                                class="remove_button btn btn-xs btn-danger" title="Remove"
@@ -247,23 +258,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="input-group input-group-md">
-                                                            <input type="number" name="unit_price[]"
-                                                               min="0"
-                                                               step="any"
-                                                               id="unit_price_1" class="form-control requisition-unit_price"
-                                                               aria-label="Large"
-                                                               aria-describedby="inputGroup-sizing-sm"
-                                                               required data-input="recommended"
-                                                               oninput="this.value = Math.abs(this.value)"
-                                                               data-unit-price=""
-                                                               value="0"
-                                                            >
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group input-group-md">
                                                             <input type="number" name="qty[]" min="1" max="99999999"
-                                                                   id="qty_1" class="form-control requisition-qty"
+                                                                   id="qty_1" class="form-control requisition-qty text-right calculate-total"
                                                                    aria-label="Large"
                                                                    aria-describedby="inputGroup-sizing-sm"
                                                                    onKeyPress="if(this.value.length==6) return false;"
@@ -271,9 +267,30 @@
                                                                    required data-input="recommended"
                                                                    oninput="this.value = Math.abs(this.value)"
                                                                    data-quantity=""
+                                                                   onchange="calculateTotal($(this))"
+                                                                    onkeyup="calculateTotal($(this))"
                                                                    >
                                                         </div>
                                                     </td>
+                                                    <td>
+                                                        <div class="input-group input-group-md">
+                                                            <input type="number" name="unit_price[]"
+                                                               min="0"
+                                                               step="any"
+                                                               id="unit_price_1" class="form-control requisition-unit_price text-right calculate-total"
+                                                               aria-label="Large"
+                                                               aria-describedby="inputGroup-sizing-sm"
+                                                               required data-input="recommended"
+                                                               oninput="this.value = Math.abs(this.value)"
+                                                               data-unit-price=""
+                                                               value="0"
+
+                                                               onchange="calculateTotal($(this))"
+                                                                onkeyup="calculateTotal($(this))"
+                                                            >
+                                                        </div>
+                                                    </td>
+                                                    <td class="total-amount text-right">0.00</td>
                                                     <td class="text-center">
                                                         <a href="javascript:void(0);" id="remove_1"
                                                            class="remove_button btn btn-xs btn-danger" title="Remove"
@@ -285,6 +302,14 @@
                                             @endif
 
                                             </tbody>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="5" class="text-right"><strong>Total Budgeted Amount:</strong></td>
+                                                    <td class="grand-total-amount text-right">0.00</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
 
                                         </table>
                                         <a href="javascript:void(0);"
@@ -504,15 +529,16 @@
                     '</td>'+
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <input type="number" name="unit_price[]" min="0" step="any" id="unit_price_' + x + '" class="form-control requisition-unit_price" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-unit-price="" value="0">\n' +
+                    '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="">\n' +
+                    '                                                    <input type="number" name="unit_price[]" min="0" step="any" id="unit_price_' + x + '" class="form-control requisition-unit_price text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-unit-price="" value="0" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '\n' +
+                    '<td class="total-amount text-right">0.00</td>'+
                     '                                            <td class="text-center">\n' +
                     '                                                <a href="javascript:void(0);" id="remove_' + x + '" class="remove_button btn btn-xs btn-danger" title="Remove" style="color:#fff;">\n' +
                     '                                                    <i class="las la-trash"></i>\n' +
@@ -561,8 +587,22 @@
 
                 $(this).parent().parent().parent().find('.subcategory').val(parseInt($(this).find(':selected').attr('data-sub-category-id'))).select2();
             });
-
         });
+
+        function calculateTotal(element) {
+            var unit_price = element.parent().parent().parent().find('.requisition-unit_price').val() != "" ? parseFloat(element.parent().parent().parent().find('.requisition-unit_price').val()) : 0;
+            var qty = element.parent().parent().parent().find('.requisition-qty').val() != "" ? parseFloat(element.parent().parent().parent().find('.requisition-qty').val()) : 0;
+            var total_amount = parseFloat(unit_price*qty);
+
+            element.parent().parent().parent().find('.total-amount').html(parseFloat(total_amount).toFixed(2));
+
+
+            var grand_total = 0;
+            $.each($('.total-amount'), function(index, val) {
+                grand_total += $(this).text() != "" ? parseFloat($(this).text()) : 0;
+            });
+            $('.grand-total-amount').html(parseFloat(grand_total).toFixed(2));
+        }
 
         function getSubCategories() {
             $.each($('.subcategory'), function (index, val) {

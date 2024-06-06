@@ -100,7 +100,7 @@
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-2', 'slug' => 'trade', 'text' => ucwords('Trade'), 'placeholder' => ucwords('Supplier Trade')
+                                                'div' => 'col-md-2', 'slug' => 'trade', 'text' => ucwords('Trade'), 'placeholder' => ucwords('Supplier Trade'), 'required' => true
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
@@ -155,15 +155,20 @@
                                         <h5 class="floating-title">Product Information</h5>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <p class="mb-0 font-weight-bold"><label for="sub_categories">{{ __('Sub Categories') }}:</label> {!! $errors->has('sub_categories')? '<span class="text-danger text-capitalize">'. $errors->first('sub_categories').'</span>':'' !!}</p>
-                                                <div class="input-group input-group-md mb-3 d-">
-                                                    <select name="sub_categories[]" id="sub_categories" class="form-control" data-placeholder="Choose Sub Categories" multiple onchange="getProducts()">
-                                                        @if(isset($subCategories[0]))
-                                                        @foreach($subCategories as $key => $subCategory)
-                                                        <option value="{{ $subCategory->id }}">{{ $subCategory->name }} ({{ $subCategory->category->name }})</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
+                                                <div class="form-group">
+                                                    <label><strong>Sub Categories</strong></label>
+                                                    {!! $errors->has('sub_categories')? '<span class="text-danger text-capitalize">'. $errors->first('sub_categories').'</span>':'' !!}
+                                                    <br>
+                                                    @if(isset($subCategories[0]))
+                                                    @foreach($subCategories as $key => $subCategory)
+                                                    <div class="icheck-primary d-inline">
+                                                        <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" onchange="getProducts()" class="sub_categories">
+                                                        <label class="text-primary" for="sub-category-{{ $subCategory->id }}">
+                                                          {{ $subCategory->category->name }}&nbsp;&nbsp;&nbsp;
+                                                        </label>
+                                                    </div>
+                                                    @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -215,13 +220,16 @@
                                                 <div class="form-group">
                                                     <label for="currencies"><strong>Currencies</strong></label>
                                                     <div class="input-group input-group-md mb-3 d-">
-                                                        <select name="currencies[]" class="form-control rounded" multiple>
-                                                            @if(isset($currencies[0]))
-                                                            @foreach($currencies as $key => $currency)
-                                                            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
-                                                            @endforeach
-                                                            @endif
-                                                        </select>
+                                                        @if(isset($currencies[0]))
+                                                        @foreach($currencies as $key => $currency)
+                                                        <div class="icheck-primary d-inline">
+                                                            <input type="checkbox" name="currencies[]" value="{{ $currency->id }}" id="currency-{{ $currency->id }}" class="currencies">
+                                                            <label class="text-primary" for="currency-{{ $currency->id }}">
+                                                              {{ $currency->name }}&nbsp;&nbsp;&nbsp;
+                                                            </label>
+                                                        </div>
+                                                        @endforeach
+                                                        @endif
                                                     </div> 
                                                 </div>
                                             </div>
@@ -267,8 +275,8 @@
 
                                                                 <select name="type[]" id="type_1" class="form-control" >
                                                                     <option value="{{ null }}">Select One</option>
-                                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::ADVANCE}}">Account Payee-cheque</option>
-                                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::DUE}}">Cash Cheque</option>
+                                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::ADVANCE}}">Advance</option>
+                                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::DUE}}">Due</option>
                                                                 </select>
                                                             </div>
 
@@ -355,8 +363,8 @@
                         '                                            <select name="type[]" id="type_' + x + '" class="form-control">\n' +
                         '                                                <option value="{{ null }}">Select One</option>\n' +
                         '\n' +
-                        '                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::ADVANCE}}">Account Payee-cheque</option>\n' +
-                        '                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::DUE}}">Cash Cheque</option>\n' +
+                        '                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::ADVANCE}}">Advance</option>\n' +
+                        '                                                    <option value="{{\App\Models\PmsModels\SupplierPaymentTerm::DUE}}">Due</option>\n' +
                         '                                            </select>\n' +
                         '\n' +
                         '                                        </div>\n' +
@@ -445,8 +453,8 @@
     }
 
     function getProducts() {
-        var sub_categories = $('#sub_categories option:selected').map(function(){
-            return this.value;
+        var sub_categories = $('.sub_categories:checkbox:checked').map(function () {
+          return this.value;
         }).get();
         var selected_products = $('#products option:selected').map(function(){
             return this.value;

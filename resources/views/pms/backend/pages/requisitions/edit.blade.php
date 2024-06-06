@@ -141,17 +141,21 @@
 
                                 <table class="table table-striped table-bordered miw-500 dac_table" cellspacing="0" width="100%" id="dataTable">
                                     <thead>
-                                        <tr>
-                                            <th style="width: 15%">Sub Category</th>
-                                            <th style="width: 20%">Product</th>
-                                            <th style="width: 40%">Attributes</th>
-                                            <th style="width: 10%">Budgeted Price</th>
-                                            <th style="width: 10%">Quantity</th>
+                                        <tr class="text-center">
+                                            <th style="width: 10%" rowspan="2">Sub Category</th>
+                                            <th style="width: 20%" rowspan="2">Product</th>
+                                            <th style="width: 35%" rowspan="2">Attributes</th>
+                                            <th style="width: 10%" rowspan="2">Quantity</th>
                                             @can('department-requisition-edit')
                                             <th style="width: 10%">Approved Quantity</th>
                                             @php $modifiedName = true; @endphp
                                             @endcan
-                                            <th style="width: 5%" class="text-center">Action</th>
+                                            <th style="width: 20%" colspan="2">Budgeted Amount</th>
+                                            <th style="width: 5%" rowspan="2" class="text-center">Action</th>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th style="width: 10%">Unit Amount</th>
+                                            <th style="width: 10%">Total Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody class="field_wrapper">
@@ -186,23 +190,22 @@
                                             </td>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
-                                                    <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control {{ !$modifiedName ? 'requisition-unit_price' : ''  }}" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}}>
+                                                    <input type="number" @if($modifiedName) readonly name="old_qty[]" value="{{ old('qty',$requisitionItem->requisition_qty) }}" @else name="qty[]" value="{{ old('qty',$requisitionItem->qty) }}" @endif  min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control {{ !$modifiedName ? 'requisition-qty' : ''  }} text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="input-group input-group-md mb-3 d-">
-                                                    <input type="number" @if($modifiedName) readonly name="old_qty[]" value="{{ old('qty',$requisitionItem->requisition_qty) }}" @else name="qty[]" value="{{ old('qty',$requisitionItem->qty) }}" @endif  min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control {{ !$modifiedName ? 'requisition-qty' : ''  }}" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}}>
-                                                </div>
-                                            </td>
-
                                             @can('department-requisition-edit')
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
-                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old('qty',$requisitionItem->qty) }}">
+                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old('qty',$requisitionItem->qty) }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
                                                 </div>
                                             </td>
                                             @endcan
-
+                                            <td>
+                                                <div class="input-group input-group-md mb-3 d-">
+                                                    <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control {{ !$modifiedName ? 'requisition-unit_price' : ''  }} text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
+                                                </div>
+                                            </td>
+                                            <td class="total-amount text-right">{{ $requisitionItem->unit_price*$requisitionItem->qty }}</td>
                                             <td>
                                                 @if($requisition->status !=1)
                                                 <a href="javascript:void(0);" id="remove_{{$key}}" class="remove_button btn btn-danger btn-sm" style="margin-right:17px;" title="Remove" >
@@ -215,6 +218,14 @@
                                         @endforelse
 
                                     </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="{{ auth()->user()->hasPermissionTo('department-requisition-edit') ? 6 : 5 }}" class="text-right"><strong>Total Budgeted Amount:</strong></td>
+                                            <td class="grand-total-amount text-right">0.00</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                                 @if(auth::user()->id == $requisition->author_id)
                                      @if($requisition->status !=1)
@@ -358,15 +369,18 @@
             '                                            <td class="product-attributes"></td>' +
             '                                            <td>\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-            '                                                    <input type="number" name="unit_price[]" min="0" value="0" step="any" id="unit_price_'+x+'" class="form-control requisition-unit_price" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("unit_price") }}">\n' +
+            '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_'+x+'" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
             '                                                </div>\n' +
             '                                            </td>\n'+
+            '@if($modifiedName)\n' +
+            '<td></td>\n'+
+            '@endif\n' +
             '                                            <td>\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-            '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_'+x+'" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}">\n' +
+            '                                                    <input type="number" name="unit_price[]" min="0" value="0" step="any" id="unit_price_'+x+'" class="form-control requisition-unit_price text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("unit_price") }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
             '                                                </div>\n' +
-            '                                            </td>\n'+'@if($modifiedName)\n' +
-            '<td></td>\n'+'@endif\n' +
+            '                                            </td>\n'+
+            '<td class="total-amount text-right">0.00</td>'+
             '                                            <td>\n' +
             '                                                <a href="javascript:void(0);" id="remove_'+x+'" class="remove_button btn btn-sm btn-danger" title="Remove" >\n' +
             '                                                    <i class="las la-trash"></i>\n' +
@@ -539,6 +553,21 @@
             $.each(attributes, function(index, attribute) {
                 element.parent().parent().parent().parent().find('.attribute-option-div-'+attribute).show();
             });
+        }
+
+        function calculateTotal(element) {
+            var unit_price = element.parent().parent().parent().find('.requisition-unit_price').val() != "" ? parseFloat(element.parent().parent().parent().find('.requisition-unit_price').val()) : 0;
+            var qty = element.parent().parent().parent().find('.requisition-qty').val() != "" ? parseFloat(element.parent().parent().parent().find('.requisition-qty').val()) : 0;
+            var total_amount = parseFloat(unit_price*qty);
+
+            element.parent().parent().parent().find('.total-amount').html(parseFloat(total_amount).toFixed(2));
+
+
+            var grand_total = 0;
+            $.each($('.total-amount'), function(index, val) {
+                grand_total += $(this).text() != "" ? parseFloat($(this).text()) : 0;
+            });
+            $('.grand-total-amount').html(parseFloat(grand_total).toFixed(2));
         }
     </script>
     @endsection
