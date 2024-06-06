@@ -259,6 +259,46 @@
             $('#POdetailsModel').find('.modal-title').html(`Notes From Audit`);
             $('#POdetailsModel').modal('show');
         }
-    </script>
 
+        function CancelBillApproval(element) {
+            var content = element.html();
+            element.html('<i class="las la-spinner la-spin"></i>').prop('disabled', true);
+
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are you sure to cancel the Bill Approval ?',
+                buttons: {
+                    yes: {
+                        text: 'Yes',
+                        btnClass: 'btn-blue',
+                        action: function(){
+                            $.ajax({
+                                url: "{{ url('pms/billing-audit/billing-po-attachment-list') }}?cancel-bill&bill="+element.attr('data-id'),
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {},
+                            })
+                            .done(function(response) {
+                                console.log(response);
+                                if(response.success){
+                                    toastr.success(response.message);
+                                    reloadDatatable();
+                                }else{
+                                    toastr.error(response.message);
+                                    element.html(content).prop('disabled', false);
+                                }
+                            });
+                        }
+                    },
+                    no: {
+                        text: 'No',
+                        btnClass: 'btn-red',
+                        action: function(){
+                            element.html(content).prop('disabled', false);
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 @endsection

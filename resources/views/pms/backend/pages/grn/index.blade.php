@@ -200,5 +200,45 @@
                 }
             });
         }
+
+        function sendToRequisitor(element) {
+            swal({
+                title: "{{__('Are you sure?')}}",
+                icon: "warning",
+                dangerMode: false,
+                buttons: {
+                    cancel: true,
+                    confirm: {
+                        text: "Send To Requisitor",
+                        value: true,
+                        visible: true,
+                        closeModal: true
+                    },
+                },
+            }).then((value) => {
+                if (value) {
+                    $.ajax({
+                        type: 'get',
+                        url: element.attr('data-action'),
+                        success: function (response) {
+                            if (response.success) {
+                                reloadDatatable();
+                                swal({
+                                    icon: 'success',
+                                    text: response.message,
+                                    button: false
+                                });
+                                setTimeout(() => {
+                                    swal.close();
+                                }, 1500);
+                            } else {
+                                showAlert('error', response.message);
+                                return;
+                            }
+                        },
+                    });
+                }
+            });
+        }
     </script>
 @endsection
