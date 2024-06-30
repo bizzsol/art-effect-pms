@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'X34HDm'); return 0;
-##!!!##wsImGSUdKygZGx3Y+SgoFAUnHB0kKxQAKvPCwi0rHdgBJCQtJSEmGSwdFPwZLBkaGSsdFP0kJyktHSYsFAUnHB0k88LCGyQZKyvYBCcZJvkoKCQhGxksIScm2B0wLB0mHCvYBSccHSTCM8LY2NjYKConLB0bLB0c2NwsGRokHdj12NogKhckJxkmFxkoKCQhGxksIScm2vPCwtjY2NgoLRokIRvY3CwhJR0rLBklKCvY9dgeGSQrHfPCNcI=
+bolt_decrypt( __FILE__ , 'KWvhde'); return 0;
+##!!!##U1O3qrauvLmqrK5pirm5pZa4ra61vKWRu4RTU768rmmStbW+trK3qr2upY2qvaqrqryupY61uLq+rre9pZa4ra61hFNTrLWqvLxplbiqt4q5ubWyrKq9sri3aa7Bva63rbxplritrrVTxFNpaWlpubu4va6sva6taW29qqu1rmmGaWuxu6i1uKq3qKq5ubWyrKq9sri3a4RTU2lpaWm5vqu1sqxpbb2ytq68vaq2ubxphmmvqrW8roRTxlM=
