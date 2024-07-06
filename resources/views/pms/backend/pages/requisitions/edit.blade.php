@@ -147,7 +147,7 @@
                                             <th style="width: 35%" rowspan="2">Attributes</th>
                                             <th style="width: 10%" rowspan="2">Quantity</th>
                                             @can('department-requisition-edit')
-                                            <th style="width: 10%">Approved Quantity</th>
+                                            <th style="width: 10%" rowspan="2">Approved Quantity</th>
                                             @php $modifiedName = true; @endphp
                                             @endcan
                                             <th style="width: 20%" colspan="2">Budgeted Amount</th>
@@ -202,7 +202,7 @@
                                             @endcan
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
-                                                    <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control {{ !$modifiedName ? 'requisition-unit_price' : ''  }} text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
+                                                    <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control requisition-unit_price text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
                                                 </div>
                                             </td>
                                             <td class="total-amount text-right">{{ $requisitionItem->unit_price*$requisitionItem->qty }}</td>

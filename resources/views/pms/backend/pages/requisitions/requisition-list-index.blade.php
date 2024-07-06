@@ -419,5 +419,43 @@
             }
         }
 
+        function resendForFinanceApproval(element){
+            var content = element.html();
+            element.html('<i class="las la-spinner la-spin"></i>&nbsp;Loading...').prop('disabled', true);
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are you sure to Resend ?',
+                buttons: {
+                    yes: {
+                        text: 'Yes',
+                        btnClass: 'btn-blue',
+                        action: function(){
+                            $.ajax({
+                                url: "{{ url('pms/requisition/list-view') }}?resend&requisition_id="+element.attr('data-id'),
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {},
+                            })
+                            .done(function(response) {
+                                if(response.success){
+                                    toastr.success(response.message);
+                                    reloadDatatable();
+                                }else{
+                                    toastr.error(response.message);
+                                    element.html(content).prop('disabled', false);
+                                }
+                            });
+                        }
+                    },
+                    no: {
+                        text: 'No',
+                        btnClass: 'btn-dark',
+                        action: function(){
+                            element.html(content).prop('disabled', false);
+                        }
+                    }
+                }
+            });
+        }
     </script>
 @endsection
