@@ -543,7 +543,7 @@
         }
 
 
-        addMilestone();
+        // addMilestone();
         function addMilestone() {
             $('#milestones').append('<tr>'+
                                         '<td>'+

@@ -106,17 +106,20 @@
                                                         ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }}
                                                         )
                                                     </th>
-                                                    <th class="text-center">Option</th>
+                                                    <th class="text-center">Status</th>
+                                                    <th class="text-center">Actions</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php $sumOfLeftQty = 0; $sumOfUnitPrice = 0; ?>
+                                                @php
+                                                    $sumOfLeftQty = 0;
+                                                    $sumOfUnitPrice = 0;
+                                                @endphp
                                                 @foreach($grn->rel_goods_received_items as $key=>$item)
-                                                        <?php
-                                                        $sumOfLeftQty += ($item->qty - $item->received_qty);
-                                                        $sumOfUnitPrice += $item->sub_total;
-                                                        ?>
-
+                                                @php
+                                                    $sumOfLeftQty += ($item->qty - $item->received_qty);
+                                                    $sumOfUnitPrice += $item->sub_total;
+                                                @endphp
                                                     <tr id="removeApprovedRow{{$item->id}}">
                                                         <td>{{$key+1}}</td>
                                                         <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
@@ -126,73 +129,54 @@
                                                         <td class="text-center">{{number_format($item->qty,0)}}</td>
                                                         <td class="text-right">{{number_format($item->sub_total,2)}}</td>
                                                         <td class="text-center">
-                                                            <div class="btn-group">
-                                                                <button class="btn dropdown-toggle"
-                                                                        data-toggle="dropdown">
-                                                        <span id="statusName{{$item->id}}"
-                                                              title="Click Here To Quality Ensure">
-                                                            {{ucwords($item->quality_ensure)}}
-                                                        </span>
+                                                            <button class="btn btn-dark btn-xs">
+                                                                <span id="statusName{{$item->id}}">
+                                                                    {{ucwords($item->quality_ensure)}}
+                                                                </span>
+                                                            </button>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if($item->quality_ensure=='pending')
+                                                            @can('quality-ensure-approved')
+                                                                <button
+                                                                   title="Click Here To Approved"
+                                                                   class="btn btn-success btn-xs qualityEnsureStatusChange"
+                                                                   data-id="{{$item->id}}"
+                                                                   data-category-id="{{ $item->relProduct->category_id }}"
+                                                                   data-status="approved">
+                                                                   <i class="las la-check"></i>&nbsp;Approve
                                                                 </button>
-                                                                <ul class="dropdown-menu">
-                                                                    <li>
-                                                                    @if($item->quality_ensure=='pending')
-                                                                        @can('quality-ensure-approved')
-                                                                            <li>
-                                                                                <a href="javascript:void(0)"
-                                                                                   title="Click Here To Approved"
-                                                                                   class="qualityEnsureStatusChange"
-                                                                                   data-id="{{$item->id}}"
-                                                                                   data-category-id="{{ $item->relProduct->category_id }}"
-                                                                                   data-status="approved">{{ __('Approved')}}
-                                                                                </a>
-                                                                            </li>
-                                                                        @endcan
-                                                                    @endif
+                                                            @endcan
+                                                            @endif
 
-                                                                    @can('quality-ensure-return')
-                                                                        <li>
-                                                                            <a href="javascript:void(0)"
-                                                                               title="Click Here To Return"
-                                                                               class="qualityEnsureStatusChange"
-                                                                               data-id="{{$item->id}}"
-                                                                               data-category-id="{{ $item->relProduct->category_id }}"
-                                                                               data-qty="{{$item->qty}}"
-                                                                               data-title="Return Qty"
-                                                                               data-status="return">{{ __('Return')}}
-                                                                            </a>
-                                                                        </li>
-                                                                    @endcan
+                                                            @can('quality-ensure-return')
+                                                                <a href="javascript:void(0)"
+                                                                   title="Click Here To Return"
+                                                                   class="btn btn-danger btn-xs qualityEnsureStatusChange"
+                                                                   data-id="{{$item->id}}"
+                                                                   data-category-id="{{ $item->relProduct->category_id }}"
+                                                                   data-qty="{{$item->qty}}"
+                                                                   data-title="Return Qty"
+                                                                   data-status="return">
+                                                                   <i class="las la-ban"></i>&nbsp;Return
+                                                                </a>
+                                                            @endcan
 
-                                                                    @can('quality-ensure-return-change')
-                                                                        <li>
-                                                                            <a href="javascript:void(0)"
-                                                                               title="Click Here To Replace"
-                                                                               class="qualityEnsureStatusChange"
-                                                                               data-id="{{$item->id}}"
-                                                                               data-category-id="{{ $item->relProduct->category_id }}"
-                                                                               data-qty="{{$item->qty}}"
-                                                                               data-title="Replace Qty"
-                                                                               data-status="return-change">{{ __('Replace')}}
-                                                                            </a>
-                                                                        </li>
-                                                                        @endcan
-
-                                                                        </li>
-                                                                </ul>
-
-                                                            </div>
+                                                            @can('quality-ensure-return-change')
+                                                                <a href="javascript:void(0)"
+                                                                   title="Click Here To Replace"
+                                                                   class="btn btn-warning btn-xs qualityEnsureStatusChange"
+                                                                   data-id="{{$item->id}}"
+                                                                   data-category-id="{{ $item->relProduct->category_id }}"
+                                                                   data-qty="{{$item->qty}}"
+                                                                   data-title="Replace Qty"
+                                                                   data-status="return-change">
+                                                                   <i class="las la-retweet"></i>&nbsp;Replace
+                                                                </a>
+                                                            @endcan
                                                         </td>
                                                     </tr>
-
                                                 @endforeach
-                                                {{-- <tr>
-                                                    <td colspan="4" class="text-right">Total</td>
-                                                    <td colspan="">{{isset($grn->rel_goods_received_items)?number_format($grn->rel_goods_received_items->sum('unit_amount'),0):0}}</td>
-                                                    <td>{{isset($sumOfLeftQty)?number_format($sumOfLeftQty,0):0}}</td>
-                                                    <td colspan="">{{isset($sumOfUnitPrice)?number_format($sumOfUnitPrice,2):0}}</td>
-                                                    <td></td>
-                                                </tr> --}}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -284,7 +268,6 @@
                 "use script";
 
                 $('.qualityEnsureStatusChange').on('click', function () {
-
                     let id = $(this).attr('data-id');
                     let quality_ensure = $(this).attr('data-status');
 
@@ -312,6 +295,9 @@
                         });
 
                     } else if (quality_ensure === 'approved') {
+                        var element = $(this);
+                        var content = element.html();
+                        element.html('<i class="las la-spinner la-spin"></i>&nbsp;Loading...').prop('disabled', true);
                         swal({
                             title: "{{__('Are you sure?')}}",
                             text: 'Would you like to ensure the quality of this product & approved It?',
@@ -344,13 +330,17 @@
                                             notify(response.message, 'success');
                                         } else {
                                             notify(response.message, 'error');
+                                            element.html(content).prop('disabled', false);
                                         }
                                     })
                                     .fail(function (response) {
                                         notify('Something went wrong!', 'error');
+                                        element.html(content).prop('disabled', false);
                                     });
 
                                 return false;
+                            }else{
+                                element.html(content).prop('disabled', false);
                             }
                         });
                     }
