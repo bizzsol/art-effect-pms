@@ -5,15 +5,16 @@
 			<table class="table table-striped table-bordered table-head" cellspacing="0" width="100%" id="dataTable">
 				<thead>
 					<tr class="text-center">
-						<th>{{__('GRN Reference')}}</th>
-						<th>{{__('GRN Date')}}</th>
-						<th>{{__('Challan No')}}</th>
-						<th>{{__('Po Qty')}}</th>
-						<th>{{__('GRN Qty')}}</th>
-						<th>{{__('Currency')}}</th>
-						<th>{{__('GRN Amount')}}</th>
-						<th class="text-center">{{__('Bill Amount')}}</th>
-						<th>{{__('Receive Status')}}</th>
+						<th>GRN Reference</th>
+						<th>GRN Date</th>
+						<th>Challan No</th>
+						<th>Po Qty</th>
+						<th>GRN Qty</th>
+						<th>Currency</th>
+						<th>GRN Amount</th>
+						<th class="text-center">Bill Amount</th>
+						<th>Receive Status</th>
+						<th>Challan</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -43,6 +44,9 @@
 								</td>
 								<td class="text-center">Not Updated Yet</td>
 								<td class="capitalize text-center">{{$grn->received_status}}</td>
+								<td class="capitalize text-center">
+									<input type="file" name="challan_files[{{ $grn->id }}]" class="form-control">
+								</td>
 							</tr>
 						
 						@endforeach
@@ -50,6 +54,7 @@
 					<tr>
 						<td colspan="6" class="text-right"><strong>Total GRN Amount:</strong></td>
 						<td class="text-right">{{ systemMoneyFormat($billAmount) }}</td>
+						<td></td>
 						<td></td>
 						<td></td>
 					</tr>

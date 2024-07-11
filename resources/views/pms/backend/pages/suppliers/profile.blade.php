@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-3">
-                                                <p class="mb-0 font-weight-bold"><label class="mb-0">Tin:</label></p>
+                                                <p class="mb-0 font-weight-bold"><label class="mb-0">TIN:</label></p>
                                                 <h6>{{ $supplier->tin }}</h6>
                                             </div>
 
@@ -109,12 +109,12 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <p class="mb-0 font-weight-bold"><label class="mb-0">Bin:</label></p>
+                                                <p class="mb-0 font-weight-bold"><label class="mb-0">BIN:</label></p>
                                                 <h6>{{ $supplier->bin }}</h6>
                                             </div>
 
                                             <div class="col-md-2">
-                                                <p class="mb-0 font-weight-bold"><label class="mb-0">Vat:</label></p>
+                                                <p class="mb-0 font-weight-bold"><label class="mb-0">VAT:</label></p>
                                                 <h6>{{ $supplier->vat }}</h6>
                                             </div>
                                             <div class="col-md-3">

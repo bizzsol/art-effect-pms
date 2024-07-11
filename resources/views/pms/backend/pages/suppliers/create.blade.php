@@ -96,7 +96,7 @@
                                         </div>
                                         <div class="row">
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-2', 'slug' => 'tin', 'text' => ucwords('Tin'), 'placeholder' => ucwords('Supplier Tin')
+                                                'div' => 'col-md-2', 'slug' => 'tin', 'text' => strtoupper('Tin'), 'placeholder' => ucwords('Supplier TIN')
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
@@ -104,11 +104,11 @@
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-2', 'slug' => 'bin', 'text' => ucwords('Bin'), 'placeholder' => ucwords('Supplier Bin'),
+                                                'div' => 'col-md-2', 'slug' => 'bin', 'text' => strtoupper('Bin'), 'placeholder' => ucwords('Supplier BIN'),
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-2', 'slug' => 'vat', 'text' => ucwords('Vat'), 'placeholder' => ucwords('Supplier Vat')
+                                                'div' => 'col-md-2', 'slug' => 'vat', 'text' => strtoupper('Vat'), 'placeholder' => ucwords('Supplier VAT')
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
@@ -162,7 +162,7 @@
                                                     @if(isset($subCategories[0]))
                                                     @foreach($subCategories as $key => $subCategory)
                                                     <div class="icheck-primary d-inline">
-                                                        <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" onchange="getProducts()" class="sub_categories">
+                                                        <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" class="sub_categories">
                                                         <label class="text-primary" for="sub-category-{{ $subCategory->id }}">
                                                           {{ $subCategory->category->name }}&nbsp;&nbsp;&nbsp;
                                                         </label>
@@ -172,7 +172,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-md-12">
                                                 <p class="mb-0 font-weight-bold"><label for="products">{{ __('Products') }}:</label> {!! $errors->has('products')? '<span class="text-danger text-capitalize">'. $errors->first('products').'</span>':'' !!}</p>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -181,7 +181,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

@@ -457,5 +457,16 @@
                 }
             });
         }
+
+        function showComments(element) {
+            $.dialog({
+                title: '&nbsp;',
+                content: "url:{{ url('pms/requisition/list-view') }}?comments&requisition_id="+element.attr('data-id'),
+                animation: 'scale',
+                columnClass: 'medium',
+                closeAnimation: 'scale',
+                backgroundDismiss: true,
+            });
+        }
     </script>
 @endsection

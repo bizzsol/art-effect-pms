@@ -103,7 +103,7 @@ width:  100% !important;
 </div>
 <div class="row">
 @include('pms.backend.pages.suppliers.element',[
-'div' => 'col-md-2', 'slug' => 'tin', 'text' => ucwords('Tin'), 'placeholder' => ucwords('Supplier Tin'), 'value' => $supplier->tin
+'div' => 'col-md-2', 'slug' => 'tin', 'text' => strtoupper('Tin'), 'placeholder' => ucwords('Supplier TIN'), 'value' => $supplier->tin
 ])
 
 @include('pms.backend.pages.suppliers.element',[
@@ -111,11 +111,11 @@ width:  100% !important;
 ])
 
 @include('pms.backend.pages.suppliers.element',[
-'div' => 'col-md-2', 'slug' => 'bin', 'text' => ucwords('Bin'), 'placeholder' => ucwords('Supplier Bin'), 'value' => $supplier->bin
+'div' => 'col-md-2', 'slug' => 'bin', 'text' => strtoupper('Bin'), 'placeholder' => ucwords('Supplier BIN'), 'value' => $supplier->bin
 ])
 
 @include('pms.backend.pages.suppliers.element',[
-'div' => 'col-md-2', 'slug' => 'vat', 'text' => ucwords('Vat'), 'placeholder' => ucwords('Supplier Vat'), 'value' => $supplier->vat
+'div' => 'col-md-2', 'slug' => 'vat', 'text' => strtoupper('Vat'), 'placeholder' => ucwords('Supplier VAT'), 'value' => $supplier->vat
 ])
 
 @include('pms.backend.pages.suppliers.element',[
@@ -170,7 +170,7 @@ width:  100% !important;
         @if(isset($subCategories[0]))
         @foreach($subCategories as $key => $subCategory)
         <div class="icheck-primary d-inline">
-            <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" onchange="getProducts()" class="sub_categories" {{ in_array($subCategory->id, $selectedSubCategories) ? 'checked' : '' }}>
+            <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" class="sub_categories" {{ in_array($subCategory->id, $selectedSubCategories) ? 'checked' : '' }}>
             <label class="text-primary" for="sub-category-{{ $subCategory->id }}">
               {{ $subCategory->category->name }}&nbsp;&nbsp;&nbsp;
             </label>
@@ -180,20 +180,20 @@ width:  100% !important;
     </div>
 </div>
 </div>
-<div class="row">
-<div class="col-md-12">
-<p class="mb-0 font-weight-bold"><label for="products">{{ __('Products') }}:</label> {!! $errors->has('products')? '<span class="text-danger text-capitalize">'. $errors->first('products').'</span>':'' !!}</p>
-<div class="input-group input-group-md mb-3 d-">
-<select name="products[]" id="products" class="form-control" multiple>
-@if(isset($products[0]))
-@foreach($products as $key => $product)
-<option value="{{ $product->id }}" selected>{{ $product->name }} {{ getProductAttributesFaster($product) }}</option>
-@endforeach
-@endif
-</select>
-</div>
-</div>
-</div>
+{{-- <div class="row">
+    <div class="col-md-12">
+        <p class="mb-0 font-weight-bold"><label for="products">{{ __('Products') }}:</label> {!! $errors->has('products')? '<span class="text-danger text-capitalize">'. $errors->first('products').'</span>':'' !!}</p>
+        <div class="input-group input-group-md mb-3 d-">
+            <select name="products[]" id="products" class="form-control" multiple>
+            @if(isset($products[0]))
+            @foreach($products as $key => $product)
+            <option value="{{ $product->id }}" selected>{{ $product->name }} {{ getProductAttributesFaster($product) }}</option>
+            @endforeach
+            @endif
+            </select>
+        </div>
+    </div>
+</div> --}}
 </div>
 </div>
 </div>
@@ -691,24 +691,23 @@ $(this).val(0);
 });
 }
 
-getProducts();
 function getProducts() {
-var sub_categories = $('.sub_categories:checkbox:checked').map(function () {
-  return this.value;
-}).get();
-var selected_products = $('#products option:selected').map(function(){
-return this.value;
-}).get();
+    var sub_categories = $('.sub_categories:checkbox:checked').map(function () {
+      return this.value;
+    }).get();
+    var selected_products = $('#products option:selected').map(function(){
+    return this.value;
+    }).get();
 
-$('#products').html('').change();
-$.ajax({
-url: "{{ url('pms/supplier-category-wise-products') }}",
-type: 'POST',
-data: {sub_categories:sub_categories, selected_products:selected_products},
-})
-.done(function(response) {
-$('#products').html(response).change();
-});
+    $('#products').html('').change();
+    $.ajax({
+    url: "{{ url('pms/supplier-category-wise-products') }}",
+    type: 'POST',
+    data: {sub_categories:sub_categories, selected_products:selected_products},
+    })
+    .done(function(response) {
+    $('#products').html(response).change();
+    });
 }
 
 

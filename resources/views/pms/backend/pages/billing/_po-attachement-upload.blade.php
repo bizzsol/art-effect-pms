@@ -5,15 +5,16 @@
     <table class="table table-striped table-bordered table-head" cellspacing="0" width="100%" id="dataTable">
         <thead>
             <tr class="text-center">
-                <th>{{__('GRN Reference')}}</th>
-                <th>{{__('GRN Date')}}</th>
-                <th>{{__('Challan No')}}</th>
-                <th>{{__('Po Qty')}}</th>
-                <th>{{__('GRN Qty')}}</th>
-                <th>{{__('Currency')}}</th>
-                <th>{{__('GRN Amount')}}</th>
-                <th class="text-center">{{__('Bill Amount')}}</th>
-                <th>{{__('Receive Status')}}</th>
+                <th>GRN Reference</th>
+                <th>GRN Date</th>
+                <th>Challan No</th>
+                <th>Po Qty</th>
+                <th>GRN Qty</th>
+                <th>Currency</th>
+                <th>GRN Amount</th>
+                <th class="text-center">Bill Amount</th>
+                <th>Receive Status</th>
+                <th>Challan</th>
             </tr>
         </thead>
         <tbody>
@@ -50,6 +51,16 @@
                             </td>
                             <td class="text-center">Not Updated Yet</td>
                             <td class="capitalize text-center">{{$grn->received_status}}</td>
+                            <td class="capitalize text-center">
+                                <div style="position:relative;">
+                                    <a class='btn btn-primary btn-xs font-10' href='javascript:;'>
+                                        Choose File...
+                                        <input name="challan_files[{{ $grn->id }}]" type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' size="40" onchange='$("#upload-file-info-{{ $grn->id }}").html($(this).val());'>
+                                    </a>
+                                    &nbsp;
+                                    <span class='label label-info' id="upload-file-info-{{ $grn->id }}"></span>
+                                </div>
+                            </td>
                         </tr>
                     @endif
                     @endforeach
@@ -57,6 +68,7 @@
                 <tr>
                     <td colspan="6" class="text-right"><strong>Total GRN Amount: ({{ $po->relQuotation->exchangeRate->currency->code }})</strong></td>
                     <td class="text-right">{{ systemMoneyFormat($billAmount) }}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
