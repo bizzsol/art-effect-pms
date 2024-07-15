@@ -8,18 +8,18 @@
 
         @if($quotations->count() > 2)
             thead, tbody tr {
-            display: table;
-            width: 2000px;
-            table-layout: fixed;
-        }
+                display: table;
+                width: {{ ($quotations->count()*400)+400 }}px;
+                table-layout: fixed;
+            }
 
-        thead {
-            width: calc(2000px)
-        }
+            thead {
+                width: calc({{ ($quotations->count()*400)+400 }}px)
+            }
 
-        ul {
-            list-style: none;
-        }
+            ul {
+                list-style: none;
+            }
         @endif
     </style>
 @endsection

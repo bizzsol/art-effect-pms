@@ -696,7 +696,7 @@
                                                     '<td>'+
                                                         '<select name="payment_types[]" class="form-control payment-types" required>'+
                                                             '<option value="paid" '+(type == 'paid' ? 'selected' : '')+'>Advance</option>'+
-                                                            '<option value="due" '+(type == 'due' ? 'selected' : '')+'>Due</option>'+
+                                                            '<option value="due" '+(type == 'due' ? 'selected' : '')+'>Credit</option>'+
                                                         '</select>'+
                                                     '</td>'+
                                                     '<td>'+
@@ -720,7 +720,7 @@
                                                     '<td>'+
                                                         '<select name="payment_types[]" class="form-control payment-types" required>'+
                                                             '<option value="paid">Advance</option>'+
-                                                            '<option value="due">Due</option>'+
+                                                            '<option value="due">Credit</option>'+
                                                         '</select>'+
                                                     '</td>'+
                                                     '<td>'+

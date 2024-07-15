@@ -45,7 +45,7 @@
                         <a href="javascript:history.back()" class="btn btn-sm btn-warning text-white"
                            data-toggle="tooltip" title="Back"> <i class="las la-chevron-left"></i>Back</a>
                     </li>
-                </ul><!-- /.breadcrumb -->
+                </ul>
             </div>
 
             <div class="page-content">
@@ -64,11 +64,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>{{__('RFP Provide By')}}
-                                                        :</strong> {{$quotation->relRequestProposal->createdBy->name}}
+                                                <li><strong>RFP Provide By:</strong> {{$quotation->relRequestProposal->createdBy->name}}
                                                 </li>
-                                                <li><strong>{{__('RFP Date')}}
-                                                        :</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
+                                                <li><strong>RFP Date:</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                 </li>
                                             </ul>
                                         </div>
@@ -282,7 +280,7 @@
                                                                 </td>
                                                                 @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                     <td class="text-right">
-                                                                        <strong id="total-exchange-gross-amount-{{ $quotation->id }}"><?= number_format($quotation->gross_price * $exchangeRate, 2); ?> </strong>
+                                                                        <strong id="total-exchange-gross-amount-{{ $quotation->id }}">@php number_format($quotation->gross_price * $exchangeRate, 2); @endphp</strong>
                                                                     </td>
                                                                 @endif
                                                             @endforeach
@@ -403,7 +401,7 @@
             });
 
             $.each($('.recommendations'), function(index, val) {
-                checkRecommendation($(this));
+                checkRecommendation($(this), true);
             });
         });
 
@@ -415,8 +413,8 @@
             // }
         }
 
-        function checkRecommendation(element) {
-            var value = parseInt(element.val());
+        function checkRecommendation(element, loading = false) {
+            var value = loading ? parseInt(element.attr('max')) : parseInt(element.val());
             var max = parseInt(element.attr('max'));
             var min = parseInt(element.attr('min'));
 
@@ -430,14 +428,16 @@
                 element.val(value);
             }
 
-            var total_recommendation = 0;
-            $.each(element.parent().parent().find('.recommendations'), function(index, val) {
-                total_recommendation += parseInt($(this).val());
-            });
+            if(!loading){
+                var total_recommendation = 0;
+                $.each(element.parent().parent().find('.recommendations'), function(index, val) {
+                    total_recommendation += parseInt($(this).val());
+                });
 
-            if(total_recommendation > max){
-                value = 0;
-                element.val(value);
+                if(total_recommendation > max){
+                    value = 0;
+                    element.val(value);
+                }
             }
 
             var unit_price = parseFloat(element.attr('data-unit-price'));
@@ -445,64 +445,66 @@
             var discount = parseFloat(element.attr('data-discount'));
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
 
-            var sub_total = unit_price * parseFloat(element.val());
+            var sub_total = unit_price * parseFloat(loading ? element.attr('max') : element.val());
             element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
 
             var exchange_sub_total = sub_total * exchange_rate;
             element.parent().parent().find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
 
-            var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
-            var exchange_discount_amount = discount_amount * exchange_rate;
-            element.parent().find('.this-discount-amount').html(discount_amount);
-            element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
+            if(loading){
+                var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
+                var exchange_discount_amount = discount_amount * exchange_rate;
+                element.parent().find('.this-discount-amount').html(discount_amount);
+                element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
 
-            var after_discount = sub_total - discount_amount;
-            var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
-            var exchange_vat_amount = vat_amount * exchange_rate;
-            element.parent().find('.this-vat-amount').html(vat_amount);
-            element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
+                var after_discount = sub_total - discount_amount;
+                var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
+                var exchange_vat_amount = vat_amount * exchange_rate;
+                element.parent().find('.this-vat-amount').html(vat_amount);
+                element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
 
-            var total_sub_total = 0;
-            $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_sub_total += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_sub_total = 0;
+                $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_sub_total += parseFloat($(this).text().split(",").join(""));
+                });
 
-            var total_exchange_sub_total = 0;
-            $.each($('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_exchange_sub_total += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_exchange_sub_total = 0;
+                $.each($('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_exchange_sub_total += parseFloat($(this).text().split(",").join(""));
+                });
 
-            var total_discount = 0;
-            $.each($('.discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_discount += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_discount = 0;
+                $.each($('.discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_discount += parseFloat($(this).text().split(",").join(""));
+                });
 
-            var total_exchange_discount = 0;
-            $.each($('.exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_exchange_discount += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_exchange_discount = 0;
+                $.each($('.exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_exchange_discount += parseFloat($(this).text().split(",").join(""));
+                });
 
-            var total_vat = 0;
-            $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_vat += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_vat = 0;
+                $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_vat += parseFloat($(this).text().split(",").join(""));
+                });
 
-            var total_exchange_vat = 0;
-            $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                total_exchange_vat += parseFloat($(this).text().split(",").join(""));
-            });
+                var total_exchange_vat = 0;
+                $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+                    total_exchange_vat += parseFloat($(this).text().split(",").join(""));
+                });
 
-            $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
-            $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
+                $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
+                $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
 
-            $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
-            $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
+                $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
+                $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
 
-            $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
-            $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
+                $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
+                $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
 
-            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
-            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+                $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
+                $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+            }
         }
 
         newApprover();

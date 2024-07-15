@@ -55,8 +55,14 @@
 @include('yajra.js')
 <script>
     function openModal(requestId) {
-        $('#modalContent').empty().load('{{URL::to("pms/rfp/request-proposal")}}/'+requestId);
-        $('#requestProposalDetailModal').modal('show')
+        $.dialog({
+            title: 'CS Preview',
+            content: "url:{{url("pms/rfp/request-proposal")}}/"+requestId+"?preview",
+            animation: 'scale',
+            columnClass: 'col-md-12',
+            closeAnimation: 'scale',
+            backgroundDismiss: true,
+        });
     }
 </script>
 @endsection
