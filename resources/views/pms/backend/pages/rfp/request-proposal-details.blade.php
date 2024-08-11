@@ -6,16 +6,16 @@
                     <strong>Assign to suppliers:</strong>
                     <ul class="list-unstyled mb0">
 
-                        <li><strong>{{__('Name') }} :</strong>
-                        {{ $requestProposal->defineToSupplier->pluck('supplier.name')->implode(', ') }}
+                        <li>
+                            <strong>Name :</strong> {{ $requestProposal->defineToSupplier->pluck('supplier.name')->implode(', ') }}
                         </li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <ul class="list-unstyled mb0 pull-right">
 
-                        <li><strong>{{__('Date')}} :</strong> {{date('d-m-Y',strtotime($requestProposal->request_date))}}</li>
-                        <li><strong>{{__('Reference No')}}:</strong> {{$requestProposal->reference_no}}</li>
+                        <li><strong>Date :</strong> {{ date('d-m-Y',strtotime($requestProposal->request_date)) }}</li>
+                        <li><strong>Reference No:</strong> {{ $requestProposal->reference_no }}</li>
                     </ul>
                 </div>
             </div>
@@ -34,25 +34,25 @@
 
                 <tbody>
                     @if(isset($requestProposal->requestProposalDetails[0]))
-                    @php
-                    $requestQty=0;
-                    @endphp
                     @foreach($requestProposal->requestProposalDetails as $key => $requestProposalDetail)
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
-                        <td>{{isset($requestProposalDetail->product->category->name)?$requestProposalDetail->product->category->name:''}}</td>
-                        <td>{{isset($requestProposalDetail->product->name)?$requestProposalDetail->product->name:''}} ({{isset($requestProposalDetail->product->sku)?$requestProposalDetail->product->sku:''}}) {{ isset($requestProposalDetail->product_id)? getProductAttributesFaster($requestProposalDetail->product) :''}}</td>
-                        <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $requestProposalDetail->product_id)->first()) }}</td>
-                        <td class="text-center">{{$requestProposalDetail->request_qty}}</td>
+                        <td>
+                            {{isset($requestProposalDetail->product->category->name)?$requestProposalDetail->product->category->name:''}}
+                        </td>
+                        <td>
+                            {{isset($requestProposalDetail->product->name) ? $requestProposalDetail->product->name:  ''}} ({{isset($requestProposalDetail->product->sku) ? $requestProposalDetail->product->sku : ''}}) {{ isset($requestProposalDetail->product_id) ? getProductAttributesFaster($requestProposalDetail->product) : ''}}
+                        </td>
+                        <td>
+                            {{ getProductAttributesFaster($requisitionItems->where('uid', $requestProposalDetail->uid)->first()) }}
+                        </td>
+                        <td class="text-center">{{ $requestProposalDetail->request_qty }}</td>
                     </tr>
-                    @php
-                    $requestQty+=$requestProposalDetail->request_qty;
-                    @endphp
                     @endforeach
                     @endif
                     <tr class="text-center">
                         <td colspan="4">Total</td>
-                        <td>{{$requestQty}}</td>
+                        <td>{{ $requestProposal->requestProposalDetails->sum('request_qty') }}</td>
                     </tr>
                 </tbody>
             </table>

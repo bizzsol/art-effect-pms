@@ -34,7 +34,7 @@
                             <td>{{ $q+1 }}</td>
                             <td>{{ $suppliers->where('id', $quotation->supplier_id)->first()->name }}</td>
                             <td class="text-center">{{ $quotation->reference_no }}</td>
-                            <td class="text-center">{{ collect($quotation->rel_quotation_items)->where('product_id', $product_id)->first()->approved_qty }}</td>
+                            <td class="text-center">{{ collect($quotation->rel_quotation_items)->where('uid', $uid)->first()->approved_qty }}</td>
                         </tr>
                         @endforeach
                     </tbody>

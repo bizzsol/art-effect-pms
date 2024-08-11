@@ -292,7 +292,7 @@
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
                                     <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-                                    <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                                    <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td class="text-center">{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                                     </td>
@@ -312,19 +312,19 @@
                                                 </svg>
                                             @endif
                                         </td> --}}
-                                        <td class="text-center {{ $quotationInfo[$quotation->id]['items'][$item->product_id]['approved_qty'] > 0 ? 'text-success' : 'text-danger' }}">
-                                            {{ $quotationInfo[$quotation->id]['items'][$item->product_id]['approved_qty'] }}
+                                        <td class="text-center {{ $quotationInfo[$quotation->id]['items'][$item->uid]['approved_qty'] > 0 ? 'text-success' : 'text-danger' }}">
+                                            {{ $quotationInfo[$quotation->id]['items'][$item->uid]['approved_qty'] }}
                                         </td>
                                         <td class="text-right">
-                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['unit_price'] ,) }}
+                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['unit_price'] ,) }}
                                         </td>
                                         <td class="text-right">
-                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['sub_total'] ,2) }}
+                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['sub_total'] ,2) }}
                                         </td>
                                         @if($systemCurrency->code != ($quotation->exchangeRate ?
                                         $quotation->exchangeRate->currency->code : ''))
                                         <td class="text-right">
-                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['exchange_sub_total'] ,2) }}
+                                            {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['exchange_sub_total'] ,2) }}
                                         </td>
                                         @endif
                                     @endforeach

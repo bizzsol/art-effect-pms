@@ -166,7 +166,7 @@
                                             <tr>
                                                 <td class="text-center">
                                                     {{$key+1}}
-                                                    <input type="hidden" name="product_id[]" value="{{$item->product_id}}">
+                                                    <input type="hidden" name="product_id[]" value="{{$item->uid}}">
                                                     <input type="hidden" name="unit_price" id="unit_price" value="{{$item->unit_price}}">
                                                     <input type="hidden" name="discount_percentage[{{ $item->id }}]" id="discount_percentage" value="{{$item->discount}}" class="discount_percentage">
                                                     <input type="hidden" name="vat_type[{{ $item->id }}]" id="vat_type" value="{{$item->vat_type}}">
@@ -175,7 +175,7 @@
                                                 {{-- <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td> --}}
                                                 <td>
                                                     @if(isset($item->relProduct->name))
-                                                        {{$item->relProduct->name}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
+                                                        {{$item->relProduct->name}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->description }}</td>
@@ -186,9 +186,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <input type="hidden" id="po-{{ $item->id }}"
-                                                           name="po_qty[{{$item->product_id}}]"
+                                                           name="po_qty[{{$item->uid}}]"
                                                            class="form-control bg-white po-qty check-po-qty"
-                                                           data-id="{{$item->product_id}}"
+                                                           data-id="{{$item->uid}}"
                                                            onkeypress="return isNumberKey(event);"
                                                            onchange="checkPOQty()" onkeyup="checkPOQty()">
                                                     <span class="view-data">0</span>
@@ -209,17 +209,17 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <input type="hidden" id="item-{{ $item->id }}"
-                                                           name="requisition_qty[{{$item->product_id}}]"
+                                                           name="requisition_qty[{{$item->uid}}]"
                                                            class="form-control bg-white requisition-qty po-qty"
-                                                           data-id="{{$item->product_id}}" readonly>
+                                                           data-id="{{$item->uid}}" readonly>
                                                     <span class="view-data">0</span>
                                                 </td>
 
                                                 <td class="text-center">
                                                     <input type="hidden" id="po-{{ $item->id }}"
-                                                           name="po_qty[{{$item->product_id}}]"
+                                                           name="po_qty[{{$item->uid}}]"
                                                            class="form-control bg-white po-qty check-po-qty"
-                                                           data-id="{{$item->product_id}}"
+                                                           data-id="{{$item->uid}}"
                                                            onkeypress="return isNumberKey(event);"
                                                            onchange="checkPOQty()" onkeyup="checkPOQty()">
                                                     <span class="view-data">0</span>

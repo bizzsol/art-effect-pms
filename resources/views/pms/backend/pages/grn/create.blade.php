@@ -108,41 +108,41 @@
                                     <tr class="grnItemContent">
                                         <td class="text-center">{{$key+1}}</td>
                                         <td>
-                                            {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
-                                            <input type="hidden" name="product_id[]" class="form-control" value="{{isset($item->relProduct->id)?$item->relProduct->id:0}}">
+                                            {{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                                            <input type="hidden" name="product_id[]" class="form-control" value="{{ $item->uid }}">
                                         </td>
-                                        <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first()->description }}</td>
+                                        <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
                                         <td>
                                             {{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                                         </td>
                                         <td>
-                                            <input type="text" name="unit_price[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" class="form-control text-right"   min="0.0"  id="unit_price_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->unit_price}}" readonly placeholder="0">
+                                            <input type="text" name="unit_price[{{ $item->uid }}]" class="form-control text-right"   min="0.0"  id="unit_price_{{ $item->uid }}" value="{{$item->unit_price}}" readonly placeholder="0">
                                         </td>
                                         <td class="text-center">
                                             {{$item->qty}}
-                                            <input type="hidden" value="{{$leftQty}}" id="main_qty_{{isset($item->relProduct->id)?$item->relProduct->id:0}}">
+                                            <input type="hidden" value="{{$leftQty}}" id="main_qty_{{ $item->uid }}">
                                         </td>
-                                        <td class="text-center" id="pre_rcv_qty_{{isset($item->relProduct->id)?$item->relProduct->id:0}}">
+                                        <td class="text-center" id="pre_rcv_qty_{{ $item->uid }}">
                                             {{$receiveQty}}
                                         </td>
                                         <td class="text-center">
-                                            <input type="number" name="qty[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]"  class="form-control bg-white rcvQty" min="0" max="{{$leftQty}}" id="receive_qty_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" data-id="{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$leftQty}}" placeholder="0" oninput="this.value = Math.abs(this.value)">
+                                            <input type="number" name="qty[{{ $item->uid }}]"  class="form-control bg-white rcvQty" min="0" max="{{$leftQty}}" id="receive_qty_{{ $item->uid }}" data-id="{{ $item->uid }}" value="{{$leftQty}}" placeholder="0" oninput="this.value = Math.abs(this.value)">
                                         </td>
 
-                                        <td class="text-center" id="left_qty_{{isset($item->relProduct->id)?$item->relProduct->id:0}}"></td>
+                                        <td class="text-center" id="left_qty_{{ $item->uid }}"></td>
 
 
-                                        <input type="hidden" name="unit_amount[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" value="{{round($unit_amount,2)}}" required readonly class="form-control calculateSumOfSubtotal" id="sub_total_price_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" placeholder="0">
+                                        <input type="hidden" name="unit_amount[{{ $item->uid }}]" value="{{round($unit_amount,2)}}" required readonly class="form-control calculateSumOfSubtotal" id="sub_total_price_{{ $item->uid }}" placeholder="0">
                                         
-                                        <input type="hidden" name="discount_percentage[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" class="form-control readonly rounded discountPercentage" id="discount_percentage_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" readonly value="{{$item->discount_percentage}}">
+                                        <input type="hidden" name="discount_percentage[{{ $item->uid }}]" class="form-control readonly rounded discountPercentage" id="discount_percentage_{{ $item->uid }}" readonly value="{{$item->discount_percentage}}">
 
-                                        <input type="hidden" name="item_discount_amount[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="item_wise_discount_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" class="itemWiseDiscount" value="{{$discount_amount}}">
+                                        <input type="hidden" name="item_discount_amount[{{ $item->uid }}]" id="item_wise_discount_{{ $item->uid }}" class="itemWiseDiscount" value="{{$discount_amount}}">
                                         
-                                        <input type="hidden" name="vat_type[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="vat_type_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" data-id="{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->vat_type}}" class="form-control calculateProductVat" readonly>
+                                        <input type="hidden" name="vat_type[{{ $item->uid }}]" id="vat_type_{{ $item->uid }}" data-id="{{ $item->uid }}" value="{{$item->vat_type}}" class="form-control calculateProductVat" readonly>
 
-                                        <input type="hidden" name="vat_percentage[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" id="vat_percentage_{{isset($item->relProduct->id)?$item->relProduct->id:0}}" data-id="{{isset($item->relProduct->id)?$item->relProduct->id:0}}" value="{{$item->vat_percentage}}" class="form-control calculateProductVat" readonly>
+                                        <input type="hidden" name="vat_percentage[{{ $item->uid }}]" id="vat_percentage_{{ $item->uid }}" data-id="{{ $item->uid }}" value="{{$item->vat_percentage}}" class="form-control calculateProductVat" readonly>
 
-                                        <input type="hidden" name="sub_total_vat_price[{{isset($item->relProduct->id)?$item->relProduct->id:0}}]" required class="form-control calculateSumOfVat" readonly id="sub_total_vat_price{{isset($item->relProduct->id)?$item->relProduct->id:0}}" placeholder="0.00" value="{{$vat_amount}}" data-vat-type="{{$item->vat_type}}">
+                                        <input type="hidden" name="sub_total_vat_price[{{ $item->uid }}]" required class="form-control calculateSumOfVat" readonly id="sub_total_vat_price{{ $item->uid }}" placeholder="0.00" value="{{$vat_amount}}" data-vat-type="{{$item->vat_type}}">
                                     </tr>
                                     @endif
                                     @endforeach
@@ -180,7 +180,7 @@
                                     ])
                                     ->where([
                                         'po_id' => $gateOut->relGoodsReceivedItems->relGoodsReceivedNote->purchase_order_id,
-                                        'product_id' => $gateOut->relGoodsReceivedItems->product_id
+                                        'uid' => $gateOut->relGoodsReceivedItems->uid
                                     ])->first();
                                     
                                     $unit_amount=$leftQty*$item->unit_price;

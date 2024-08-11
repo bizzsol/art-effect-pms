@@ -4,8 +4,8 @@
             @if(isset($attributes[0]))
             @foreach($attributes  as $attribute)
             <div class="icheck-primary d-inline">
-                <input type="checkbox" id="attribute-{{ $product->id }}-{{ $attribute->id }}" name="product_attributes[{{ $product->id }}][]" value="{{ $attribute->id }}" onchange="showAttributeoptions($(this))" class="attributes" {{ in_array($attribute->id, $selectedAttributes) ? 'checked' : '' }}>
-                <label for="attribute-{{ $product->id }}-{{ $attribute->id }}" class="text-primary mb-1">
+                <input type="checkbox" id="attribute-{{ $product->id }}-{{ $serial }}-{{ $attribute->id }}" name="product_attributes[{{ $serial }}][]" value="{{ $attribute->id }}" onchange="showAttributeoptions($(this))" class="attributes" {{ in_array($attribute->id, $selectedAttributes) ? 'checked' : '' }}>
+                <label for="attribute-{{ $product->id }}-{{ $serial }}-{{ $attribute->id }}" class="text-primary mb-1">
                   {{ $attribute->name }}&nbsp;&nbsp;&nbsp;
                 </label>
             </div>
@@ -21,7 +21,7 @@
     <div class="col-md-3 attribute-option-div attribute-option-div-{{ $attribute->id }}" @if(!in_array($attribute->id, $selectedAttributes)) style="display: none;" @endif>
         <div class="form-group">
             <label><strong>{{ $attribute->name }}</strong></label>
-            <select class="form-control attribute-select2-{{ $product->id }}" name="attribute_options[{{ $product->id }}][{{ $attribute->id }}]">
+            <select class="form-control attribute-select2-{{ $product->id }}-{{ $serial }}" name="attribute_options[{{ $serial }}][{{ $attribute->id }}]">
                 @if($options->count() > 0)
                 @foreach($options as $option)
                 <option value="{{ $option->id }}" {{ isset($item->attributes[0]) && $item->attributes->where('attribute_option_id', $option->id)->count() > 0 ? 'selected' : '' }}>{{ $option->name }}</option>
@@ -35,7 +35,7 @@
 </div>
 
 <script type="text/javascript">
-    $('.attribute-select2-{{ $product->id }}').select2({
+    $('.attribute-select2-{{ $product->id }}-{{ $serial }}').select2({
         tags: true
     });
 </script>

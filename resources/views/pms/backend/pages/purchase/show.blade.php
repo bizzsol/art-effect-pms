@@ -67,8 +67,8 @@
                     @foreach($purchaseOrder->relPurchaseOrderItems as $key=>$item)
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
-                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
-                        <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first()->description }}</td>
+                        <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
+                        <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
                         <td class="text-right">{{systemMoneyFormat($item->unit_price)}}</td>
                         <td class="text-center">{{systemMoneyFormat($item->qty)}}</td>

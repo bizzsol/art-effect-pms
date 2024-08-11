@@ -181,12 +181,12 @@
                                                         </td>
                                                         <td class="product-td">
                                                             <div class="input-group input-group-md">
-                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products"required  data-product-id="{{ $item['product_id'] }}" onchange="getAttributes($(this))">
+                                                                <select name="product_id[]" id="product_{{ $key+1 }}" class="form-control product requisition-products"required  data-product-id="{{ $item['product_id'] }}" onchange="getAttributes($(this))" data-serial="{{ $key+1 }}">
                                                                     <option value="{{ null }}" data-uom="">{{ __('Product') }}</option>
                                                                 </select>
                                                             </div>
                                                         </td>
-                                                        <td class="product-attributes">
+                                                        <td class="product-attributes-{{ $key+1 }}">
                                                             
                                                         </td>
                                                         <td>
@@ -248,12 +248,12 @@
                                                     <td class="product-td">
                                                         <div class="input-group input-group-md">
                                                             <select name="product_id[]" id="product_1"
-                                                                    class="form-control product requisition-products" data-product-id="" required onchange="getAttributes($(this))">
+                                                                    class="form-control product requisition-products" data-product-id="" required onchange="getAttributes($(this))" data-serial="1">
                                                                 <option value="{{ null }}" data-uom="">{{ __('Select Product') }}</option>
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="product-attributes">
+                                                    <td class="product-attributes-1">
                                                         
                                                     </td>
                                                     <td>
@@ -518,13 +518,13 @@
                     '                                            <td class="product-td">\n' +
                     '\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <select name="product_id[]" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required onchange="getAttributes($(this))">\n' +
+                    '                                                    <select name="product_id[]" id="product_' + x + '" class="form-control select2 product requisition-products" data-product-id="" required onchange="getAttributes($(this))" data-serial="'+x+'">\n' +
                     '                                                        <option value="{{ null }}">{{ __("Select Product") }}</option>\n' +
                     '                                                    </select>\n' +
                     '                                                </div>\n' +
                     '\n' +
                     '                                            </td>\n' +
-                    '<td class="product-attributes">'+
+                    '<td class="product-attributes-'+x+'">'+
                         
                     '</td>'+
                     '                                            <td>\n' +
@@ -689,15 +689,15 @@
             var product_id = parseInt(element.find(':selected').val());
             if(product_id > 0){
                 $.ajax({
-                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id,
+                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&serial="+element.attr('data-serial'),
                     type: 'GET',
                     data: {},
                 })
                 .done(function(response) {
-                    element.parent().parent().parent().find('.product-attributes').html(response);
+                    element.parent().parent().parent().find('.product-attributes-'+element.attr('data-serial')).html(response);
                 });
             }else{
-                element.parent().parent().parent().find('.product-attributes').html('');
+                element.parent().parent().parent().find('.product-attributes-'+element.attr('data-serial')).html('');
             }
         }
 

@@ -158,14 +158,14 @@
                                                             <tr>
                                                                 <td>{{$key+1}}</td>
                                                                 <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
                                                                 <td>{{ $item->description }}</td>
                                                                 <td>{{ isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                                 <td class="text-center max-quantity">{{$item->qty}}</td>
                                                                 @if(isset($quotations[0]))
                                                                     @foreach($quotations as $quotation_key => $quotation)
                                                                         @php
-                                                                            $this_prices = ($quotation->relQuotationItems->where('product_id', $item->product_id)->count() > 0 ? collect($quotation->relQuotationItems->where('product_id', $item->product_id)->first()) : false);
+                                                                            $this_prices = ($quotation->relQuotationItems->where('uid', $item->uid)->count() > 0 ? collect($quotation->relQuotationItems->where('uid', $item->uid)->first()) : false);
                                                                         @endphp
                                                                         <td>
                                                                             <input type="number" name="recommendations[{{ $this_prices['id'] }}]" id="recommendations-{{ $this_prices['id'] }}" value="{{ $quotation_key == 0 ? $item->qty : 0 }}" min="0" max="{{ $item->qty }}"

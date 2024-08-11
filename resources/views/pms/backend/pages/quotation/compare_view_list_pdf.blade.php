@@ -133,9 +133,9 @@
             <tr>
                 <td class="text-center">{{$key+1}}</td>
                 <td>
-                    <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->product_id }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
+                    <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
                 </td>
-                <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
                 <td>{{ $item->description }}</td>
                 <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                 </td>
@@ -143,21 +143,21 @@
 
                 @foreach($quotations as $key=>$quotation)
                 {{-- <td class="text-center">
-                    {!! $quotationInfo[$quotation->id]['items'][$item->product_id]['is_approved'] == 'approved' ? '<i class="las la-check-square text-success" style="font-size: 18px;"></i>' : '<i class="las la-ban text-danger" style="font-size: 18px;"></i>' !!}
+                    {!! $quotationInfo[$quotation->id]['items'][$item->uid]['is_approved'] == 'approved' ? '<i class="las la-check-square text-success" style="font-size: 18px;"></i>' : '<i class="las la-ban text-danger" style="font-size: 18px;"></i>' !!}
                 </td> --}}
-                <td class="text-center {{ $quotationInfo[$quotation->id]['items'][$item->product_id]['approved_qty'] > 0 ? 'text-success' : 'text-danger' }}">
-                    {{ $quotationInfo[$quotation->id]['items'][$item->product_id]['approved_qty'] }}
+                <td class="text-center {{ $quotationInfo[$quotation->id]['items'][$item->uid]['approved_qty'] > 0 ? 'text-success' : 'text-danger' }}">
+                    {{ $quotationInfo[$quotation->id]['items'][$item->uid]['approved_qty'] }}
                 </td>
                 <td class="text-right">
-                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['unit_price'] ,) }}
+                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['unit_price'] ,) }}
                 </td>
                 <td class="text-right">
-                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['sub_total'] ,2) }}
+                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['sub_total'] ,2) }}
                 </td>
                 @if($systemCurrency->code != ($quotation->exchangeRate ?
                 $quotation->exchangeRate->currency->code : ''))
                 <td class="text-right">
-                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->product_id]['exchange_sub_total'] ,2) }}
+                    {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['exchange_sub_total'] ,2) }}
                 </td>
                 @endif
                 @endforeach
@@ -315,10 +315,10 @@
 
 @section('page-script')
     <script type="text/javascript">
-        function productLogs(product_id) {
+        function productLogs(uid) {
             $.dialog({
                 title: 'Product CS logs',
-                content: "url:"+location.href+"?get-product-logs&request_proposal_id={{ $purchaseOrderId }}&product_id="+product_id,
+                content: "url:"+location.href+"?get-product-logs&request_proposal_id={{ $purchaseOrderId }}&uid="+uid,
                 animation: 'scale',
                 columnClass: 'col-md-12',
                 closeAnimation: 'scale',

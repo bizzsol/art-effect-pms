@@ -87,7 +87,7 @@
                             <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}}
                                 ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}
                                 ) {{ getProductAttributesFaster($item->relProduct) }}</td>
-                            <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                            <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->where('uid', $item->uid)->first()) }}</td>
                             <td>{{ $item->description }}</td>
                             <td class="text-center">
                                 @if($item->technical_specification_file)

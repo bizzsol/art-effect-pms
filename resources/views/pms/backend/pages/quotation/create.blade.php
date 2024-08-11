@@ -194,126 +194,126 @@
                                             @foreach($requestProposal->requestProposalDetails as $key=>$item)
                                                 <tr>
                                                     <td>
-                                                        {{ isset($item->product->name) ? $item->product->name : '' }} ({{ isset($item->product->sku) ? $item->product->sku : '' }}) {{ getProductAttributesFaster($item->product) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
-                                                        <input type="hidden" name="product_id[]" class="form-control" value="{{$item->product->id}}">
+                                                        {{ isset($item->product->name) ? $item->product->name : '' }} ({{ isset($item->product->sku) ? $item->product->sku : '' }}) {{ getProductAttributesFaster($item->product) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                                                        <input type="hidden" name="product_id[]" class="form-control" value="{{$item->uid}}">
                                                     </td>
                                                     <td>
-                                                        <textarea name="product_description[{{$item->product->id}}]" class="form-control" style="min-height: 80px;">{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</textarea>
+                                                        <textarea name="product_description[{{$item->uid}}]" class="form-control" style="min-height: 80px;">{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</textarea>
                                                     </td>
                                                     <td class="text-center">
                                                         {{$item->product->productUnit->unit_name}}
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="qty[{{$item->product->id}}]" required
+                                                        <input type="number" name="qty[{{$item->uid}}]" required
                                                                class="form-control summation-qty" min="0"
-                                                               id="qty{{$item->product->id}}"
+                                                               id="qty{{$item->uid}}"
                                                                value="{{round($item->request_qty)}}"
                                                                onKeyPress="if(this.value.length==4) return false;"
-                                                               onkeyup="calculateSubtotal({{$item->product->id}})"
+                                                               onkeyup="calculateSubtotal('{{ $item->uid }}')"
                                                                step='any'
-                                                               onchange="calculateSubtotal({{$item->product->id}})">
+                                                               onchange="calculateSubtotal('{{ $item->uid }}')">
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="unit_price[{{$item->product->id}}]" required class="form-control text-right" min="0.0"
+                                                        <input type="text" name="unit_price[{{$item->uid}}]" required class="form-control text-right" min="0.0"
                                                                step='any' value="0.00"
-                                                               id="unitPrice{{$item->product->id}}" placeholder="0.00"
-                                                               onkeyup="calculateSubtotal({{$item->product->id}})"
-                                                               onchange="calculateSubtotal({{$item->product->id}})">
+                                                               id="unitPrice{{$item->uid}}" placeholder="0.00"
+                                                               onkeyup="calculateSubtotal('{{ $item->uid }}')"
+                                                               onchange="calculateSubtotal('{{ $item->uid }}')">
                                                     </td>
                                                     <td>
                                                         <input type="number"
-                                                               name="sub_total_price[{{$item->product->id}}]" required
+                                                               name="sub_total_price[{{$item->uid}}]" required
                                                                class="form-control calculateSumOfSubtotal" readonly
-                                                               id="subTotalPrice_{{$item->product->id}}"
+                                                               id="subTotalPrice_{{$item->uid}}"
                                                                placeholder="0.00" value="0.00">
 
                                                         <input type="hidden" step='any'
-                                                               name="item_discount_percent[{{$item->product->id}}]"
+                                                               name="item_discount_percent[{{$item->uid}}]"
                                                                class="form-control calculateDiscount bg-white"
-                                                               id="itemDiscountPercent{{$item->product->id}}"
+                                                               id="itemDiscountPercent{{$item->uid}}"
                                                                placeholder="0"
-                                                               data-id="{{$item->product->id}}" min="0">
+                                                               data-id="{{$item->uid}}" min="0">
                                                         <input type="hidden"
-                                                               name="item_discount_amount[{{$item->product->id}}]"
-                                                               id="itemWiseDiscount_{{$item->product->id}}"
+                                                               name="item_discount_amount[{{$item->uid}}]"
+                                                               id="itemWiseDiscount_{{$item->uid}}"
                                                                class="itemWiseDiscount">
 
                                                         <input type="hidden"
-                                                               name="sub_total_vat_price[{{$item->product->id}}]"
+                                                               name="sub_total_vat_price[{{$item->uid}}]"
                                                                required class="form-control calculateSumOfVat" readonly
-                                                               id="sub_total_vat_price{{$item->product->id}}"
+                                                               id="sub_total_vat_price{{$item->uid}}"
                                                                placeholder="0.00" value="0.00">
                                                         <input type="hidden"
                                                                 class="product_vat_type"
-                                                                name="product_vat_type[{{$item->product->id}}]"
-                                                                id="product_vat_type_{{$item->product->id}}" value="exempted"
-                                                                onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
+                                                                name="product_vat_type[{{$item->uid}}]"
+                                                                id="product_vat_type_{{$item->uid}}" value="exempted"
+                                                                onchange="calculateSumOfVatValue('{{$item->uid}}', true)">
                                                         <input type="hidden" step="0.01"
-                                                               name="product_vat[{{$item->product->id}}]"
-                                                               id="product_vat_{{$item->product->id}}"
-                                                               data-id="{{$item->product->id}}"
+                                                               name="product_vat[{{$item->uid}}]"
+                                                               id="product_vat_{{$item->uid}}"
+                                                               data-id="{{$item->uid}}"
                                                                value="0"
                                                                class="form-control calculateProductVat mask-money"
-                                                               onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
+                                                               onchange="calculateSumOfVatValue('{{$item->uid}}', true)">
                                                     </td>
                                                     {{-- <td>
                                                         <input type="text" step='any'
-                                                               name="item_discount_percent[{{$item->product->id}}]"
+                                                               name="item_discount_percent[{{$item->uid}}]"
                                                                class="form-control calculateDiscount bg-white"
-                                                               id="itemDiscountPercent{{$item->product->id}}"
+                                                               id="itemDiscountPercent{{$item->uid}}"
                                                                placeholder="0"
                                                                onKeyPress="if(this.value.length==5) return false;"
-                                                               onkeyup="calculateItemDiscount('{{$item->product->id}}', true)"
-                                                               onchange="calculateItemDiscount('{{$item->product->id}}', true)"
-                                                               data-id="{{$item->product->id}}" min="0">
+                                                               onkeyup="calculateItemDiscount('{{$item->uid}}', true)"
+                                                               onchange="calculateItemDiscount('{{$item->uid}}', true)"
+                                                               data-id="{{$item->uid}}" min="0">
 
                                                         <input type="hidden"
-                                                               name="item_discount_amount[{{$item->product->id}}]"
-                                                               id="itemWiseDiscount_{{$item->product->id}}"
+                                                               name="item_discount_amount[{{$item->uid}}]"
+                                                               id="itemWiseDiscount_{{$item->uid}}"
                                                                class="itemWiseDiscount">
 
                                                         <input type="hidden"
-                                                               name="sub_total_vat_price[{{$item->product->id}}]"
+                                                               name="sub_total_vat_price[{{$item->uid}}]"
                                                                required class="form-control calculateSumOfVat" readonly
-                                                               id="sub_total_vat_price{{$item->product->id}}"
+                                                               id="sub_total_vat_price{{$item->uid}}"
                                                                placeholder="0.00" value="0.00">
                                                     </td>
-                                                    <td class="text-right" id="discount_amount_{{$item->product->id}}"
+                                                    <td class="text-right" id="discount_amount_{{$item->uid}}"
                                                         style="padding-right: 2.25rem !important;">0.00
                                                     </td>
                                                     <td class="text-right summation-after-discount-amount"
-                                                        id="after_discount_amount_{{$item->product->id}}">0.00
+                                                        id="after_discount_amount_{{$item->uid}}">0.00
                                                     </td>
                                                     <td>
-                                                        <select class="form-control product_vat_type" name="product_vat_type[{{$item->product->id}}]" id="product_vat_type_{{$item->product->id}}"
-                                                               onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
+                                                        <select class="form-control product_vat_type" name="product_vat_type[{{$item->uid}}]" id="product_vat_type_{{$item->uid}}"
+                                                               onchange="calculateSumOfVatValue('{{$item->uid}}', true)">
                                                             <option value="inclusive" {{ $item->product->vat_type == 'inclusive' ? 'selected' : '' }}>Inclusive</option>
                                                             <option value="exclusive" {{ $item->product->vat_type == 'exclusive' ? 'selected' : '' }}>Exclusive</option>
                                                         </select>
                                                     </td>
                                                     <td class="text-right">
                                                         <input type="text" step="0.01"
-                                                               name="product_vat[{{$item->product->id}}]"
-                                                               id="product_vat_{{$item->product->id}}"
-                                                               data-id="{{$item->product->id}}"
+                                                               name="product_vat[{{$item->uid}}]"
+                                                               id="product_vat_{{$item->uid}}"
+                                                               data-id="{{$item->uid}}"
                                                                value="{{systemDoubleValue($item->product->vat, 2)}}"
                                                                class="form-control calculateProductVat mask-money"
-                                                               onkeyup="calculateSumOfVatValue('{{$item->product->id}}', true)"
-                                                               onchange="calculateSumOfVatValue('{{$item->product->id}}', true)">
+                                                               onkeyup="calculateSumOfVatValue('{{$item->uid}}', true)"
+                                                               onchange="calculateSumOfVatValue('{{$item->uid}}', true)">
                                                     </td>
-                                                    <td class="text-right vat_amounts" id="sub_total_vat_price{{$item->product->id}}_show">
+                                                    <td class="text-right vat_amounts" id="sub_total_vat_price{{$item->uid}}_show">
                                                         0.00
                                                     </td>
-                                                    <td class="text-right summation-gross-amount" id="item_gross_total_{{$item->product->id}}">
+                                                    <td class="text-right summation-gross-amount" id="item_gross_total_{{$item->uid}}">
                                                         0.00
                                                     </td> --}}
 
                                                     <td class="text-center">
                                                         <label class="btn btn-sm btn-dark custom-file-upload">
                                                             <input type="file"
-                                                               name="item_technical_specification_file[{{$item->product->id}}]"
+                                                               name="item_technical_specification_file[{{$item->uid}}]"
                                                                accept="application/pdf"
-                                                               id="item_technical_specification_file{{$item->product->id}}"
+                                                               id="item_technical_specification_file{{$item->uid}}"
                                                                style="display: none"
                                                                onchange="checkFile($(this))"
                                                             >

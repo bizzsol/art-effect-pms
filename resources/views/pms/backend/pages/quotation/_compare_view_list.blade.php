@@ -158,9 +158,9 @@
                                                     <tr>
                                                         <td class="text-right">{{$key+1}}</td>
                                                         <td>
-                                                            <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->product_id }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
+                                                            <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
                                                         </td>
-                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}</td>
+                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
                                                         <td>{{ $item->description }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                         <td class="text-center">{{$item->qty}}</td>
@@ -170,8 +170,8 @@
 
                                                         @foreach($quotations as $key => $quotation)
                                                             @php
-                                                                $this_prices = ($quotation->relQuotationItems->where('product_id', $item->product_id)->count() > 0 ? collect($quotation->relQuotationItems->where('product_id', $item->product_id)->first()) : false);
-                                                                $item_id = $quotation->relQuotationItems->where('product_id', $item->product_id)->first()->id;
+                                                                $this_prices = ($quotation->relQuotationItems->where('uid', $item->uid)->count() > 0 ? collect($quotation->relQuotationItems->where('uid', $item->uid)->first()) : false);
+                                                                $item_id = $quotation->relQuotationItems->where('uid', $item->uid)->first()->id;
                                                             @endphp
                                                             <td class="text-center">
                                                                 {{-- <input type="checkbox"
@@ -583,10 +583,10 @@
             $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + exchange_exclusive_vat).toFixed(2));
         }
 
-        function productLogs(product_id) {
+        function productLogs(uid) {
             $.dialog({
                 title: 'Product CS logs',
-                content: "url:"+location.href+"&get-product-logs&request_proposal_id={{ $requestProposalId }}&product_id="+product_id,
+                content: "url:"+location.href+"&get-product-logs&request_proposal_id={{ $requestProposalId }}&uid="+uid,
                 animation: 'scale',
                 columnClass: 'col-md-12',
                 closeAnimation: 'scale',

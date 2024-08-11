@@ -71,7 +71,7 @@
                                         <tr>
                                             <td>{{ isset($item->product->category->name) ? $item->product->category->name : '' }}</td>
                                             <td>{{ $item->product->name }} {{ getProductAttributesFaster($item->product) }}</td>
-                                            <td class="product-attributes-{{ $item->product_id }}-{{ $item->id }}">
+                                            <td class="product-attributes product-attributes-{{ $key+1 }}" data-serial="{{ $key+1 }}" data-product-id="{{ $item->product_id }}" data-item-id="{{ $item->id }}">
 
                                             </td>
                                             <td class="text-right">{{ $item->unit_price }}</td>
@@ -103,20 +103,26 @@
 @section('page-script')
 <script type="text/javascript">
     $('body').addClass('sidebar-main');
-    var items = <?php echo json_encode($requisition->items); ?>;
-    $.each(items, function(index, item) {
-        getAttributes(item.product_id, item.id);
+
+    $.each($('.product-attributes'), function(index, val) {
+        getAttributes($(this));
     });
 
-    function getAttributes(product_id, item_id) {
-        $.ajax({
-            url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&item_id="+item_id,
-            type: 'GET',
-            data: {},
-        })
-        .done(function(response) {
-            $('.product-attributes-'+product_id+'-'+item_id).html(response);
-        });
+    function getAttributes(element) {
+        var product_id = parseInt(element.attr('data-product-id'));
+        var item_id = parseInt(element.attr('data-item-id'));
+        if(product_id > 0){
+            $.ajax({
+                url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&item_id="+item_id+"&serial="+element.attr('data-serial'),
+                type: 'GET',
+                data: {},
+            })
+            .done(function(response) {
+                $('.product-attributes-'+element.attr('data-serial')).html(response);
+            });
+        }else{
+            $('.product-attributes-'+element.attr('data-serial')).html('');
+        }
     }
 
     function showAttributeoptions(element) {

@@ -102,7 +102,7 @@
                             $stock = isset($stocks[$item->id]) ? array_sum(array_values($stocks[$item->id])) : 0;
                             $left = floor(($item->purchase_qty > 0 ? $item->qc_qty : $item->qty) < $stock ? ($item->purchase_qty > 0 ? $item->qc_qty : $item->qty)-$item->delivery_qty : $stock);
                         @endphp
-                            <tr id="SelectedRow{{$item->product->id}}">
+                            <tr id="SelectedRow{{$item->uid}}">
                                 <td>{{$key+1}}</td>
                                 <td>{{isset($item->product->name)?$item->product->name:''}} {{ getProductAttributesFaster($item->product) }}</td>
                                 <td>{{ getProductAttributesFaster($item) }}</td>
@@ -115,11 +115,11 @@
                                 <td class="text-center">{{$item->qc_qty}}</td>
                                 <td class="text-center">{{$item->delivery_qty}}</td>
                                 <td class="text-center">
-                                    <input type="hidden" value="{{$item->qc_qty-$item->delivery_qty}}" id="leftQty_{{$item->product->id}}">
-                                    <span id="leftQtyAfterSubTract_{{$item->product->id}}">{{$item->qc_qty-$item->delivery_qty}}</span>
+                                    <input type="hidden" value="{{$item->qc_qty-$item->delivery_qty}}" id="leftQty_{{$item->uid}}">
+                                    <span id="leftQtyAfterSubTract_{{$item->uid}}">{{$item->qc_qty-$item->delivery_qty}}</span>
                                 </td>
                                 <td class="text-center">
-                                    <select name="product_unit_id[{{ $item->product->id }}]" id="product_unit_id_{{ $item->product->id }}" onchange="updateDeliveryQuantity($(this))" class="product_unit_id">
+                                    <select name="product_unit_id[{{ $item->uid }}]" id="product_unit_id_{{ $item->uid }}" onchange="updateDeliveryQuantity($(this))" class="product_unit_id">
                                         <option value="{{ $item->product->product_unit_id }}" data-conversion-rate="1">{{ $item->product->productUnit->unit_name }}</option>
                                         @if($item->product->productUnitConversions->where('conversion_rate', '>', 0)->count() > 0)
                                         @foreach($item->product->productUnitConversions->where('conversion_rate', '>', 0) as $key => $this_unit)
@@ -129,10 +129,10 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="number" name="delivery_qty[{{$item->product->id}}]" id="delivery_qty_{{$item->product->id}}" class="form-control delivery_qty text-right" min="0" max="{{$left}}" value="{{$left}}" data-id="{{$item->product->id}}" step="1" onchange="checkDeliveryQuantity($(this))" onkeyup="checkDeliveryQuantity($(this))">
+                                    <input type="number" name="delivery_qty[{{$item->uid}}]" id="delivery_qty_{{$item->uid}}" class="form-control delivery_qty text-right" min="0" max="{{$left}}" value="{{$left}}" data-id="{{$item->uid}}" step="1" onchange="checkDeliveryQuantity($(this))" onkeyup="checkDeliveryQuantity($(this))">
                                 </td>
                                 <td>
-                                    <select class="form-control not-select2 warehouse_id" name="warehouse_id[{{$item->product->id}}]" id="warehouse_{{$item->product->id}}" onchange="updateDeliveryQuantity($(this))">
+                                    <select class="form-control not-select2 warehouse_id" name="warehouse_id[{{$item->uid}}]" id="warehouse_{{$item->uid}}" onchange="updateDeliveryQuantity($(this))">
                                         @if($warehouses->whereIn('id', array_keys($stocks[$item->id]))->count() > 0)
                                             @foreach($warehouses->whereIn('id', array_keys($stocks[$item->id])) as $warehouse)
                                                 <option value="{{$warehouse->id}}" data-remaining="{{ $stocks[$item->id][$warehouse->id] }}"> {!! $warehouse->name. ' ('.$stocks[$item->id][$warehouse->id].' '.$item->product->productUnit->unit_name.')' !!}</option>
@@ -142,7 +142,7 @@
                                 </td>
                                 <td>
                                     @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))
-                                        <select class="form-control not-select2 cost_centre" name="cost_centre_id[{{$item->product->id}}]" id="cost_centre_{{$item->product->id}}">
+                                        <select class="form-control not-select2 cost_centre" name="cost_centre_id[{{$item->uid}}]" id="cost_centre_{{$item->uid}}">
                                            {!! $costCentres !!}
                                         </select>
                                     @endif

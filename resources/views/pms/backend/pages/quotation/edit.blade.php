@@ -196,7 +196,7 @@
                                                     <td>
                                                         {{isset($item->relProduct->name)?$item->relProduct->name:''}}
                                                         ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}
-                                                        ) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('product_id', $item->product_id)->first()) }}
+                                                        ) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
                                                         <input type="hidden" name="quotations_item_id[]" class="form-control" value="{{$item->id}}">
                                                     </td>
                                                      <td>

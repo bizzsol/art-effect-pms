@@ -162,7 +162,7 @@
                                         @php
                                         $oldProductIds=[];
                                         @endphp
-                                        @forelse($requisition->items as $key=>$requisitionItem)
+                                        @forelse($requisition->items as $key => $requisitionItem)
                                         <tr>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -179,13 +179,13 @@
                                                     @if($requisition->status==1)
                                                     <input type="text" name="category_id" value="{{isset($requisitionItem->product->name)?$requisitionItem->product->name:''}}" class="form-control" readonly>
                                                     @else
-                                                    <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" required onchange="getAttributes($(this))" data-item-id="{{ $requisitionItem->id }}">
+                                                    <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" required onchange="getAttributes($(this))" data-item-id="{{ $requisitionItem->id }}" data-serial="{{ $key+1 }}">
                                                         
                                                     </select>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="product-attributes">
+                                            <td class="product-attributes-{{ $key+1 }}">
 
                                             </td>
                                             <td>
@@ -361,12 +361,12 @@
             '                                            <td>\n' +
             '\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-            '                                                    <select name="product_id[]" id="product_'+x+'" class="form-control select2 product requisition-products" required onchange="getAttributes($(this))" data-item-id="0">\n' +
+            '                                                    <select name="product_id[]" id="product_'+x+'" class="form-control select2 product requisition-products" required onchange="getAttributes($(this))" data-item-id="0" data-serial="'+(x-1)+'">\n' +
             '                                                        <option value="{{ null }}">{{ __("--Select Product--") }}</option>\n' +
             '                                                    </select>\n' +
             '                                                </div>\n' +
             '\n' +
-            '                                            <td class="product-attributes"></td>' +
+            '                                            <td class="product-attributes-'+(x-1)+'"></td>' +
             '                                            <td>\n' +
             '                                                <div class="input-group input-group-md mb-3 d-">\n' +
             '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_'+x+'" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
@@ -532,15 +532,15 @@
             var item_id = parseInt(element.attr('data-item-id'));
             if(product_id > 0){
                 $.ajax({
-                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&item_id="+item_id,
+                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id="+product_id+"&item_id="+item_id+"&serial="+element.attr('data-serial'),
                     type: 'GET',
                     data: {},
                 })
                 .done(function(response) {
-                    element.parent().parent().parent().find('.product-attributes').html(response);
+                    element.parent().parent().parent().find('.product-attributes-'+element.attr('data-serial')).html(response);
                 });
             }else{
-                element.parent().parent().parent().find('.product-attributes').html('');
+                element.parent().parent().parent().find('.product-attributes-'+element.attr('data-serial')).html('');
             }
         }
 
