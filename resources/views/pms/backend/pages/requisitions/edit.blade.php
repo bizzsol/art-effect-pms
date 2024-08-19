@@ -146,10 +146,10 @@
                                             <th style="width: 20%" rowspan="2">Product</th>
                                             <th style="width: 35%" rowspan="2">Attributes</th>
                                             <th style="width: 10%" rowspan="2">Quantity</th>
-                                            @can('department-requisition-edit')
+                                            @if(auth()->user()->hasPermissionTo('department-requisition-edit') && $requisition->author_id != auth()->user()->id)
                                             <th style="width: 10%" rowspan="2">Approved Quantity</th>
                                             @php $modifiedName = true; @endphp
-                                            @endcan
+                                            @endif
                                             <th style="width: 20%" colspan="2">Budgeted Amount</th>
                                             <th style="width: 5%" rowspan="2" class="text-center">Action</th>
                                         </tr>
@@ -193,13 +193,13 @@
                                                     <input type="number" @if($modifiedName) readonly name="old_qty[]" value="{{ old('qty',$requisitionItem->requisition_qty) }}" @else name="qty[]" value="{{ old('qty',$requisitionItem->qty) }}" @endif  min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control {{ !$modifiedName ? 'requisition-qty' : ''  }} text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
                                                 </div>
                                             </td>
-                                            @can('department-requisition-edit')
+                                            @if(auth()->user()->hasPermissionTo('department-requisition-edit') && $requisition->author_id != auth()->user()->id)
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
                                                     <input type="number" name="qty[]" min="1" max="99999999" id="qty_{{$key}}" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old('qty',$requisitionItem->qty) }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
                                                 </div>
                                             </td>
-                                            @endcan
+                                            @endif
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
                                                     <input type="number" @if($modifiedName) readonly name="old_unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @else name="unit_price[]" value="{{ old('unit_price', $requisitionItem->unit_price) }}" @endif  min="0" step="any" id="unit_price_{{$key}}" class="form-control requisition-unit_price text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required {{($requisition->status==1)?'readonly':''}} onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">
@@ -218,16 +218,15 @@
                                         @endforelse
 
                                     </tbody>
-
                                     <tfoot>
                                         <tr>
-                                            <td colspan="{{ auth()->user()->hasPermissionTo('department-requisition-edit') ? 6 : 5 }}" class="text-right"><strong>Total Budgeted Amount:</strong></td>
+                                            <td colspan="{{ auth()->user()->hasPermissionTo('department-requisition-edit') && $requisition->author_id != auth()->user()->id ? 6 : 5 }}" class="text-right"><strong>Total Budgeted Amount:</strong></td>
                                             <td class="grand-total-amount text-right">0.00</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
-                                @if(auth::user()->id == $requisition->author_id)
+                                @if(auth()->user()->id == $requisition->author_id)
                                      @if($requisition->status !=1)
                                     <a href="javascript:void(0);" style="margin-right:27px;" class="add_button btn btn-sm btn-primary pull-right" title="Add More Product">
                                         <i class="las la-plus"></i>
