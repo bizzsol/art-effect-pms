@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'OemSuq'); return 0;
-##!!!##ZGTIu8e/zcq7vb96m8rKtqfJvr/GzbaizJVkZM/Nv3qjxsbPx8PIu86/tp67zru8u82/tp/GycvPv8jOtqfJvr/GlWRkvca7zc16p7vKncnNzqbDyL96v9LOv8i+zXqnyb6/xmTVZHp6enrKzMnOv73Ov756fs67vMa/l3qBwsy5vcnNzrnHu8rKw8jBucbDyL+BlWR6enp6ys+8xsO9en7Ow8e/zc67x8rNl3rAu8bNv5Vk12Q=
+bolt_decrypt( __FILE__ , 'i98C9H'); return 0;
+##!!!##qKgM/wsDEQ7/AQO+3w4O+usNAgMKEfrmENmoqBMRA77nCgoTCwcM/xID+uL/Ev8A/xED+uMKDQ8TAwwS+usNAgMK2aioAQr/ERG+6/8O4Q0REuoHDAO+AxYSAwwCEb7rDQIDCqgZqL6+vr4OEA0SAwESAwK+whL/AAoD277FBhD9AQ0REv0L/w4OBwwF/QoHDAPF2ai+vr6+DhMACgcBvsISBwsDERL/Cw4R274E/woRA9moG6g=
