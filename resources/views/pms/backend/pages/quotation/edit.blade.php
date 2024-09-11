@@ -91,19 +91,25 @@
                                                         </div>
                                                     </div> --}}
 
-                                                    <div class="col-md-8 col-sm-12">
+                                                    <div class="col-md-6 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="supplier_id"><strong>{{ __('Supplier') }}<span class="text-danger">*</span></strong></label></p>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <input type="text" class="form-control rounded" value="{{isset($quotation->relSuppliers->name)?$quotation->relSuppliers->name:''}}" readonly>
                                                             <input type="hidden" name="supplier_id" id="supplier_id" value="{{$quotation->supplier_id}}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
+                                                    <div class="col-md-3 col-sm-12">
                                                         <p><label class="font-weight-bold" for="currency_id"><strong>{{ __('Currency') }} <span class="text-danger">*</span></strong></label></p>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <select name="currency_id" id="currency_id" class="form-control rounded">
 
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <p class="mb-1 font-weight-bold"><label for="validation_days"><strong>Validation Days<span class="text-danger">*</span></strong></label></p>
+                                                        <div class="input-group input-group-md mb-3 d-">
+                                                            <input type="text" name="validation_days" id="validation_days" class="form-control" value="{{ $quotation->validation_days }}" required>
                                                         </div>
                                                     </div>
                                                 </div>

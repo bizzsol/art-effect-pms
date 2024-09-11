@@ -98,7 +98,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 col-sm-12">
+                                            <div class="col-md-8 col-sm-12">
                                                 <p class="mb-1 font-weight-bold"><label for="assigned_user_id"><strong>{{ __('Assign Person') }}<span class="text-danger">*</span></strong></label></p>
                                                 <div class="input-group input-group-md mb-3 d-">
                                                     <select name="assigned_user_id" id="assigned_user_id" class="form-control rounded" required>
@@ -108,6 +108,12 @@
                                                             @endforeach
                                                         @endif
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <p class="mb-1 font-weight-bold"><label for="validation_days"><strong>Validation Days<span class="text-danger">*</span></strong></label></p>
+                                                <div class="input-group input-group-md mb-3 d-">
+                                                    <input type="text" name="validation_days" id="validation_days" class="form-control" value="7" required>
                                                 </div>
                                             </div>
                                             {{-- <div class="col-md-7 col-sm-12">

@@ -289,6 +289,8 @@
                                                         class="text-left">
                                                         Payment Term:
                                                         <strong>{{ makePaymentTermsString($quotation->supplier_payment_terms_id)}}</strong>
+                                                        <br>
+                                                        Quotation validated for <strong>{{ inWordBn($quotation->validation_days, false, '') }}</strong> days
                                                     </td>
                                                 @endforeach
                                             </tr>

@@ -686,6 +686,7 @@
 
 
         function getAttributes(element) {
+            element.parent().parent().parent().find('.requisition-unit_price').val(element.find(':selected').attr('data-unit-price'));
             var product_id = parseInt(element.find(':selected').val());
             if(product_id > 0){
                 $.ajax({

@@ -74,7 +74,7 @@
                                                             <input type="text" name="reference_no" id="reference_no" class="form-control rounded" readonly aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ ($refNo)?($refNo):0 }}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-8 col-sm-12">
+                                                    <div class="col-md-6 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="supplier_id"><strong>{{ __('Supplier') }}<span class="text-danger">*</span></strong></label></p>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <select name="supplier_id" id="supplier_id" class="form-control rounded" required onchange="getSupplierInfo()">
@@ -89,12 +89,18 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
+                                                    <div class="col-md-3 col-sm-12">
                                                         <p><label class="font-weight-bold" for="currency_id"><strong>{{ __('Currency') }} <span class="text-danger">*</span></strong></label></p>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <select name="currency_id" id="currency_id" class="form-control rounded">
 
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12">
+                                                        <p class="mb-1 font-weight-bold"><label for="validation_days"><strong>Validation Days<span class="text-danger">*</span></strong></label></p>
+                                                        <div class="input-group input-group-md mb-3 d-">
+                                                            <input type="text" name="validation_days" id="validation_days" class="form-control" value="7" required>
                                                         </div>
                                                     </div>
                                                     {{-- <div class="col-md-4 col-sm-12">
