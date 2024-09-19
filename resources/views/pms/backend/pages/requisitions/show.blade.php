@@ -59,9 +59,7 @@
                         <th>Stock Qty</th>
                     @endcan
                     <th>Requisition Qty</th>
-                    @if($requisition->status==1)
-                        <th>Approved Qty</th>
-                    @endif
+                    <th>Approved Qty</th>
                     <th class="text-right">Budgeted Price</th>
                     <th class="text-right">Estimated Amount</th>
                 </tr>
@@ -90,9 +88,7 @@
                             <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
                         @endcan
                         <td class="text-center">{{number_format($item->requisition_qty,0)}}</td>
-                        @if($requisition->status==1)
-                            <td class="text-center">{{$item->qty}}</td>
-                        @endif
+                        <td class="text-center">{{$item->qty}}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
@@ -112,12 +108,10 @@
                 </tbody>
             </table>
 
-            {{-- @if(auth()->user()->hasRole('Department-Head') || auth()->user()->hasRole('Accounts') || auth()->user()->hasRole('Management')) --}}
-                <div>
-                    <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat($totalEstimation)}}
-                    BDT
-                </div>
-            {{-- @endif --}}
+            <div>
+                <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat($totalEstimation)}}
+                BDT
+            </div>
 
             <div>
                 <strong> Explanations: </strong>

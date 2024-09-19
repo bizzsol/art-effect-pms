@@ -149,7 +149,7 @@
 
 
     <div class="modal" id="requisitionDetailModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg" style="max-width: 80%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Requisition Details</h4>

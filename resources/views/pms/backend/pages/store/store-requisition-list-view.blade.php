@@ -178,6 +178,56 @@
     <script>
 
         function sendToPurchaseDepartment(element) {
+            $.confirm({
+                title: 'Send to Procument',
+                content: '<hr>' +
+                '<form action="" class="formName">' +
+                    '<h5 class="text-danger mb-2"><strong>Are you sure ?</strong></h5>'+
+                    '<h6>Once you send it to Procurement, You can not rollback from there.</h6>'+
+                    '<hr>'+
+                    '<div class="form-group">' +
+                        '<textarea placeholder="Your Message..." class="message form-control" required style="min-height: 200px;resize: none;"></textarea>' +
+                    '</div>' +
+                '</form>',
+                buttons: {
+                    send: {
+                        text: 'Send To Procurement',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: element.attr('data-src'),
+                                dataType: "json",
+                                data: {
+                                    _token: '{!! csrf_token() !!}',
+                                    requisition_id: element.attr('data-id'),
+                                    message: this.$content.find('.message').val()
+                                },
+                            })
+                            .done(function(data) {
+                                if (data.result === 'success') {
+                                    $('.jconfirm').remove();
+                                    notify(data.message, 'success');
+                                    reloadDatatable();
+                                } else {
+                                    notify(data.message, data.result);
+                                }
+                            });
+                            return false;
+                        }
+                    },
+                    close: {
+                        text: 'Close',
+                        btnClass: 'btn-dark',
+                        action: function () {
+                            
+                        }
+                    },
+                }
+            });
+        }
+
+        function sensdToPurchaseDepartment(element) {
             let requisition_id = element.attr('data-id');
 
             if (requisition_id !== '') {

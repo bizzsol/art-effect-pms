@@ -73,9 +73,17 @@
                     @endphp
                     @foreach($requisition->items as $key=>$item)
                     @php
-                    $stockQty = isset($item->product->relInventoryDetails)? collect($item->product->relInventoryDetails)->when(isset(auth()->user()->employee->as_unit_id), function($query){
-                            return $query->where('hr_unit_id',auth()->user()->employee->as_unit_id);
-                        })->sum('qty'):0;
+                        $stockQty = \App\Models\PmsModels\InventoryModels\InventoryLogs::whereIn('warehouse_id', auth()->user()->relUsersWarehouse->pluck('id')->toArray())
+                        ->whereHas('stockIn.relGoodsReceivedItems.attributes', function($query) use ($item){
+                            $query->select(\DB::raw('count(distinct id)'))
+                                  ->whereIn('attribute_option_id', $item->attributes->pluck('attribute_option_id')->toArray());
+                        }, '=', count($item->attributes->pluck('attribute_option_id')->toArray()))
+                        ->where([
+                            'category_id' => $item->product->category_id,
+                            'product_id' => $item->product_id,
+                            'hr_unit_id' => (isset(auth()->user()->employee->as_unit_id) ? auth()->user()->employee->as_unit_id : 0)
+                        ])
+                        ->sum('available');
                     @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
@@ -89,21 +97,20 @@
                         @endif
                     </tr>
 
-                    @php
-
-                    $totalStockQty += $stockQty;
-                    $totalRequisitionQty += $item->requisition_qty;
-                    $totalApprovedQty += $item->qty;
-                    @endphp
+                    {{-- @php
+                        $totalStockQty += $stockQty;
+                        $totalRequisitionQty += $item->requisition_qty;
+                        $totalApprovedQty += $item->qty;
+                    @endphp --}}
                     @endforeach
                     @endif
 
-                    <tr>
+                    {{-- <tr>
                         <td colspan="4" class="text-right">Total</td>
                         <td class="text-center">{{$totalStockQty}}</td>
                         <td class="text-center">{{$totalRequisitionQty}}</td>
                         <td class="text-center">{{$totalApprovedQty}}</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
