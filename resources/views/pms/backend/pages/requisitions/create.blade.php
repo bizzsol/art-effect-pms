@@ -215,7 +215,6 @@
                                                                    aria-label="Large"
                                                                    aria-describedby="inputGroup-sizing-sm"
                                                                    required data-input="recommended"
-                                                                   oninput="this.value = Math.abs(this.value)"
                                                                    data-unit-price="{{ $item['unit_price'] }}"
                                                                    value="0"
 
@@ -281,7 +280,6 @@
                                                                aria-label="Large"
                                                                aria-describedby="inputGroup-sizing-sm"
                                                                required data-input="recommended"
-                                                               oninput="this.value = Math.abs(this.value)"
                                                                data-unit-price=""
                                                                value="0"
 
@@ -534,7 +532,7 @@
                     '                                            </td>\n' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <input type="number" name="unit_price[]" min="0" step="any" id="unit_price_' + x + '" class="form-control requisition-unit_price text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-unit-price="" value="0" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
+                    '                                                    <input type="number" name="unit_price[]" min="0" step="any" id="unit_price_' + x + '" class="form-control requisition-unit_price text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required data-unit-price="" value="0" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '\n' +
