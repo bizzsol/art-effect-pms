@@ -260,7 +260,7 @@
                 <br>
                 <strong>Deliver to:</strong> {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}
                 <div>
-                    {!! isset($purchaseOrder->Unit->hr_unit_address)?$purchaseOrder->Unit->hr_unit_address:'' !!}
+                    {!! isset($purchaseOrder->Unit->delivery_address) ? $purchaseOrder->Unit->delivery_address : '' !!}
                 </div>
                 <br>
                 <strong>Order is valid till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
