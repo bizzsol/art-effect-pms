@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'Fuil45'); return 0;
-##!!!##AwNubF4ZQmVlbmZiZ1ptXlVMbmlpaGttVT9aXFpdXmxVS2hubV40AwNLaG5tXjMzaWteX2JxISAobFplXmwgIiY3WmwhIGxaZV5sJyAiJjdga2huaSFfbmdcbWJoZxkhInQDGRkZGUtobm1eMzNrXmxobmtcXiEgKCAlIExaZV5sVT1abGFbaFprXTxoZ21raGVlXmsgIjQDdiI0GQM=
+bolt_decrypt( __FILE__ , 'RjvAcC'); return 0;
+##!!!##IyOOjH45YoWFjoaCh3qNfnVsjomJiIuNdV96fHp9fox1a4iOjX5UIyNriI6NflNTiYt+f4KRQUBIjHqFfoxAQkZXeoxBQIx6hX6MR0BCRleAi4iOiUF/jod8jYKIhzlBQpQjOTk5OWuIjo1+U1OLfoyIjot8fkFASEBFQGx6hX6MdV16jIF7iHqLfVyIh42LiIWFfotAQlQjlkJUOSM=
