@@ -32,7 +32,7 @@
                 <div class="">
                     <div class="panel panel-info">
                         <form action="{{ route('pms.requisition.requisition.store') }}" method="post"
-                              id="addRequisitionForm" data-src="{{ $requisition?$requisition->id:null }}"
+                              id="addRequisitionForm" data-src="{{ $requisition ? $requisition->id : null }}"
                               enctype="multipart/form-data" class="formInputValidation">
                             @csrf
                             <div class="panel-body">
@@ -354,13 +354,8 @@
                                     <div class="col-4"></div>
                                     <div class="col-4 mt-4">
                                         <input type="hidden" name="where_to_go" id="where_to_go" value="index">
-                                        <button type="button" class="btn btn-primary rounded pull-right save-button"
-                                                onclick="submitRequisition('index');"><i
-                                                    class="la la-plus"></i>{{ __('Save Requisition') }}</button>
-                                        <button type="button"
-                                                class="btn btn-info rounded pull-right mr-2 save-new-button"
-                                                onclick="submitRequisition('back');"><i
-                                                    class="la la-plus"></i>{{ __('Save & New Requisition') }}</button>
+                                        <button type="button" class="btn btn-primary rounded pull-right save-button" onclick="submitRequisition('index');"><i class="la la-plus"></i>&nbsp;Save Requisition</button>
+                                        <button type="button" class="btn btn-info rounded pull-right mr-2 save-new-button" onclick="submitRequisition('back');"><i class="la la-plus"></i>&nbsp;Save & New Requisition</button>
                                     </div>
                                 </div>
 
@@ -567,6 +562,43 @@
                     }
                     $(this).parent('td').parent('tr').remove();
                 }
+            });
+
+            var saveButton = $('.save-button');
+            var saveButtonContent = saveButton.html();
+            var saveNewButton = $('.save-new-button');
+            var saveNewButtonContent = saveNewButton.html();
+            form.submit(function(event) {
+                event.preventDefault();
+                
+                saveButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
+                saveNewButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(form[0]),
+                })
+                .done(function(response) {
+                    if(response.success){
+                        window.open(response.redirect, '_parent');
+                    }else{
+                        toastr.error(response.message);
+                        saveButton.prop('disabled', false).html(saveButtonContent);
+                        saveNewButton.prop('disabled', false).html(saveNewButtonContent);
+                    }
+                })
+                .fail(function(response) {
+                    $.each(response.responseJSON.errors, function(index, val) {
+                        toastr.error(val[0]);
+                    });
+
+                    saveButton.prop('disabled', false).html(saveButtonContent);
+                    saveNewButton.prop('disabled', false).html(saveNewButtonContent);
+                });
             });
 
         });

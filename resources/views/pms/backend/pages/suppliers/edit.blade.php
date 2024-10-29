@@ -172,7 +172,7 @@ width:  100% !important;
         <div class="icheck-primary d-inline">
             <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" class="sub_categories" {{ in_array($subCategory->id, $selectedSubCategories) ? 'checked' : '' }}>
             <label class="text-primary" for="sub-category-{{ $subCategory->id }}">
-              {{ $subCategory->category->name }}&nbsp;&nbsp;&nbsp;
+              {{ $subCategory->name }}&nbsp;&nbsp;&nbsp;
             </label>
         </div>
         @endforeach

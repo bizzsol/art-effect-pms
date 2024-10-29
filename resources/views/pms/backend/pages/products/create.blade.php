@@ -140,7 +140,7 @@
                                         {!! $errors->has('product_unit_id')? '<span class="text-danger text-capitalize">'. $errors->first('product_unit_id').'</span>':'' !!}
                                     </p>
                                     <div class="select-search-group  input-group input-group-md mb-3 d-">
-                                        {!! Form::Select('product_unit_id',$unit,old('product_unit_id'),['id'=>'product_unit_id', 'class'=>'form-control selectheighttype select2']) !!}
+                                        {!! Form::Select('product_unit_id',$unit,old('product_unit_id', \App\Models\PmsModels\ProductUnit::where('unit_name', 'Piece')->count() > 0 ? \App\Models\PmsModels\ProductUnit::where('unit_name', 'Piece')->first()->id : 0),['id'=>'product_unit_id', 'class'=>'form-control selectheighttype select2']) !!}
                                     </div>
                                 </div>
                                 <div class="col-md-2 row">

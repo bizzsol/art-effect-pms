@@ -164,7 +164,7 @@
                                                     <div class="icheck-primary d-inline">
                                                         <input type="checkbox" name="sub_categories[]" value="{{ $subCategory->id }}" id="sub-category-{{ $subCategory->id }}" class="sub_categories">
                                                         <label class="text-primary" for="sub-category-{{ $subCategory->id }}">
-                                                          {{ $subCategory->category->name }}&nbsp;&nbsp;&nbsp;
+                                                          {{ $subCategory->name }}&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>
                                                     @endforeach
@@ -172,6 +172,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         {{-- <div class="row">
                                             <div class="col-md-12">
                                                 <p class="mb-0 font-weight-bold"><label for="products">{{ __('Products') }}:</label> {!! $errors->has('products')? '<span class="text-danger text-capitalize">'. $errors->first('products').'</span>':'' !!}</p>
@@ -411,6 +412,14 @@
         };
 
     })(jQuery);
+
+    function checkAllSubCategory(element, unit){
+        if(element.is(':checked')){
+            $('.sub-category-'+unit).prop('checked', true);
+        }else{
+            $('.sub-category-'+unit).prop('checked', false);
+        }
+    }
 
     validatePaymentTerms();
     function validatePaymentTerms(){

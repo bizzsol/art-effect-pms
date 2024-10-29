@@ -294,7 +294,7 @@
                                 
                             </div>
                             <div class="col-6">
-                                <button type="button" onclick="updateRequisition()" class="btn btn-primary rounded pull-right"><i class="la la-plus"></i> {{ __('Update Requisition') }}</button>
+                                <button type="button" onclick="updateRequisition()" class="btn btn-primary rounded pull-right update-button"><i class="la la-plus"></i> {{ __('Update Requisition') }}</button>
                             </div>
 
                         </div>
@@ -448,8 +448,39 @@
                 $(this).parent().parent().parent().find('.subcategory').val(parseInt($(this).find(':selected').attr('data-sub-category-id'))).select2();
             });
 
+            var form = $('#editRequisitionForm');
+            var updateButton = $('.update-button');
+            var updateButtonContent = updateButton.html();
+            form.submit(function(event) {
+                event.preventDefault();
+                
+                updateButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
+                saveNewButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
 
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(form[0]),
+                })
+                .done(function(response) {
+                    if(response.success){
+                        window.open(response.redirect, '_parent');
+                    }else{
+                        toastr.error(response.message);
+                        updateButton.prop('disabled', false).html(updateButtonContent);
+                    }
+                })
+                .fail(function(response) {
+                    $.each(response.responseJSON.errors, function(index, val) {
+                        toastr.error(val[0]);
+                    });
 
+                    updateButton.prop('disabled', false).html(updateButtonContent);
+                });
+            });
         });
 
         function getProduct(element){
