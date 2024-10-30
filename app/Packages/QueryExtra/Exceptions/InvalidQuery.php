@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'h0KkA4'); return 0;
-##!!!##zc0xJDAoNjMkJijjBDMzHxMkJi4kKig2HxQ4KDU8CDs3NSQfCDsmKDM3LDIxNv7NzTg2KOMIOyYoMzcsMjH+zc0mLyQ2NuMMMTkkLywnFDgoNTzjKDs3KDEnNuMIOyYoMzcsMjHNPs3j4+Pj8u3tzePj4+Pj7eMVKDMyNTfjNyso4yg7JigzNywyMfHN4+Pj4+PtzePj4+Pj7eMDNSg3ODUx4zkyLCfN4+Pj4+Pt8s3j4+PjMzglLywm4yk4MSY3LDIx4zUoMzI1N+vszePj4+M+zePj4+NAzUA=
+bolt_decrypt( __FILE__ , 'WfxZgk'); return 0;
+##!!!##a2vPws7G1NHCxMaBotHRvbHCxMzCyMbUvbLWxtPaptnV08K9ptnExtHVytDP1Jxra9bUxoGm2cTG0dXK0M+ca2vEzcLU1IGqz9fCzcrFstbG09qBxtnVxs/F1IGm2cTG0dXK0M9r3GuBgYGBkIuLa4GBgYGBi4GzxtHQ09WB1cnGgcbZxMbR1crQz49rgYGBgYGLa4GBgYGBi4Gh08bV1tPPgdfQysVrgYGBgYGLkGuBgYGB0dbDzcrEgcfWz8TVytDPgdPG0dDT1YmKa4GBgYHca4GBgYHea94=
