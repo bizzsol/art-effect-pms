@@ -160,33 +160,35 @@
                                     </thead>
                                     <tbody class="field_wrapper">
                                         @php
-                                        $oldProductIds=[];
+                                            $oldProductIds = [];
                                         @endphp
-                                        @forelse($requisition->items as $key => $requisitionItem)
+                                        @if(isset($requisition->items[0]))
+                                        @foreach($requisition->items as $key => $requisitionItem)
                                         <tr>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
-                                                    @if($requisition->status==1)
-                                                    <input type="text" name="category_id" value="{{isset($requisitionItem->product->category->name)?$requisitionItem->product->category->name:''}}" class="form-control" readonly>
+                                                    @if($requisition->status == 1)
+                                                        <input type="text" name="category_id" value="{{isset($requisitionItem->product->category->name)?$requisitionItem->product->category->name:''}}" class="form-control" readonly>
                                                     @else
-                                                    <select name="sub_category_id[]" id="subCategoryId_{{$key}}" class="form-control subcategory" onchange="getProduct($(this))">
+                                                        <select name="sub_category_id[]" id="subCategoryId_{{$key}}" class="form-control subcategory" onchange="getProduct($(this))" data-selected="{{ $requisitionItem->product->category_id }}">
+                                                            {!! $subCategories !!}
+                                                        </select>
                                                     @endif
-                                                    </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
                                                     @if($requisition->status==1)
-                                                    <input type="text" name="category_id" value="{{isset($requisitionItem->product->name)?$requisitionItem->product->name:''}}" class="form-control" readonly>
+                                                        <input type="text" name="category_id" value="{{isset($requisitionItem->product->name)?$requisitionItem->product->name:''}}" class="form-control" readonly>
                                                     @else
-                                                    <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" required onchange="getAttributes($(this))" data-item-id="{{ $requisitionItem->id }}" data-serial="{{ $key+1 }}">
-                                                        
-                                                    </select>
+                                                        <select name="product_id[]" id="product_{{$key}}" class="form-control product existing-products requisition-products" data-selected-product="{{ $requisitionItem->product_id }}" data-selected-sub-category="{{ $requisitionItem->product->category_id }}" required onchange="getAttributes($(this))" data-item-id="{{ $requisitionItem->id }}" data-serial="{{ $key+1 }}">
+                                                            {!! $subCategoryProducts[$requisitionItem->product->category_id] !!}
+                                                        </select>
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="product-attributes-{{ $key+1 }}">
-
+                                                {!! $productAttributes[$requisitionItem->id] !!}
                                             </td>
                                             <td>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -214,9 +216,8 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        @empty
-                                        @endforelse
-
+                                        @endforeach
+                                        @endif
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -330,17 +331,25 @@
 <script type="text/javascript">
     $('body').addClass('sidebar-main');
 
-    var selectedProductIds=["{{ implode(",",$oldProductIds) }}"];
+    var selectedProductIds = ["{{ implode(",", $oldProductIds) }}"];
 
     function changeSelectedProductIds() {
-        selectedProductIds=[];
+        selectedProductIds = [];
         $('.product').each(function () {
             selectedProductIds.push($(this).val());
         })
     }
 
     $(document).ready(function(){
-        getSubCategories();
+        // getSubCategories();
+
+        $.each($('.subcategory'), function(index, val) {
+            $(this).val($(this).attr('data-selected')).select2();
+        });
+
+        $.each($('.requisition-products'), function(index, val) {
+            $(this).val($(this).attr('data-selected-product')).select2();
+        });
 
         var maxField = 500;
         var addButton = $('.add_button');
@@ -455,7 +464,7 @@
                 event.preventDefault();
                 
                 updateButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
-                saveNewButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
+                // saveNewButton.prop('disabled', true).html('<i class="las la-spinner la-spin"></i>&nbsp;Please wait...');
 
                 $.ajax({
                     url: form.attr('action'),

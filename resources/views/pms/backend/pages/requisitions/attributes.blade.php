@@ -34,8 +34,18 @@
     @endif
 </div>
 
+@php
+    $show = true;
+    if(isset($select2)){
+        if(!$select2){
+            $show = false;
+        }
+    } 
+@endphp
+@if($show)
 <script type="text/javascript">
     $('.attribute-select2-{{ $product->id }}-{{ $serial }}').select2({
         tags: true
     });
 </script>
+@endif
