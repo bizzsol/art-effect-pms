@@ -153,5 +153,16 @@ use Illuminate\Support\Facades\Request;
             backgroundDismiss: true,
         });
     }
+
+    function updateSuppliers(element) {
+        $.dialog({
+            title: 'Update Suppliers',
+            content: "url:{{ url('pms/product-management/product') }}/"+element.attr('data-product-id')+'/update-suppliers',
+            animation: 'scale',
+            columnClass: 'large',
+            closeAnimation: 'scale',
+            backgroundDismiss: true,
+        });
+    }
 </script>
 @endsection

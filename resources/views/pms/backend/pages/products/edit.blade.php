@@ -120,7 +120,7 @@
                                 </div>
 
                                 <div class="form-row">
-                                   <div class="col-md-2 mb-3">
+                                <div class="col-md-2 mb-3">
                                     <p class="mb-1 font-weight-bold"><label for="supplier"><strong>{{ __('Safety Stock') }}</strong></label> {!! $errors->has('buffer_inventory')? '<span class="text-danger text-capitalize">'. $errors->first('buffer_inventory').'</span>':'' !!}</p>
                                     @if(auth()->user()->hasRole('Employee'))
                                     {{ ($product->relInventorySummary ? $product->relInventorySummary->buffer_inventory : 0) }}
@@ -227,7 +227,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <p class="mb-1 font-weight-bold"><label for="supplier">{{ __('Supplier') }}</label> {!! $errors->has('supplier')? '<span class="text-danger text-capitalize">'. $errors->first('supplier').'</span>':'' !!}</p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-">
                                         <select name="supplier[]" id="supplier" class="form-control rounded select2" multiple style="width: 100%">
@@ -239,7 +239,7 @@
                                         </select>
                                     </div>
                                 </div>
-
+ --}}
                                {{--  <div class="col-md-12 mt-3">
                                     <div class="row pr-3">
                                         <div class="col-md-3">

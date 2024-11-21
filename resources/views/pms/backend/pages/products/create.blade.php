@@ -263,14 +263,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <p class="mb-1 font-weight-bold"><label for="supplier"><strong>{{ __('Supplier') }}
                                             :</strong></label> {!! $errors->has('supplier')? '<span class="text-danger text-capitalize">'. $errors->first('supplier').'</span>':'' !!}
                                     </p>
                                     <div class="select-search-group input-group input-group-md mb-3 d-">
                                         {!! Form::Select('supplier[]',$suppliers,old('supplier'),['id'=>'supplier', 'class'=>'form-control rounded select2','multiple'=>'multiple','style'=>'width:100%']) !!}
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- <div class="col-md-12 mt-3">
                                     <div class="row pr-3">
