@@ -57,7 +57,7 @@
                             <div class="col-md-2 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span class="text-danger">&nbsp;*</span></strong></label></p>
                                 <div class="input-group input-group-md mb-3 d-">
-                                    <select name="hr_unit_id" id="hr_unit_id" class="form-control">
+                                    <select name="hr_unit_id" id="hr_unit_id" class="form-control" onchange="getCostCentres()">
                                         @if($requisition->author_id == auth()->user()->id)
                                             @if(isset($units[0]))
                                             @foreach($units as $unit)
@@ -237,15 +237,27 @@
                             </div>
 
                             <div class="col-md-12 mt-3">
-                                <p class="mb-1 font-weight-bold">
-                                    <label for="edit_file"><strong>Attachment:</strong></label>
-                                    @if(!empty($requisition->attachment) && file_exists(public_path($requisition->attachment)))
-                                        <a class="text-primary" href="{{ url($requisition->attachment) }}" target="_blank">View Existing Attachment</a>
-                                    @endif 
-                                    {!! $errors->has('edit_file')? '<span class="text-danger text-capitalize">'. $errors->first('edit_file').'</span>':'' !!}
-                                </p>
-                                <div class="form-group form-group-lg mb-3 d-">
-                                    <input type="file" name="edit_file" id="edit_file" class="form-control">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-1 font-weight-bold"><label for="cost_centre_id"><strong>Cost Centre: <span class="text-danger">*</span></strong></label>
+                                        {!! $errors->has('cost_centre_id')? '<span class="text-danger text-capitalize">'.
+                                        $errors->first('cost_centre_id').'</span>':'' !!}</p>
+                                        <div class="form-group form-group-lg mb-3 d-">
+                                            <select name="cost_centre_id" id="cost_centre_id" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 font-weight-bold">
+                                            <label for="edit_file"><strong>Attachment:</strong></label>
+                                            @if(!empty($requisition->attachment) && file_exists(public_path($requisition->attachment)))
+                                                <a class="text-primary" href="{{ url($requisition->attachment) }}" target="_blank">View Existing Attachment</a>
+                                            @endif 
+                                            {!! $errors->has('edit_file')? '<span class="text-danger text-capitalize">'. $errors->first('edit_file').'</span>':'' !!}
+                                        </p>
+                                        <div class="form-group form-group-lg mb-3 d-">
+                                            <input type="file" name="edit_file" id="edit_file" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -607,6 +619,19 @@
                 grand_total += $(this).text() != "" ? parseFloat($(this).text()) : 0;
             });
             $('.grand-total-amount').html(parseFloat(grand_total).toFixed(2));
+        }
+
+        getCostCentres();
+        function getCostCentres() {
+            $('#cost_centre_id').html('<option value="{{ null }}">Please wait...</option>');
+            $.ajax({
+                url: "{{ url('pms/requisition/requisition/create') }}?get-cost-centres&hr_unit_id="+$('#hr_unit_id').val(),
+                type: 'GET',
+                data: {},
+            })
+            .done(function(response) {
+                $('#cost_centre_id').html(response).select2().val('{{ $requisition->cost_centre_id }}').trigger("change");
+            });
         }
     </script>
     @endsection

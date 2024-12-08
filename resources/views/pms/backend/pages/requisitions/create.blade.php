@@ -69,7 +69,7 @@
                                         <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span
                                                             class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
-                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control">
+                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control" onchange="getCostCentres()">
                                                 @if(isset($units[0]))
                                                     @foreach($units as $unit)
                                                         <option value="{{ $unit->hr_unit_id }}">{{ $unit->hr_unit_short_name }}</option>
@@ -353,11 +353,23 @@
                                     </div>
 
                                     <div class="col-md-12 mt-3">
-                                        <p class="mb-1 font-weight-bold"><label for="file"><strong>Attachment:</strong></label>
-                                            {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
-                                            $errors->first('file').'</span>':'' !!}</p>
-                                        <div class="form-group form-group-lg mb-3 d-">
-                                            <input type="file" name="file" id="file" class="form-control">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="mb-1 font-weight-bold"><label for="cost_centre_id"><strong>Cost Centre: <span class="text-danger">*</span></strong></label>
+                                                {!! $errors->has('cost_centre_id')? '<span class="text-danger text-capitalize">'.
+                                                $errors->first('cost_centre_id').'</span>':'' !!}</p>
+                                                <div class="form-group form-group-lg mb-3 d-">
+                                                    <select name="cost_centre_id" id="cost_centre_id" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-1 font-weight-bold"><label for="file"><strong>Attachment:</strong></label>
+                                                {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
+                                                $errors->first('file').'</span>':'' !!}</p>
+                                                <div class="form-group form-group-lg mb-3 d-">
+                                                    <input type="file" name="file" id="file" class="form-control">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -830,6 +842,19 @@
             element.parent().parent().parent().parent().find('.attribute-option-div').hide();
             $.each(attributes, function (index, attribute) {
                 element.parent().parent().parent().parent().find('.attribute-option-div-' + attribute).show();
+            });
+        }
+
+        getCostCentres();
+        function getCostCentres() {
+            $('#cost_centre_id').html('<option value="{{ null }}">Please wait...</option>');
+            $.ajax({
+                url: "{{ url('pms/requisition/requisition/create') }}?get-cost-centres&hr_unit_id="+$('#hr_unit_id').val(),
+                type: 'GET',
+                data: {},
+            })
+            .done(function(response) {
+                $('#cost_centre_id').html(response).select2();
             });
         }
     </script>
