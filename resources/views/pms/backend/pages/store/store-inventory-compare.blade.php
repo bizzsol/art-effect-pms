@@ -16,6 +16,9 @@
                         <li><strong>{{__('Department')}} :</strong>
                             {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
                         </li>
+                        <li>
+                            <strong>Department Head:</strong> {{getDepartmentHeadName($requisition->author_id)}}
+                        </li>
                     </ul>
                 </div>
                 <div class="col-6">
@@ -24,6 +27,9 @@
                             {{date('d-m-Y', strtotime($requisition->requisition_date))}}</li>
                         <li><strong>{{__('Reference No')}}:</strong> {{$requisition->reference_no}}</li>
                         <li><strong>Saleable:</strong> {{ ucwords($requisition->saleable) }}</li>
+                        <li><strong>Assigned To (For Finance Approval):</strong> {{ ucwords
+                        ($requisition->assignedFinanceUser->name?? '')
+                        }}</li>
                     </ul>
                 </div>
             </div>
