@@ -51,3 +51,14 @@ UPDATE `permissions` SET `module` = 'Requisition' WHERE `name` LIKE '%halt%';
 UPDATE `permissions` SET `module` = 'Finance Reprots' WHERE `module` IS NULL;
 
 UPDATE `attributes` SET `code` = `name` WHERE 1
+
+
+ALTER TABLE requisitions
+ADD COLUMN assigned_finance_id BIGINT UNSIGNED NULL AFTER is_po_generate;
+
+ALTER TABLE requisitions
+ADD CONSTRAINT fk_assigned_finance
+FOREIGN KEY (assigned_finance_id)
+REFERENCES users(id)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;

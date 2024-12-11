@@ -9,9 +9,11 @@
 
                         <li><strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
                         </li>
-                        <li><strong>Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
+                        <li>
+                            <strong>Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
                         </li>
-                        <li><strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
+                        <li>
+                            <strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
                         </li>
                     </ul>
                 </div>
@@ -20,6 +22,9 @@
                         <li><strong>Date:</strong> {{date('d-m-Y',strtotime($requisition->requisition_date))}}</li>
                         <li><strong>Reference No:</strong> {{$requisition->reference_no}}</li>
                         <li><strong>Saleable:</strong> {{ ucwords($requisition->saleable) }}</li>
+                        <li><strong>Assigned To (For Finance Approval):</strong> {{ ucwords
+                        ($requisition->assignedFinanceUser->name?? '')
+                        }}</li>
                     </ul>
                 </div>
             </div>
@@ -73,9 +78,9 @@
                     $totalEstimation = 0;
                 @endphp
                 @forelse($requisition->items as $key=>$item)
-                @php
-                    $totalEstimation += ($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty));
-                @endphp
+                    @php
+                        $totalEstimation += ($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty));
+                    @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
                         <td>{{isset($item->product->category->name)?$item->product->category->name:''}}</td>
@@ -110,7 +115,7 @@
 
             <div>
                 <strong>Estimated Total Amount:</strong>&nbsp;{{systemMoneyFormat($totalEstimation)}}
-                BDT
+                                                        BDT
             </div>
 
             <div>

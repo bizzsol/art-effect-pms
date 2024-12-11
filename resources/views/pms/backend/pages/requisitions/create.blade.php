@@ -69,7 +69,8 @@
                                         <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span
                                                             class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
-                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control" onchange="getCostCentres()">
+                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control"
+                                                    onchange="getCostCentres()">
                                                 @if(isset($units[0]))
                                                     @foreach($units as $unit)
                                                         <option value="{{ $unit->hr_unit_id }}">{{ $unit->hr_unit_short_name }}</option>
@@ -338,7 +339,7 @@
                                             <tfoot>
                                             <tr>
                                                 <td colspan="5" class="text-right"><strong>Total Budgeted
-                                                        Amount:</strong></td>
+                                                                                           Amount:</strong></td>
                                                 <td class="grand-total-amount text-right">0.00</td>
                                                 <td></td>
                                             </tr>
@@ -354,18 +355,41 @@
 
                                     <div class="col-md-12 mt-3">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="mb-1 font-weight-bold"><label for="cost_centre_id"><strong>Cost Centre: <span class="text-danger">*</span></strong></label>
-                                                {!! $errors->has('cost_centre_id')? '<span class="text-danger text-capitalize">'.
-                                                $errors->first('cost_centre_id').'</span>':'' !!}</p>
+                                            <div class="col-md-4">
+                                                <p class="mb-1 font-weight-bold"><label for="cost_centre_id"><strong>Cost
+                                                                                                                     Centre:
+                                                            <span class="text-danger">*</span></strong></label>
+                                                    {!! $errors->has('cost_centre_id')? '<span class="text-danger text-capitalize">'.
+                                                    $errors->first('cost_centre_id').'</span>':'' !!}</p>
                                                 <div class="form-group form-group-lg mb-3 d-">
-                                                    <select name="cost_centre_id" id="cost_centre_id" class="form-control"></select>
+                                                    <select name="cost_centre_id" id="cost_centre_id"
+                                                            class="form-control"></select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <p class="mb-1 font-weight-bold"><label for="file"><strong>Attachment:</strong></label>
-                                                {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
-                                                $errors->first('file').'</span>':'' !!}</p>
+                                            <div class="col-md-4">
+                                                <p class="mb-1 font-weight-bold"><label
+                                                            for="assigned_finance_id"><strong>Assign Finance
+                                                                                              User:
+                                                            <span class="text-danger">*</span></strong></label>
+                                                    {!! $errors->has('assigned_finance_id')? '<span class="text-danger text-capitalize">'.
+                                                    $errors->first('assigned_finance_id').'</span>':'' !!}</p>
+                                                <div class="form-group form-group-lg mb-3 d-">
+                                                    <select name="assigned_finance_id" id="assigned_finance_id"
+                                                            class="form-control">
+                                                        @if(isset($financeUsers[0]))
+                                                            @foreach($financeUsers as $user)
+                                                                <option value="{{ $user->id }}">{{
+                                                                $user->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="mb-1 font-weight-bold"><label
+                                                            for="file"><strong>Attachment:</strong></label>
+                                                    {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
+                                                    $errors->first('file').'</span>':'' !!}</p>
                                                 <div class="form-group form-group-lg mb-3 d-">
                                                     <input type="file" name="file" id="file" class="form-control">
                                                 </div>
@@ -373,7 +397,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 mt-3">
+                                    <div class="col-md-6 mt-3">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="explanations"><strong>Explanations:</strong><strong
                                                         class="text-danger">*</strong></label> {!! $errors->has('explanations')? '<span class="text-danger text-capitalize">'.$errors->first('explanations').'</span>':'' !!}
@@ -394,7 +418,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-6 mt-3">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="remarks"><strong>Notes:</strong></label> {!! $errors->has('remarks')? '<span class="text-danger text-capitalize">'.$errors->first('remarks').'</span>':'' !!}
                                         </p>
@@ -414,12 +438,13 @@
                                         <input type="hidden" name="where_to_go" id="where_to_go" value="index">
                                         <button type="button" class="btn btn-primary rounded pull-right save-button"
                                                 onclick="submitRequisition('index');"><i class="la la-plus"></i>&nbsp;Save
-                                            Requisition
+                                                                                                                Requisition
                                         </button>
                                         <button type="button"
                                                 class="btn btn-info rounded pull-right mr-2 save-new-button"
                                                 onclick="submitRequisition('back');"><i class="la la-plus"></i>&nbsp;Save
-                                            & New Requisition
+                                                                                                               & New
+                                                                                                               Requisition
                                         </button>
                                     </div>
                                 </div>
@@ -846,16 +871,17 @@
         }
 
         getCostCentres();
+
         function getCostCentres() {
             $('#cost_centre_id').html('<option value="{{ null }}">Please wait...</option>');
             $.ajax({
-                url: "{{ url('pms/requisition/requisition/create') }}?get-cost-centres&hr_unit_id="+$('#hr_unit_id').val(),
+                url: "{{ url('pms/requisition/requisition/create') }}?get-cost-centres&hr_unit_id=" + $('#hr_unit_id').val(),
                 type: 'GET',
                 data: {},
             })
-            .done(function(response) {
-                $('#cost_centre_id').html(response).select2();
-            });
+                .done(function (response) {
+                    $('#cost_centre_id').html(response).select2();
+                });
         }
     </script>
 @endsection
