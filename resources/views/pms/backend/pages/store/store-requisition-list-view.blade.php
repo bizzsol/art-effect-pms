@@ -89,7 +89,7 @@
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="category_id"><strong>Product
-                                                                Category</strong></label>
+                                                                                         Category</strong></label>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <select name="category_id" id="category_id"
                                                                     class="form-control">
@@ -181,14 +181,14 @@
             $.confirm({
                 title: 'Send to Procument',
                 content: '<hr>' +
-                '<form action="" class="formName">' +
-                    '<h5 class="text-danger mb-2"><strong>Are you sure ?</strong></h5>'+
-                    '<h6>Once you send it to Procurement, You can not rollback from there.</h6>'+
-                    '<hr>'+
+                    '<form action="" class="formName">' +
+                    '<h5 class="text-danger mb-2"><strong>Are you sure ?</strong></h5>' +
+                    '<h6>Once you send it to Procurement, You can not rollback from there.</h6>' +
+                    '<hr>' +
                     '<div class="form-group">' +
-                        '<textarea placeholder="Your Message..." class="message form-control" required style="min-height: 200px;resize: none;"></textarea>' +
+                    '<textarea placeholder="Your Message..." class="message form-control" required style="min-height: 200px;resize: none;"></textarea>' +
                     '</div>' +
-                '</form>',
+                    '</form>',
                 buttons: {
                     send: {
                         text: 'Send To Procurement',
@@ -204,15 +204,15 @@
                                     message: this.$content.find('.message').val()
                                 },
                             })
-                            .done(function(data) {
-                                if (data.result === 'success') {
-                                    $('.jconfirm').remove();
-                                    notify(data.message, 'success');
-                                    reloadDatatable();
-                                } else {
-                                    notify(data.message, data.result);
-                                }
-                            });
+                                .done(function (data) {
+                                    if (data.result === 'success') {
+                                        $('.jconfirm').remove();
+                                        notify(data.message, 'success');
+                                        reloadDatatable();
+                                    } else {
+                                        notify(data.message, data.result);
+                                    }
+                                });
                             return false;
                         }
                     },
@@ -220,7 +220,7 @@
                         text: 'Close',
                         btnClass: 'btn-dark',
                         action: function () {
-                            
+
                         }
                     },
                 }
