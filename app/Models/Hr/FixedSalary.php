@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'RC48GW'); return 0;
-##!!!##qakNAAwEEg8AAgS/4A8P++wOAwQLEvvnEdqpqRQSBL/oCwsUDAgNABME++MAEwABABIE++QLDhAUBA0T++wOAwQL2qmpAgsAEhK/5QgXBAPyAAsAERi/BBcTBA0DEr/sDgMEC6kaqam/v7+/DxEOEwQCEwQDv8MTAAELBL/cv8EHEf4FCBcEA/4EDA/+EgALABEYwdqpqb+/v78PFAELCAK/wxMIDAQSEwAMDxK/3L8FAAsSBNqpqb+/v6m/v7+/qRyp
+bolt_decrypt( __FILE__ , 'I44ygq'); return 0;
+##!!!##DAxwY29ndXJjZWciQ3JyXk9xZmdudV5KdD0MDHd1ZyJLbm53b2twY3ZnXkZjdmNkY3VnXkducXN3Z3B2Xk9xZmduPQwMZW5jdXUiSGt6Z2ZVY25jdHsiZ3p2Z3BmdSJPcWZnbgx9DAwiIiIicnRxdmdldmdmIiZ2Y2RuZyI/IiRqdGFoa3pnZmFnb3JhdWNuY3R7JD0MDCIiIiJyd2Rua2UiJnZrb2d1dmNvcnUiPyJoY251Zz0MDCIiIgwiIiIiDH8M
