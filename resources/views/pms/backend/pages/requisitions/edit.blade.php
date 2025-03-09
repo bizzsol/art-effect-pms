@@ -245,8 +245,8 @@
                                                                        value="{{ old('qty',$requisitionItem->requisition_qty) }}"
                                                                        @else name="qty[]"
                                                                        value="{{ old('qty',$requisitionItem->qty) }}"
-                                                                       @endif  min="1" max="99999999" id="qty_{{$key}}"
-                                                                       onKeyPress="if(this.value.length==6) return false;"
+                                                                       @endif  min="1" id="qty_{{$key}}"
+                                                                    
                                                                        class="form-control {{ !$modifiedName ? 'requisition-qty' : ''  }} text-right"
                                                                        aria-label="Large"
                                                                        aria-describedby="inputGroup-sizing-sm" required
@@ -258,8 +258,8 @@
                                                             <td>
                                                                 <div class="input-group input-group-md mb-3 d-">
                                                                     <input type="number" name="qty[]" min="1"
-                                                                           max="99999999" id="qty_{{$key}}"
-                                                                           onKeyPress="if(this.value.length==6) return false;"
+                                                                           id="qty_{{$key}}"
+                                                                        
                                                                            class="form-control requisition-qty text-right"
                                                                            aria-label="Large"
                                                                            aria-describedby="inputGroup-sizing-sm"
@@ -379,13 +379,7 @@
                                     $errors->has('explanations')? '<span class="text-danger text-capitalize">'.
                                     $errors->first('explanations').'</span>':'' !!}</p>
                                         <div class="form-group form-group-lg mb-3 d-">
-                                            {{-- <select name="explanations[]" id="explanations" multiple class="form-control">
-                                                @if(isset($explanations[0]))
-                                                @foreach($explanations as $key => $explanation)
-                                                <option {{ in_array($explanation->explanation, json_decode(!empty($requisition->explanations) ? $requisition->explanations : '', true)) ? 'selected' : '' }}>{{ $explanation->explanation }}</option>
-                                                @endforeach
-                                                @endif
-                                            </select> --}}
+
                                             <textarea rows="3" name="explanations" id="explanations"
                                                       class="form-control rounded word-restrictions" aria-label="Large"
                                                       aria-describedby="inputGroup-sizing-sm" data-input="recommended"
@@ -517,7 +511,7 @@
                     '                                            <td class="product-attributes-' + (x - 1) + '"></td>' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md mb-3 d-">\n' +
-                    '                                                    <input type="number" name="qty[]" min="1" max="99999999" id="qty_' + x + '" onKeyPress="if(this.value.length==6) return false;" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
+                    '                                                    <input type="number" name="qty[]" min="1"  id="qty_' + x + '" class="form-control requisition-qty text-right" aria-label="Large" aria-describedby="inputGroup-sizing-sm" required value="{{ old("qty") }}" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '@if($modifiedName)\n' +

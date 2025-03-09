@@ -4,7 +4,7 @@
     $factoryAddress = \App\Models\PmsModels\SupplierAddress::where(['supplier_id' => isset($purchaseOrder->relQuotation->relSuppliers->id) ? $purchaseOrder->relQuotation->relSuppliers->id : 0, 'type' => 'factory'])->first();
     $contactPersonSales = \App\Models\PmsModels\SupplierContactPerson::where(['supplier_id' => isset($purchaseOrder->relQuotation->relSuppliers->id) ? $purchaseOrder->relQuotation->relSuppliers->id : 0, 'type' => 'sales'])->first();
 @endphp
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -235,14 +235,17 @@
                 <br>
                 <strong>Div./Dept:</strong> {{ $purchaseOrder->purchaseOrderRequisitions->first()->requisition->relUsersList->employee->department->hr_department_name }}
                 <br>
-                <strong>Contact Person:</strong> {!! isset($deliveryContact->id) ? $deliveryContact->name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.isset($deliveryContact->employee) ? isset($deliveryContact->employee->designation) ? $deliveryContact->employee->designation->hr_designation_name : '' : ''.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$deliveryContact->phone : '' !!}
+                <strong>Contact
+                        Person:</strong> {!! isset($deliveryContact->id) ? $deliveryContact->name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.isset($deliveryContact->employee) ? isset($deliveryContact->employee->designation) ? $deliveryContact->employee->designation->hr_designation_name : '' : ''.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$deliveryContact->phone : '' !!}
                 <br>
-                <strong>Order/Requisition Ref: {{ $purchaseOrder->purchaseOrderRequisitions->pluck('requisition.reference_no')->implode(', ') }}</strong> 
+                <strong>Order/Requisition
+                        Ref: {{ $purchaseOrder->purchaseOrderRequisitions->pluck('requisition.reference_no')->implode(', ') }}</strong>
             </td>
         </tr>
         <tr>
             <td style="width: 50% !important">
-                <strong>Your vendor no. with us:</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name) ? $purchaseOrder->relQuotation->relSuppliers->code : ''}}
+                <strong>Your vendor no. with
+                        us:</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name) ? $purchaseOrder->relQuotation->relSuppliers->code : ''}}
                 <br>
                 <br>
                 <strong>Invoice Address:</strong>
@@ -254,18 +257,22 @@
                 @endif
             </td>
             <td style="width: 50% !important">
-                <strong>Your quot. ref.: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->reference_no : '' }}</strong>
+                <strong>Your quot.
+                        ref.: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->reference_no : '' }}</strong>
                 <br>
                 <strong>Date:</strong> {{ isset($purchaseOrder->relQuotation->quotation_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->quotation_date)) : '' }}
                 <br>
-                <strong>Deliver to:</strong> {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}
+                <strong>Deliver
+                        to:</strong> {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}
                 <div>
                     {!! isset($purchaseOrder->Unit->delivery_address) ? $purchaseOrder->Unit->delivery_address : '' !!}
                 </div>
                 <br>
-                <strong>Order is valid till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
+                <strong>Order is valid
+                        till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
                 <br>
-                <strong>Delivery Date: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong> 
+                <strong>Delivery
+                        Date: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
             </td>
         </tr>
 
@@ -378,7 +385,9 @@
                     {{ isset($item->relProduct->category->name) ? $item->relProduct->category->name : '' }}
                 </td>
                 <td>
-                    {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }} ({{ isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : '' }})
+                    {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                    ({{ isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : '' }}
+                    )
                 </td>
                 <td>{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
                 <td style="text-align: center">{{ $item->qty }}</td>
@@ -397,7 +406,9 @@
             <td colspan="6" class="text-right">
                 <strong>Total</strong>
             </td>
-            <td class="text-right"><strong>{{ systemMoneyFormat($purchaseOrder->relPurchaseOrderItems->sum('sub_total_price')) }}</strong></td>
+            <td class="text-right">
+                <strong>{{ systemMoneyFormat($purchaseOrder->relPurchaseOrderItems->sum('sub_total_price')) }}</strong>
+            </td>
         </tr>
         <tr>
             <td colspan="6" class="text-right">
@@ -408,7 +419,9 @@
         </tr>
         <tr>
             <td colspan="5">
-                Total In word: <strong>{{ inWordBn(systemDoubleValue($purchaseOrder->relPurchaseOrderItems->sum('total_price'), 2), true, $purchaseOrder->relQuotation->exchangeRate->currency->name, $purchaseOrder->relQuotation->exchangeRate->currency->hundreds) }} only</strong>
+                Total In word:
+                <strong>{{ inWordBn(systemDoubleValue($purchaseOrder->relPurchaseOrderItems->sum('total_price'), 2), true, $purchaseOrder->relQuotation->exchangeRate->currency->name, $purchaseOrder->relQuotation->exchangeRate->currency->hundreds) }}
+                    only</strong>
             </td>
             <td class="text-right">
                 <strong>Grand Total</strong>
@@ -443,72 +456,83 @@
 
     <table class="table table-bordered">
         <tbody>
-            <tr>
-                <td style="width: 75% !important">
-                    <strong>Payment Mode:&nbsp;{{ makePaymentTermsString($purchaseOrder->relQuotation->supplier_payment_terms_id) }}</strong>
-                </td>
-                <td style="width: 25% !important" class="text-right">
-                    Currency:&nbsp;<strong>{{ isset($purchaseOrder->relQuotation->exchangeRate->currency->name)?$purchaseOrder->relQuotation->exchangeRate->currency->name:'' }} ({{ isset($purchaseOrder->relQuotation->exchangeRate->currency->code)?$purchaseOrder->relQuotation->exchangeRate->currency->code:'' }})</strong>
-                </td>
-            </tr>
+        <tr>
+            <td style="width: 75% !important">
+                <strong>Payment
+                        Mode:&nbsp;{{ makePaymentTermsString($purchaseOrder->relQuotation->supplier_payment_terms_id) }}</strong>
+            </td>
+            <td style="width: 25% !important" class="text-right">
+                Currency:&nbsp;<strong>{{ isset($purchaseOrder->relQuotation->exchangeRate->currency->name)?$purchaseOrder->relQuotation->exchangeRate->currency->name:'' }}
+                    ({{ isset($purchaseOrder->relQuotation->exchangeRate->currency->code)?$purchaseOrder->relQuotation->exchangeRate->currency->code:'' }}
+                    )</strong>
+            </td>
+        </tr>
         </tbody>
     </table>
 
     @if($purchaseOrder->milestones->count() > 0)
-    <table class="table table-bordered">
-        <thead>
+        <table class="table table-bordered">
+            <thead>
             <tr class="text-center">
                 <td style="width: 10% !important" class="text-center"><strong>SL#</strong></td>
                 <td style="width: 70% !important" class="text-center"><strong>Work Progress</strong></td>
                 <td style="width: 20% !important" class="text-center"><strong>% of Payment</strong></td>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @foreach($purchaseOrder->milestones as $key => $milestone)
-            <tr>
-                <td class="text-center">{{ $key+1 }}</td>
-                <td class="text-center">{{ $milestone->name }}</td>
-                <td class="text-center">{{ $milestone->percentage }}%</td>
-            </tr>
+                <tr>
+                    <td class="text-center">{{ $key+1 }}</td>
+                    <td class="text-center">{{ $milestone->name }}</td>
+                    <td class="text-center">{{ $milestone->percentage }}%</td>
+                </tr>
             @endforeach
             <tr>
                 <td class="text-right" colspan="2"><strong>Total Payment</strong></td>
                 <td class="text-center"><strong>{{ $purchaseOrder->milestones->sum('percentage') }}%</strong></td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     @endif
 
     <table class="table table-bordered">
         <tbody>
-            <tr>
-                <td style="width: 50% !important;vertical-align: top !important" rowspan="2">
-                    <h4 class="text-center"><strong>Remarks:</strong></h4>
-                    <div>
-                        {!! $purchaseOrder->remarks !!}
-                    </div>
-                </td>
-                <td style="width: 50% !important;border-bottom: none !important" class="text-center">
+        <tr>
+            <td style="width: 50% !important;vertical-align: top !important" rowspan="2">
+                <h4 class="text-center"><strong>Remarks:</strong></h4>
+                <div>
+                    {!! $purchaseOrder->remarks !!}
+                </div>
+            </td>
+            <td style="width: 50% !important;border-bottom: none !important" class="text-center">
+                <br>
+                <div>
+                    @if(!empty($purchaseOrder->Unit->hr_unit_authorized_signature) && !empty(getUnitSignature($purchaseOrder->Unit)))
+                        <img src="{{ getUnitSignature($purchaseOrder->Unit) }}" alt="logo"
+                             style="float: right !important;height: 15mm; width:  35mm; margin: 0;"/>
+
+                        <center style="text-decoration: underline; text-align: center">{{$purchaseOrder->Unit->hr_unit_reference_heading??''}}</center>
+                    @else
+                        <small style="text-decoration: underline;">N.B.: This is an electronic version of the document,
+                                                                   therefore no signature is required.</small>
+                    @endif
+                </div>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50% !important;background: #ccfefe;border-top: none !important" class="text-center">
+                <div>
                     <br>
-                    <div>
-                        <small style="text-decoration: underline;">N.B.: This is an electronic version of the document, therefore no signature is required.</small>
-                    </div>
+                    <h4><strong>Authorized Signature</strong></h4>
                     <br>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 50% !important;background: #ccfefe;border-top: none !important" class="text-center">
-                    <div>
-                        <br>
-                        <h4><strong>Authorized Signature</strong></h4>
-                        <br>
-                        <br>
-                    </div>
-                </td>
-            </tr>
+                    <br>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
-    
+
     @if(!$directPurchase)
         <h3 class="text-center"><strong>Terms & Conditions:</strong></h3>
         <div>

@@ -219,14 +219,11 @@
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-md">
-                                                                <input type="number" name="qty[]" min="1" max="99999999"
+                                                                <input type="number" name="qty[]" min="1"
                                                                        id="qty_{{ $key+1 }}"
                                                                        class="form-control requisition-qty text-right calculate-total"
                                                                        aria-label="Large"
-                                                                       aria-describedby="inputGroup-sizing-sm"
-                                                                       onKeyPress="if(this.value.length==6) return false;"
-                                                                       min="1"
-                                                                       required data-input="recommended"
+                                                                       aria-describedby="inputGroup-sizing-sm"required data-input="recommended"
                                                                        oninput="this.value = Math.abs(this.value)"
                                                                        data-quantity="{{ $item['quantity'] }}"
 
@@ -291,13 +288,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="input-group input-group-md">
-                                                            <input type="number" name="qty[]" min="1" max="99999999"
+                                                            <input type="number" name="qty[]" min="1"
                                                                    id="qty_1"
                                                                    class="form-control requisition-qty text-right calculate-total"
                                                                    aria-label="Large"
                                                                    aria-describedby="inputGroup-sizing-sm"
-                                                                   onKeyPress="if(this.value.length==6) return false;"
-                                                                   min="1"
+                                                                
                                                                    required data-input="recommended"
                                                                    oninput="this.value = Math.abs(this.value)"
                                                                    data-quantity=""
@@ -620,7 +616,7 @@
                     '</td>' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
-                    '                                                    <input type="number" name="qty[]" min="1" max="9999" onKeyPress="if(this.value.length==6) return false;" id="qty_' + x + '" class="form-control requisition-qty text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
+                    '                                                    <input type="number" name="qty[]" min="1" id="qty_' + x + '" class="form-control requisition-qty text-right calculate-total" aria-label="Large" aria-describedby="inputGroup-sizing-sm" oninput="this.value = Math.abs(this.value)" required data-quantity="" onchange="calculateTotal($(this))" onkeyup="calculateTotal($(this))">\n' +
                     '                                                </div>\n' +
                     '                                            </td>\n' +
                     '                                            <td>\n' +

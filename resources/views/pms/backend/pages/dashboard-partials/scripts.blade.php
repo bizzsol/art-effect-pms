@@ -6,19 +6,34 @@
 <script src="https://cdn.jsdelivr.net/jquery.counterup/1.0/jquery.counterup.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    //Call The Charts
-    $.each($('.charts'), function(index, value) {
-        loadChart($(this), $(this).attr('data-chart'), $(this).attr('data-labels').split(','), $(this).attr('data-data').split(','), $(this).attr('data-legend-position'), $(this).attr('data-title-text'));
-    });
+$(document).ready(function () {
+    // Call the charts with a delay
+    setTimeout(() => {
+        $('.charts').each(function () {
+            loadChart(
+                $(this),
+                $(this).data('chart'),
+                $(this).data('labels').split(','),
+                $(this).data('data').split(','),
+                $(this).data('legend-position'),
+                $(this).data('title-text')
+            );
+        });
 
-    $.each($('.bar-charts'), function(index, value) {
-        loadBarChart($(this), $(this).attr('data-labels'), $(this).attr('data-data'), $(this).attr('data-title-text'), $(this).attr('data-legend-position'));
-    });
+        $('.bar-charts').each(function () {
+            loadBarChart(
+                $(this),
+                $(this).data('labels'),
+                $(this).data('data'),
+                $(this).data('title-text'),
+                $(this).data('legend-position')
+            );
+        });
+    }, 2000); // 2-second delay
 
-    //Load The Charts
+    // Load the Charts
     function loadChart(element, type, labels, data, legendPosition, titleText, responsive = true, titleDisplay = true) {
-        var chart = new Chart(element, {
+        const chart = new Chart(element, {
             type: type,
             data: {
                 labels: labels,
@@ -26,7 +41,7 @@ $(document).ready(function() {
                     data: data,
                     backgroundColor: randomColors(labels.length),
                     borderColor: '#ccc',
-                    borderWidth: '1px'
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -41,32 +56,27 @@ $(document).ready(function() {
                     text: titleText
                 },
                 animation: {
-                  onComplete: function() {
-                    addDownloadOptions(chart, element);
-                  }
+                    onComplete: function () {
+                        addDownloadOptions(chart, element);
+                    }
                 }
             }
         });
     }
 
-    function loadBarChart(element, labels, data, titleText, legendPosition, responsive = true, beginAtZero = true, titleDisplay = false){
+    function loadBarChart(element, labels, data, titleText, legendPosition, responsive = true, beginAtZero = true, titleDisplay = false) {
+        const titleTextArray = titleText.split(',');
+        const dataArray = data.split('|');
+        const datasets = titleTextArray.map((item, index) => ({
+            label: item,
+            data: dataArray[index].split(','),
+            backgroundColor: randomColors(titleTextArray.length)[index],
+            borderColor: '#fff',
+            borderWidth: 1
+        }));
 
-        var titleTextArray = titleText.split(',');
-        var dataArray = data.split('|');
-        var datasets = [];
-        var colors = randomColors(titleTextArray.length);
-        Array.from(titleTextArray).map((item, index)=> {
-            datasets.push({
-                label: item,
-                data: dataArray[index].split(','),
-                backgroundColor: colors[index],
-                borderColor: '#fff',
-                borderWidth: 1
-            });
-        });
-
-        let barChart = document.getElementById(element.attr('id')).getContext('2d');
-        var chart = new Chart(barChart, {
+        const barChartContext = document.getElementById(element.attr('id')).getContext('2d');
+        const chart = new Chart(barChartContext, {
             type: 'bar',
             data: {
                 labels: labels.split(','),
@@ -75,11 +85,9 @@ $(document).ready(function() {
             options: {
                 responsive: responsive,
                 scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: beginAtZero
+                    y: {
+                        beginAtZero: beginAtZero
                     }
-                  }]
                 },
                 plugins: {
                     legend: {
@@ -91,69 +99,64 @@ $(document).ready(function() {
                     text: titleText.split(',')
                 },
                 animation: {
-                  onComplete: function() {
-                    addDownloadOptions(chart, element);
-                  }
+                    onComplete: function () {
+                        addDownloadOptions(chart, element);
+                    }
                 }
             }
         });
     }
 
     function addDownloadOptions(chart, element) {
-        element.parent().find('img').remove();
-        element.parent().append('<img src="'+(chart.toBase64Image())+'" class="d-none"/>');
+        const parent = element.parent();
+        parent.find('img').remove();
+        parent.append(`<img src="${chart.toBase64Image()}" class="d-none"/>`);
 
-        if(element.parent().parent().find('.iq-card-header')){
-            element.parent().parent().find('.iq-card-header').find('.download-button').remove();
-            element.parent().parent().find('.iq-card-header').append('<a class="btn btn-xs btn-primary download-button pull-right" style="margin-top: 0px !important" href="'+(chart.toBase64Image())+'" download="'+(element.parent().parent().find('.card-title').text())+'"><i class="la la-download"></i></a>');
-        }
-
-        if(element.parent().parent().find('.project-card-header')){
-            element.parent().parent().find('.project-card-header').find('.download-button').remove();
-            element.parent().parent().find('.project-card-header').append('<a class="btn btn-xs btn-primary download-button pull-right" style="margin-top: -25px !important" href="'+(chart.toBase64Image())+'" download="'+(element.parent().parent().find('h5').text())+'"><i class="la la-download"></i></a>');
+        const header = parent.parent().find('.iq-card-header, .project-card-header');
+        if (header.length) {
+            header.find('.download-button').remove();
+            header.append(`
+                <a class="btn btn-xs btn-primary download-button pull-right" style="margin-top: 0px !important" href="${chart.toBase64Image()}" 
+                download="${parent.parent().find('.card-title, h5').text()}">
+                    <i class="la la-download"></i>
+                </a>
+            `);
         }
     }
 
-    //Chart Options
-    function randomColors(value) {
-        let colors = [];
-        for(var i=0;i<value;i++){
-            if(colorBank().length >= i){
-                colors.push(colorBank()[i]);
-            }else{
-                colors.push(randomBackgroundColor().color);
-            }
-        }
-        return colors;
+    // Chart Options
+    function randomColors(count) {
+        return Array.from({ length: count }, (_, i) => {
+            const bank = colorBank();
+            return bank[i] || randomBackgroundColor().color;
+        });
     }
 
-    function colorBank($key = false) {
-        let colors = [
+    function colorBank() {
+        return [
             'rgb(11,173,191)',
             'rgb(60, 179, 113)',
             'rgb(238, 130, 238)',
             'rgb(255, 165, 0)',
             'rgb(106, 90, 205)',
             'rgb(60, 60, 60)',
-            'rgba(255, 99, 71, 1)',
+            'rgba(255, 99, 71, 1)'
         ];
-
-        return ($key ? colors[key] : colors);
     }
 
     function randomBackgroundColor() {
-        var x = Math.floor(Math.random() * 256);
-        var y = 100 + Math.floor(Math.random() * 256);
-        var z = 50 + Math.floor(Math.random() * 256);
-        var bgColor = "rgb(" + x + "," + y + "," + z + ")";
-        var opColor = "rgb(" + x + "," + y + "," + z +","+ 0.5+")";
-        return {color:bgColor,opacity:opColor};
+        const r = Math.floor(Math.random() * 256);
+        const g = 100 + Math.floor(Math.random() * 256);
+        const b = 50 + Math.floor(Math.random() * 256);
+        return { color: `rgb(${r},${g},${b})` };
     }
 
+    // Counter animation
     $('.counter').counterUp({
-      delay: 10,
-      time: 1000
+        delay: 10,
+        time: 1000
     });
 });
+
 </script>
 @endsection
