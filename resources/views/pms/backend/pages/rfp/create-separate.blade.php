@@ -209,14 +209,14 @@
                                 <div class="col-md-6">
 
                                 </div>
-                                <div class="col-md-3 text-right pt-2">
+                                <!-- <div class="col-md-3 text-right pt-2">
                                     <label class="btn btn-xs rounded font-5 mt-10 pull-right ">
                                         <input type="checkbox" name="type" class="" value='online'>
                                         Allow Online
                                         Quotation
                                     </label>
-                                </div>
-                                <div class="col-md-3">
+                                </div> -->
+                                <div class="col-md-6">
                                     <button data-placement="top"
                                             data-content="click save changes button for send rfp"
                                             type="submit"
