@@ -99,6 +99,8 @@
                                                                    value="{{ ($refNo)?($refNo):0 }}">
                                                         </div>
                                                     </div>
+                                                    
+
                                                     <div class="col-md-6 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label
                                                                     for="supplier_id"><strong>{{ __('Supplier') }}
@@ -509,6 +511,16 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="mb-1 font-weight-bold">
+                                        <label for="note">
+                                            <strong>{{ __('Note') }}</strong>
+                                        </label>
+                                    </p>
+                                    <div class="input-group input-group-md mb-3">
+                                        <textarea name="note" id="note" class="form-control rounded" rows="3" placeholder="Write any note..."></textarea>
+                                    </div>
                                 </div>
 
                                 <div class="form-row mt-5">

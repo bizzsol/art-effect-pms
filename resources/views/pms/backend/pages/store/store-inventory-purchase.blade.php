@@ -98,18 +98,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 col-sm-12">
-                                                <p class="mb-1 font-weight-bold"><label for="assigned_user_id"><strong>{{ __('Assign Person') }}<span class="text-danger">*</span></strong></label></p>
-                                                <div class="input-group input-group-md mb-3 d-">
-                                                    <select name="assigned_user_id" id="assigned_user_id" class="form-control rounded" required>
-                                                        @if(isset($users[0]))
-                                                            @foreach($users as $key => $user)
-                                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
+                                            <div class="col-md-8 col-sm-12" id="assign-user-section">
+                                                <p class="mb-1 font-weight-bold">
+                                                    <label for="assigned_user_id"><strong>{{ __('Assigned Person') }}<span class="text-danger">*</span></strong></label>
+                                                </p>
+                                                <div class="input-group input-group-md mb-3">
+                                                    @if($assignedUser)
+                                                        <input type="text" class="form-control-plaintext" value="{{ $assignedUser->name }}" readonly>
+                                                        <input type="hidden" name="assigned_user_id" value="{{ $assignedUser->id }}">
+                                                    @else
+                                                        <span class="text-danger">No person assigned.</span>
+                                                    @endif
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4 col-sm-12">
                                                 <p class="mb-1 font-weight-bold"><label for="validation_days"><strong>Validation Days<span class="text-danger">*</span></strong></label></p>
                                                 <div class="input-group input-group-md mb-3 d-">
@@ -367,6 +369,16 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="mb-1 font-weight-bold">
+                                        <label for="note">
+                                            <strong>{{ __('Note') }}</strong>
+                                        </label>
+                                    </p>
+                                    <div class="input-group input-group-md mb-3">
+                                        <textarea name="note" id="note" class="form-control rounded" rows="3" placeholder="Write any note..."></textarea>
                                     </div>
                                 </div>
 

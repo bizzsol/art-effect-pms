@@ -1,11 +1,11 @@
 <div style="overflow: hidden;">
     <hr>
-    <form action="{{ route('pms.rfp.assignperson') }}" method="post" id="assign-form">
+    <form action="{{ route('pms.rfp.convert.to.rfp') }}" method="post" id="assign-form">
     @csrf
     <input type="hidden" name="requisition_id" value="{{ $requisition->id }}">
         <div class="form-group">
             <div class="row">
-                <div class="col-md-9">
+                <!-- <div class="col-md-9">
                     <select class="form-control select2_" name="user_id" id="user_id">
                         @if(isset($users[0]))
                         @foreach($users as $user)
@@ -13,9 +13,9 @@
                         @endforeach
                         @endif
                     </select>
-                </div>
+                </div> -->
                 <div class="col-md-3">
-                    <button class="btn btn-sm btn-success btn-block text-white assign-button" type="submit"><i class="las la-check"></i>&nbsp;Assign Person</button>
+                    <button class="btn btn-sm btn-success btn-block text-white assign-button" type="submit"><i class="las la-check"></i>&nbsp;Submit</button>
                 </div>
             </div>
         </div>
