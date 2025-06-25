@@ -75,7 +75,7 @@
         function sendToManagement(quotation_id) {
             swal({
                 title: "{{__('Are you sure?')}}",
-                text: "{{__('Once you send to Management, Management will be able to approved/reject this Internal Job Order.')}}",
+                text: "{{__('Once you send to Approval, Management will be able to see this Internal Job Order.')}}",
                 icon: "warning",
                 dangerMode: false,
                 buttons: {

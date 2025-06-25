@@ -60,6 +60,19 @@
                                                    value="{{ ($quotation->relRequestProposal->reference_no)?($quotation->relRequestProposal->reference_no):0 }}">
                                         </div>
                                     </div>
+
+                                     <div class="col-md-2 col-sm-12">
+                                    <p class="mb-1 font-weight-bold"><label for="delivery_date"><strong>{{ __('Delivery Date') }}
+                                                <span class="text-danger">*</span></strong></label></p>
+                                    <div class="input-group input-group-md mb-3 d-">
+                                        <input type="text" name="delivery_date" id="delivery_date"
+                                            class="form-control rounded cc-datepicker" aria-label="Large" min
+                                            aria-describedby="inputGroup-sizing-sm" required readonly
+                                            value="{{$quotation->delivery_date }}">
+                                    </div>
+                                </div>
+
+
                                     <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="quotation_ref_no"><strong>{{ __('Quotation Ref No') }} <span
@@ -71,7 +84,7 @@
                                                    value="{{ ($quotation->reference_no)?($quotation->reference_no):0 }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12">
+                                    <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="hr_unit_id"><strong>{{ __('Unit') }} <span class="text-danger">*</span></strong></label>
                                         </p>
@@ -91,7 +104,7 @@
                                     </div>
 
                                     @if($uncommon > 0)
-                                        <div class="col-md-3 col-sm-12">
+                                        <div class="col-md-2 col-sm-12">
                                             <p class="mb-1 font-weight-bold"><label
                                                         for="hr_department_id"><strong>{{ __('Department') }} <span
                                                                 class="text-danger">*</span></strong></label></p>

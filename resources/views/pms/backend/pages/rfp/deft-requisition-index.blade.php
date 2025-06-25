@@ -189,6 +189,66 @@
         });
     }
 
+    function rejectItem(element) {
+        $.confirm({
+            title: 'Reject Requisition',
+            content: '<hr>' +
+                '<form action="" class="formName">' +
+                '<h5 class="text-danger mb-2"><strong>Are you sure?</strong></h5>' +
+                '<h6>Once you reject this requisition, it will be marked as rejected and cannot be processed further.</h6>' +
+                '<hr>' +
+                '<div class="form-group">' +
+                '<textarea placeholder="Your Reason for Rejection..." class="message form-control" required style="min-height: 200px; resize: none;"></textarea>' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                reject: {
+                    text: 'Reject',
+                    btnClass: 'btn-red',
+                    action: function() {
+                        let message = this.$content.find('.message').val();
+                        if (!message.trim()) {
+                            $.alert('Please provide a reason for rejection.');
+                            return false;
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: element.attr('data-src'),
+                            dataType: "json",
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content'),
+                                _method: 'DELETE', // Required for Laravel DELETE routes
+                                requisition_id: element.attr('data-id'),
+                                message: message
+                            },
+                            success: function(data) {
+                                if (data.result === 'success') {
+                                    $('.jconfirm').remove();
+                                    notify(data.message, 'success');
+                                    reloadDatatable();
+                                } else {
+                                    notify(data.message || 'Something went wrong.', 'error');
+                                }
+                            },
+                            error: function() {
+                                notify('Server error occurred.', 'error');
+                            }
+                        });
+
+                        return false;
+                    }
+                },
+                close: {
+                    text: 'Close',
+                    btnClass: 'btn-dark'
+                }
+            }
+        });
+    }
+
+
+
 
     function openModal(requisitionId) {
         $('#tableData').load('{{URL::to("pms/rfp/store-inventory-compare")}}/' + requisitionId);

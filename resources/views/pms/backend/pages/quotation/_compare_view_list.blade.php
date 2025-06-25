@@ -481,6 +481,7 @@
             var value = parseInt(element.val());
             var min = parseInt(element.attr('min'));
             var max = parseInt(element.attr('max'));
+            
             if (value > max) {
                 element.val(max);
                 value = max;
@@ -517,7 +518,8 @@
             var discount = parseFloat(element.attr('data-discount'));
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
 
-            var sub_total = unit_price * parseFloat(element.val());
+            /* var sub_total = unit_price * parseFloat(element.val()); */
+            var sub_total = unit_price * parseFloat(element.val() > 0 ? element.val(): element.attr('max'));
             element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
 
             var exchange_sub_total = sub_total * exchange_rate;

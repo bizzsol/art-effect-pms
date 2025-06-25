@@ -361,6 +361,14 @@
         timepicker: false,
     });
 
+    $('.cc-datepicker').datepicker({
+        language: 'en',
+        dateFormat: 'dd-mm-yyyy',
+        autoClose: true,
+        timepicker: false,
+        minDate: new Date(),
+    });
+
 
     const showPreloader = (value) => {
         if (value === 'none') {
