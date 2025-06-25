@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <div class="form-line">
                                             {!! Form::label('reference_no', 'Ref No', array('class' => 'mb-1 font-weight-bold')) !!}
@@ -49,7 +49,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-7">
+
+                                <div class="col-md-2">
+                                    <div class="form-group mt-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="already_quotation" name="already_quotation" value="1" onclick="getRequestProposalCombineInfo()">
+                                            <label class="form-check-label font-weight-bold" for="already_quotation">
+                                                Already Quotation
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="form-line">
                                             {!! Form::label('supplier_id', 'Select Supplier', array('class' => 'mb-1 font-weight-bold')) !!}
@@ -220,7 +233,7 @@
                                     <button data-placement="top"
                                             data-content="click save changes button for send rfp"
                                             type="submit"
-                                            class="btn-block btn btn-success rounded font-10 mt-10 submit-button">
+                                            class="btn-block btn btn-success rounded font-10 mt-10 submit-button" id="send_button_text">
                                         <i
                                                 class="la la-check"></i>&nbsp;Send to supplier
                                     </button>
@@ -265,25 +278,42 @@
                 items.push(value.value);
             });
 
+            // Check whether the checkbox is checked
+            var alreadyQuotation = $('#already_quotation').is(':checked') ? true : false;
+
+            // alert(alreadyQuotation);
+
+            // Change button text based on checkbox
+            if (alreadyQuotation) {
+                $('#send_button_text').text('Submit');
+            } else {
+                $('#send_button_text').text('Send to supplier');
+            }
+
             $.ajax({
                 url: "{{ url('pms/rfp/request-proposal-separate-info') }}",
                 type: 'POST',
                 dataType: 'json',
-                data: {_token: "{{ csrf_token() }}", items: items},
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    items: items,
+                    alreadyQuotation: alreadyQuotation
+                },
             })
-                .done(function (response) {
-                    $('#reference_no').val(response.reference_no);
-                    var suppliers = '';
-                    $.each(response.suppliers, function (index, val) {
-                        suppliers += '<option value="' + (val.id) + '">' + (val.name) + ' (' + (val.code) + ')</option>';
-                    });
-                    $('#supplier_id').html(suppliers);
-                })
-                .fail(function (response) {
-                    $('#reference_no').val('');
-                    $('#supplier_id').html('');
+            .done(function (response) {
+                $('#reference_no').val(response.reference_no);
+                var suppliers = '';
+                $.each(response.suppliers, function (index, val) {
+                    suppliers += '<option value="' + (val.id) + '">' + (val.name) + ' (' + (val.code) + ')</option>';
                 });
+                $('#supplier_id').html(suppliers);
+            })
+            .fail(function (response) {
+                $('#reference_no').val('');
+                $('#supplier_id').html('');
+            });
         }
+
 
         function CheckAll() {
             if ($('#checkAllProduct').is(':checked')) {
