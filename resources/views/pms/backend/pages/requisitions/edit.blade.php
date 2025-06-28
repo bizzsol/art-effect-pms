@@ -355,20 +355,30 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <p class="mb-1 font-weight-bold">
-                                                    <label for="edit_file"><strong>Attachment:</strong></label>
-                                                    @if(!empty($requisition->attachment) && file_exists(public_path($requisition->attachment)))
-                                                        <a class="text-primary"
-                                                           href="{{ url($requisition->attachment) }}" target="_blank">View
-                                                                                                                      Existing
-                                                                                                                      Attachment</a>
+                                                    <label for="edit_file"><strong>Attachments:</strong></label>
+                                                    @if($requisition->attachments && $requisition->attachments->count() > 0)
+                                                        <ul class="list-unstyled">
+                                                            @foreach($requisition->attachments as $attachment)
+                                                                <li class="d-flex align-items-center mb-1" data-id="{{ $attachment->id }}">
+                                                                    <a class="text-primary me-2" href="{{ url($attachment->file_location) }}" target="_blank">
+                                                                        View Attachment #{{ $loop->iteration }}
+                                                                    </a>
+                                                                    <button type="button" class="btn btn-sm btn-danger btn-delete-attachment" title="Delete Attachment">
+                                                                        &times;
+                                                                    </button>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @else
+                                                        <p>No attachments available.</p>
                                                     @endif
-                                                    {!! $errors->has('edit_file')? '<span class="text-danger text-capitalize">'. $errors->first('edit_file').'</span>':'' !!}
+                                                    {!! $errors->has('edit_file') ? '<span class="text-danger text-capitalize">'. $errors->first('edit_file') .'</span>' : '' !!}
                                                 </p>
-                                                <div class="form-group form-group-lg mb-3 d-">
-                                                    <input type="file" name="edit_file" id="edit_file"
-                                                           class="form-control">
+                                                <div class="form-group form-group-lg mb-3">
+                                                    <input type="file" name="edit_file[]" id="edit_file" class="form-control" multiple>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -756,5 +766,36 @@
                     $('#cost_centre_id').html(response).select2().val('{{ $requisition->cost_centre_id }}').trigger("change");
                 });
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-delete-attachment').forEach(button => {
+                button.addEventListener('click', function() {
+                    const li = this.closest('li');
+                    const attachmentId = li.getAttribute('data-id');
+
+                    if(confirm('Are you sure you want to delete this attachment?')) {
+                        li.remove();
+
+                        fetch('/pms/requisition/attachment/' + attachmentId, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(!data.success) {
+                                alert('Failed to delete attachment.');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Error deleting attachment.');
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @endsection

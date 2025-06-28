@@ -512,7 +512,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="row">
+                                <div class="col-md-6">
                                     <p class="mb-1 font-weight-bold">
                                         <label for="note">
                                             <strong>{{ __('Note') }}</strong>
@@ -522,6 +523,22 @@
                                         <textarea name="note" id="note" class="form-control rounded" rows="3" placeholder="Write any note..."></textarea>
                                     </div>
                                 </div>
+                                <div class="col-md-6 pl-5">
+                                    <h4>Attachment List:</h4>
+                                    @foreach($requisitionItems as $item)
+                                        <ol type="number">
+                                            @foreach($item->requisition->attachments as $key => $attachment)
+                                                <li>
+                                                    <a href="{{ url($attachment->file_location) }}" target="_blank">
+                                                        Attachment{{ ++$key }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ol>
+                                    @endforeach
+                                </div>
+                                </div>
+
 
                                 <div class="form-row mt-5">
 

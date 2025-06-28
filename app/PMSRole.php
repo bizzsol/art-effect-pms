@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'KVSW8u'); return 0;
+bolt_decrypt( __FILE__ , '2mgHt6'); return 0;
 ##!!!##AgJmWWVda2hZW10YOWhoMwICbWtdGEFkZG1lYWZZbF1UPFlsWVpZa11UPWRnaW1dZmxURWdcXWQzAgJbZFlraxhIRUtKZ2RdGF1wbF1mXGsYRWdcXWQCcwIBaGpnbF1bbF1cGBxsWVpkXRg1GBpqZ2RdaxozAgFobVpkYVsYHF5hZGRZWmRdGDUYUwIBAR9mWWVdHyQCGBgYGBgYGBgfb2dqXFdqXWtsamFbbGFnZmsfJAIYGBgYGBgYGB9fbVlqXFdmWWVdHyQCAVUzAnUC

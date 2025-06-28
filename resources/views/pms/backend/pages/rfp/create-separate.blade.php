@@ -55,7 +55,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="already_quotation" name="already_quotation" value="1" onclick="getRequestProposalCombineInfo()">
                                             <label class="form-check-label font-weight-bold" for="already_quotation">
-                                                Already Quotation
+                                                Already Have Quotation
                                             </label>
                                         </div>
                                     </div>

@@ -382,14 +382,25 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="mb-1 font-weight-bold"><label
-                                                            for="file"><strong>Attachment:</strong></label>
-                                                    {!! $errors->has('file')? '<span class="text-danger text-capitalize">'.
-                                                    $errors->first('file').'</span>':'' !!}</p>
-                                                <div class="form-group form-group-lg mb-3 d-">
-                                                    <input type="file" name="file" id="file" class="form-control">
+                                                <div class="row" id="attachment-wrapper">
+                                                    <div class=" attachment-group d-flex align-items-center">
+                                                        <div class="w-100">
+                                                            <p class="mb-1 font-weight-bold">
+                                                                <label for="file"><strong>Attachment:</strong></label>
+                                                                {!! $errors->has('file') ? '<span class="text-danger text-capitalize">' . $errors->first('file') . '</span>' : '' !!}
+                                                            </p>
+                                                            <div class="form-group form-group-lg mb-0">
+                                                                <input type="file" name="file[]" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <a href="javascript:void(0);" class="add_attachment btn btn-sm btn-success ms-2 mt-4" title="Add More Attachment">
+                                                            <i class="las la-plus"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
 
@@ -880,4 +891,43 @@
                 });
         }
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const attachmentWrapper = document.getElementById('attachment-wrapper');
+
+        // Add new attachment field
+        attachmentWrapper.addEventListener('click', function (e) {
+            if (e.target.closest('.add_attachment')) {
+                const newAttachment = document.createElement('div');
+                newAttachment.className = 'attachment-group d-flex align-items-center mt-2';
+                newAttachment.innerHTML = `
+                    <div class="w-100">
+                        <p class="mb-1 font-weight-bold">
+                            <label><strong>Attachment:</strong></label>
+                        </p>
+                        <div class="form-group form-group-lg mb-0">
+                            <input type="file" name="file[]" class="form-control" />
+                        </div>
+                    </div>
+                    <a href="javascript:void(0);" class="remove_attachment btn btn-sm btn-danger ms-2 mt-4" title="Remove Attachment">
+                        <i class="las la-times"></i>
+                    </a>
+                `;
+                attachmentWrapper.appendChild(newAttachment);
+            }
+        });
+
+        // Remove attachment field
+        attachmentWrapper.addEventListener('click', function (e) {
+            if (e.target.closest('.remove_attachment')) {
+                const group = e.target.closest('.attachment-group');
+                if (group) group.remove();
+            }
+        });
+    });
+</script>
+
+
+
+    
 @endsection
