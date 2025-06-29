@@ -925,9 +925,5 @@
             }
         });
     });
-</script>
-
-
-
-    
+</script>    
 @endsection
