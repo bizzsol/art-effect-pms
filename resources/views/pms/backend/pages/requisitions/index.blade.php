@@ -269,7 +269,11 @@
                     })
                         .done(function (response) {
                             if (response.success) {
-                                $('#status' + id).html('<span class="btn btn-sm btn-warning">' + response.new_text + '</span>');
+                                var statusHtml = '<span class="btn btn-sm btn-warning">' + response.new_text + '</span>';
+
+                                $('#status' + id).html(statusHtml);
+                                $('#finance_approval_status' + id).html(statusHtml);
+
                                 notify(response.message, 'success');
                                 sendButton.parent().find('.requisition-edit').remove();
                                 sendButton.parent().find('.requisition-delete').remove();

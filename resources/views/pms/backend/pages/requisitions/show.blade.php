@@ -140,6 +140,7 @@
                     </div>
                     @endif
                 </div>
+                @if($requisition->attachments->isNotEmpty())
                 <div class="col-6">
                     <h4>Attachment List:</h4>
                     <ol type="number">
@@ -148,6 +149,7 @@
                         @endforeach
                     </ol>
                 </div>
+                @endif
             </div>
 
         </div>
