@@ -12,7 +12,7 @@
     <title>{{ $directPurchase ? 'Direct Purchase' : 'Purchase Order' }}</title>
     <style>
         @page {
-            margin-top: 1.25in;
+            margin-top: 1.45in;
             margin-bottom: 1.25in;
             header: page-header;
             footer: page-footer;

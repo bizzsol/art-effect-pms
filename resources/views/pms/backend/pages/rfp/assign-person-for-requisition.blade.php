@@ -14,6 +14,7 @@
                         @endif
                     </select>
                 </div> -->
+                <input type="hidden" name="user_id"  value="{{$requisition->assigned_user_id !==null?$requisition->assigned_user_id:auth()->user()->id}}" />
                 <div class="col-md-3">
                     <button class="btn btn-sm btn-success btn-block text-white assign-button" type="submit"><i class="las la-check"></i>&nbsp;Submit</button>
                 </div>

@@ -103,9 +103,9 @@
                                                     <label for="assigned_user_id"><strong>{{ __('Assigned Person') }}<span class="text-danger">*</span></strong></label>
                                                 </p>
                                                 <div class="input-group input-group-md mb-3">
-                                                    @if($assignedUser)
-                                                        <input type="text" class="form-control-plaintext" value="{{ $assignedUser->name }}" readonly>
-                                                        <input type="hidden" name="assigned_user_id" value="{{ $assignedUser->id }}">
+                                                    @if($req->assignedUser)
+                                                        <input type="text" class="form-control-plaintext" value="{{ $req->assignedUser->name }}" readonly>
+                                                        <input type="hidden" name="assigned_user_id" value="{{ $req->assigned_user_id }}">
                                                     @else
                                                         <span class="text-danger">No person assigned.</span>
                                                     @endif

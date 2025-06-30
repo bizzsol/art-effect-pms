@@ -6,11 +6,11 @@
     <title>{{ $title }}</title>
     <style>
         @page {
-            margin-top: 1.85in;
+            margin-top: 1.0in;
             margin-bottom: 1.25in;
             header: page-header;
             footer: page-footer;
-            background: url('assets/idcard/letterhead/{{ $quotations[0]->relRequestProposal->requestProposalRequisition[0]->relRequisition->Unit->hr_unit_short_name }}.png') no-repeat 0 0;
+            background: url({{ getUnitPad($quotations[0]->relRequestProposal->requestProposalRequisition[0]->relRequisition->Unit) }}) no-repeat 0 0;
             background-image-resize: 6;
         }
 
@@ -191,7 +191,7 @@
             <h2><strong>Compare Statement View</strong></h2>
             <div class="panel panel-info">
                 <div class="col-lg-12 invoiceBody" style="width:100%">
-                    <div class="invoice-details mt25 row">
+                    <div class="invoice-details mt10 row">
 
                         @foreach($quotations as $key=>$quotation)
                             @if($key==0)
