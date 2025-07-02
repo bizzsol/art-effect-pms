@@ -60,7 +60,7 @@
         <div class="col-md-6 well">
             <ul class="list-unstyled mb0">
                 <li><strong>CS Number :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
-                <li><strong>Project Name:</strong></li>
+{{--                <li><strong>Project Name:</strong></li>--}}
             </ul>
         </div>
         <div class="col-md-6 well">

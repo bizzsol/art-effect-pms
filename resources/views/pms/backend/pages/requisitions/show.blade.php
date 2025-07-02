@@ -10,7 +10,7 @@
                         <li><strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
                         </li>
                         <li>
-                            <strong>Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
+                            <strong>Requisitor Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
                         </li>
                         <li>
                             <strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
