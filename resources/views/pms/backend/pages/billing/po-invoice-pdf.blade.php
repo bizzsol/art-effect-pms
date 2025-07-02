@@ -254,9 +254,10 @@
         <tr class="text-center">
             <td style="text-align:  center;width: 5% !important"><strong>Item No.</strong></td>
             <td style="text-align:  center;width: 16% !important"><strong>Product</strong></td>
-            <td style="text-align:  center;width: 10% !important"><strong>Unit</strong></td>
+
             <td style="text-align:  center;width: 21% !important"><strong>Description</strong></td>
             <td style="text-align:  center;width: 8% !important"><strong>Qty</strong></td>
+            <td style="text-align:  center;width: 10% !important"><strong>Unit</strong></td>
             <td style="text-align:  center;width: 10% !important"><strong>Unit Price</strong></td>
             {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
                 <td style="text-align:  center;width: 7.5% !important"><strong>Item Total</strong></td>
@@ -274,11 +275,12 @@
                 <td>
                     {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
                 </td>
+
+                <td style="text-align: center">{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
+                <td style="text-align: center">{{ $item->qty }}</td>
                 <td style="text-align: center">
                     {{ isset($item->relProduct->productUnit->unit_name) ? $item->relProduct->productUnit->unit_name : '' }}
                 </td>
-                <td style="text-align: center">{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
-                <td style="text-align: center">{{ $item->qty }}</td>
                 <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                 {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
                     <td class="text-right">{{systemMoneyFormat($item->sub_total_price)}}</td>
