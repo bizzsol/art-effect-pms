@@ -124,7 +124,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-9 col-sm-12">
+                                    <div class="col-md-3 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="requisition_id"><strong>{{ __('Requisitions') }} <span
                                                             class="text-danger">*</span></strong></label></p>
@@ -137,16 +137,61 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-12">
-                                        <p class="mb-1 font-weight-bold"><label
-                                                    for="cost_centre_id"><strong>{{ __('Cost Centre') }} <span
-                                                            class="text-danger">*</span></strong></label></p>
-                                        <div class="input-group input-group-md mb-3 d-">
-                                            <select name="cost_centre_id" id="cost_centre_id"
-                                                    class="form-control rounded">
-                                                <option value="0">Choose Cost Centre</option>
-                                            </select>
+                                            <p><label class="font-weight-bold"
+                                                        for="payment_term_id"><strong>Payment
+                                                                                    Term
+                                                        <span class="text-danger">*</span></strong></label>
+                                            </p>
+                                            <div class="input-group input-group-md mb-3 d-">
+                                                <select name="payment_term_id"
+                                                        id="payment_term_id"
+                                                        class="form-control rounded"
+                                                        onchange="printPaymentTermInformation()">
+                                                        <option value="{{null}}">--Select One--</option>
+                                                    @if(isset($paymentTerms[0]))
+                                                        @foreach($paymentTerms as $paymentTerm)
+                                                    
+                                                            <option value="{{ $paymentTerm->id }}" 
+                                                                    {{$paymentTerm->id==$quotation->relSupplierPaymentTerm->payment_term_id?'selected':''}}
+                                                                    data-percentage="{{ $quotation->relSupplierPaymentTerm->payment_percent }}"
+                                                                    data-type="{{ $quotation->relSupplierPaymentTerm->type }}"
+                                                                    data-payment-mode="{{ $quotation->relSupplierPaymentTerm->payment_mode }}">{{ $paymentTerm->term}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                      
+                                                <div class="col-md-6">
+                                                
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <th style="width:20%">Percentage</th>
+                                                            <th style="width:20%">Payment Type</th>
+                                                            <th style="width:45%">Payment Mode</th>
+                    
+                                                        </thead>
+                                                        <tbody id="payment-percentages-div">
+
+                                                        </tbody>
+                                                    </table>
+                                                
+                                                </div>
+                                           
+
+{{--                                    <div class="col-md-3 col-sm-12">--}}
+{{--                                        <p class="mb-1 font-weight-bold"><label--}}
+{{--                                                    for="cost_centre_id"><strong>{{ __('Cost Centre') }} <span--}}
+{{--                                                            class="text-danger">*</span></strong></label></p>--}}
+{{--                                        <div class="input-group input-group-md mb-3 d-">--}}
+{{--                                            <select name="cost_centre_id" id="cost_centre_id"--}}
+{{--                                                    class="form-control rounded">--}}
+{{--                                                <option value="0">Choose Cost Centre</option>--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
+                                    <input type="hidden" name="cost_centre_id" id="cost_centre_id">
                                 </div>
 
                                 <div class="table-responsive mt-10">
@@ -304,6 +349,9 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                
+                                <!-- testing -->
+                            
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <h6 class="mb-2"><strong>Work Progresses</strong></h6>
@@ -545,7 +593,8 @@
                     },
                 })
                     .done(function (costCentres) {
-                        $('#cost_centre_id').html(costCentres);
+                        //$('#cost_centre_id').html(costCentres);
+                        $('#cost_centre_id').val(costCentres);
                     })
                     .fail(function (response) {
                         $('#cost_centre_id').html('<option value="0">Choose Cost Centre</option>');
@@ -597,5 +646,49 @@
                 element.val(0);
             }
         }
+    </script>
+
+    <script> 
+        printPaymentTermInformation();
+
+            function printPaymentTermInformation() {
+                var percentage = $('#payment_term_id').find(':selected').attr('data-percentage');
+                var type = $('#payment_term_id').find(':selected').attr('data-type');
+                var payment_mode = $('#payment_term_id').find(':selected').attr('data-payment-mode');
+                $('#payment-percentages-div').html('<tr>' +
+                    '<td>' +
+                    '<input type="number" name="payment_percentages" value="' + percentage + '" class="form-control payment-percentages" min="1" max="100" placeholder="%" onchange="validatePaymentTerms()" onkeyup="validatePaymentTerms()" required />' +
+                    '</td>' +
+    
+                    '<td>' +
+                    '<select name="payment_types" class="form-control payment-types" required>' +
+                    '<option value="paid" ' + (type == 'paid' ? 'selected' : '') + '>Advance</option>' +
+                    '<option value="due" ' + (type == 'due' ? 'selected' : '') + '>Credit</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="text" name="payment_modes" class="form-control payment-modes" value="' + payment_mode + '" required />' +
+                    '</td>' +
+                    '</tr>');
+                $('.payment-types').select2();
+            }
+
+
+            function validatePaymentTerms() {
+                var percentages = 0;
+                $.each($('.payment-percentages'), function (index, val) {
+                    var max = parseInt($(this).attr('max'));
+
+                    if ($(this).val() > max) {
+                        $(this).val(0);
+                    } else {
+                        percentages += parseInt($(this).val());
+                    }
+
+                    if (percentages > max) {
+                        $(this).val(0);
+                    }
+                });
+            }
     </script>
 @endsection

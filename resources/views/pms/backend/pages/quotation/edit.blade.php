@@ -78,6 +78,39 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <p class="mb-1 font-weight-bold">
+                                                            <label for="supplier_quotation_date">
+                                                                <strong>{{ __('Supplier Quotation Date') }} <span class="text-danger">*</span></strong>
+                                                            </label>
+                                                        </p>
+                                                        <div class="input-group input-group-md mb-3">
+                                                            <input type="datetime-local"
+                                                                name="supplier_quotation_date"
+                                                                id="supplier_quotation_date"
+                                                                class="form-control rounded"
+                                                                value="{{ old('supplier_quotation_date', isset($quotation) ? date('Y-m-d\TH:i', strtotime($quotation->supplier_quotation_date)) : now()->format('Y-m-d\TH:i')) }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">
+                                                            <label for="supplier_quotation_ref_no">
+                                                                <strong>{{ __('Supplier Reference No') }} <span class="text-danger">*</span></strong>
+                                                            </label>
+                                                        </p>
+                                                        <div class="input-group input-group-md mb-3">
+                                                            <input type="text"
+                                                                name="supplier_quotation_ref_no"
+                                                                id="supplier_quotation_ref_no"
+                                                                class="form-control rounded"
+                                                                placeholder="EX-QC-23-SSL-003"
+                                                                required
+                                                                value="{{ old('supplier_quotation_ref_no', isset($quotation) ? $quotation->supplier_quotation_ref_no : '') }}">
+                                                        </div>
+                                                    </div>
+
+
                                                     {{-- <div class="col-md-5 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="discount_percent">{{ __('Discount Percentage %') }}:</label>
                                                         </p>

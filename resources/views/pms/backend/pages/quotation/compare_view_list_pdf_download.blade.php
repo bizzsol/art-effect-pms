@@ -10,7 +10,7 @@
             margin-bottom: 1.25in;
             header: page-header;
             footer: page-footer;
-            background: url({{ getUnitPad($quotations[0]->relRequestProposal->requestProposalRequisition[0]->relRequisition->Unit) }}) no-repeat 0 0;
+            /* background: url({{ getUnitPad($quotations[0]->relRequestProposal->requestProposalRequisition[0]->relRequisition->Unit) }}) no-repeat 0 0; */
             background-image-resize: 6;
         }
 
@@ -188,7 +188,7 @@
 @if($quotations)
     <div class="row">
         <div class="col-md-12">
-            <h2><strong>Compare Statement View</strong></h2>
+            <h2><strong>Comparative Statement</strong></h2>
             <div class="panel panel-info">
                 <div class="col-lg-12 invoiceBody" style="width:100%">
                     <div class="invoice-details mt10 row">

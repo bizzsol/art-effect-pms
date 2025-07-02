@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'tPxBPn'); return 0;
+bolt_decrypt( __FILE__ , 'AoucdP'); return 0;
 ##!!!##Rkaqnamhr6ydn6FcfaysmImroKGor5iErndGRrGvoVyFqKixqaWqnbChmICdsJ2ena+hmIGoq62xoaqwmImroKGod0ZGn6idr69cfbCwoaqgnaqfoX6rqrGvXKG0sKGqoK9ciaugoahGt0ZcXFxcrK6rsKGfsKGgXGCwnZ6ooXlcXqSum52wsKGqoJ2qn6Gbnquqsa9ed0ZcXFxcrLGeqKWfXGCwpamhr7CdqayvXHlcop2or6F3RlxcXFysrquwoZ+woaBcYKOxna6goaBceVyXmXdGuUY=

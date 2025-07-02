@@ -99,6 +99,37 @@
                                                                    value="{{ ($refNo)?($refNo):0 }}">
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <p class="mb-1 font-weight-bold"><label
+                                                                    for="supplier_quotation_date"><strong>{{ __('Supplier Quotation Date') }}
+                                                                    <span class="text-danger">*</span></strong></label>
+                                                        </p>
+                                                        <div class="input-group input-group-md mb-3 d-">
+                                                            <input type="datetime-local"
+                                                                   name="supplier_quotation_date"
+                                                                   id="quotation_date"
+                                                                   class="form-control rounded"
+                                                                   value="{{ old('supplier_quotation_date') ? old('supplier_quotation_date') : date('Y-m-d\TH:i') }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold"><label
+                                                                    for="supplier_quotation_reference_no"><strong>{{ __('Supplier Reference No') }}
+                                                                    <span class="text-danger">*</span></strong></label>
+                                                        </p>
+                                                        <div class="input-group input-group-md mb-3 d-">
+                                                            <input type="text" name="supplier_quotation_ref_no"
+                                                                   id="reference_no"
+                                                                   class="form-control rounded"
+                                                                   aria-label="Large"
+                                                                   placeholder="EX-QC-23-SSL-003"
+                                                                   aria-describedby="inputGroup-sizing-sm"
+                                                                   required
+                                                                   value="{{ old('supplier_quotation_ref_no') }}">
+                                                        </div>
+                                                    </div>
                                                     
 
                                                     <div class="col-md-6 col-sm-12">
@@ -229,7 +260,7 @@
                                                         </table>
                                                         <a class="btn btn-xs btn-success text-white pull-right"
                                                            onclick="newPaymentTerm()"><i
-                                                                    class="las la-plus"></i>&nbsp;New
+                                                                    class="las la-plus"></i>&nbsp;
                                                                                             New Line</a>
                                                     </div>
                                                 </div>
