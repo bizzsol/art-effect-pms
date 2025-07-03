@@ -15,7 +15,7 @@
         <td class="text-center"><strong>Total Amount</strong></td>
         <td class="text-center"><strong>Negotiation Savings</strong></td>
         <td class="text-center"><strong>Company</strong></td>
-        <td class="text-center"><strong>CS Number</strong></td>
+        <td class="text-center"><strong>RFP Number</strong></td>
         <td class="text-center"><strong>PO Number</strong></td>
         <td class="text-center"><strong>Supplier's Name</strong></td>
         <td class="text-center"><strong>Order Date</strong></td>

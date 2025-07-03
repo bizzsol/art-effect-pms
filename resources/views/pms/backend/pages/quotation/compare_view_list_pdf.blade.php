@@ -59,7 +59,7 @@
         @if($key==0)
         <div class="col-md-6 well">
             <ul class="list-unstyled mb0">
-                <li><strong>CS Number :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                <li><strong>RFP Number :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
 {{--                <li><strong>Project Name:</strong></li>--}}
             </ul>
         </div>
@@ -139,7 +139,7 @@
                 <td>{{ $item->description }}</td>
                 <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                 </td>
-                <td class="text-center">{{$item->approved_qty}}</td>
+                <td class="text-center">{{$item->qty}}</td>
 
                 @foreach($quotations as $key=>$quotation)
                 {{-- <td class="text-center">
@@ -164,7 +164,7 @@
 
             </tr>
             @php
-            $total_qty += $item->approved_qty;
+            $total_qty += $item->qty;
             @endphp
             @endforeach
             @endif
@@ -326,4 +326,6 @@
             });
         }
     </script>
+
+
 </div>

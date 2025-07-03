@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
-                                                    for="rfp_reference_no"><strong>CS Number <span
+                                                    for="rfp_reference_no"><strong>RFP Number <span
                                                             class="text-danger">*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <input type="text" name="rfp_reference_no" id="rfp_reference_no"

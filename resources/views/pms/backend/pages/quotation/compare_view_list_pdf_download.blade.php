@@ -197,8 +197,8 @@
                             @if($key==0)
                                 <div class="col-md-6 well" style="width: 50%; float:left;padding-top: 10px;">
                                     <ul class="list-unstyled mb0">
-                                        <li><strong>CS Number: </strong>{{$quotation->relRequestProposal->reference_no}}</li>
-                                        <li><strong>Project Name:</strong></li>
+                                        <li><strong>RFP Number: </strong>{{$quotation->relRequestProposal->reference_no}}</li>
+{{--                                        <li><strong>Project Name:</strong></li>--}}
                                     </ul>
                                 </div>
                                 <div class="col-md-6 well" style="width: 50%; float:right;padding-top: 10px;">

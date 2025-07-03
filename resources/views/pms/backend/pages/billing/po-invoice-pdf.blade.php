@@ -205,8 +205,8 @@
                     Contact
                         Person:</strong> {!! isset($purchaseOrder->creator) ?  $purchaseOrder->creator->name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator->employee->designation)->hr_designation_name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator)->phone : '' !!}
                 <br>
-                <strong>Order/Requisition
-                        Ref: {{ $purchaseOrder->purchaseOrderRequisitions->pluck('requisition.reference_no')->implode(', ') }}</strong>
+                <strong>
+                    Quotation Ref: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->reference_no : '' }}</strong>
             </td>
         </tr>
         <tr>
