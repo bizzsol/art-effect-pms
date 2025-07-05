@@ -58,8 +58,8 @@
                                     @if($key==0)
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>RFP Number:</strong> {{$quotation->relRequestProposal->reference_no}}</li>
-                                                <li><strong>Project Name:</strong></li>
+                                                <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                                               
                                             </ul>
                                         </div>
                                         <div class="col-md-6">

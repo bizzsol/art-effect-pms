@@ -111,7 +111,8 @@ use App\Models\PmsModels\PurchaseReturn;
                             <tr>
                                 <td class="text-center">{{ $rkey+ 1 }}</td>
                                 @if($rkey == 0)
-                                <td rowspan="{{ $proposals->relQuotations->count() }}"><a href="javascript:void(0)" onclick="openRequestProposalModal({{$values->request_proposal_id}})"  class="btn btn-link">{{$values->relRequestProposal->reference_no}}</a></td>
+                                <td rowspan="{{ $proposals->relQuotations->count() }}"><a href="javascript:void(0)" onclick="openFullViewModal({{$values->request_proposal_id}})"  class="btn btn-link">{{$values->relRequestProposal->reference_no}}</a></td>
+                                <!-- <td rowspan="{{ $proposals->relQuotations->count() }}"><a href="javascript:void(0)" onclick="openRequestProposalModal({{$values->request_proposal_id}})"  class="btn btn-link">{{$values->relRequestProposal->reference_no}}</a></td> -->
                                 @endif
 
                                 <td>{{date('d-m-Y',strtotime($values->quotation_date))}}</td>
@@ -772,5 +773,16 @@ function viewRemarks(element){
     $('#POdetailsModel').find('.modal-title').html(`Notes From Audit`);
     $('#POdetailsModel').modal('show');
 }
+
+function openFullViewModal(requestId) {
+        $.dialog({
+            title: 'Quotation Details Preview',
+            content: "url:{{url("pms/rfp/request-proposal")}}/"+requestId+"?preview",
+            animation: 'scale',
+            columnClass: 'col-md-12',
+            closeAnimation: 'scale',
+            backgroundDismiss: true,
+        });
+    }
 </script>
 @endsection

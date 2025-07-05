@@ -67,7 +67,7 @@ use \App\Models\PmsModels\QuotationsItems;
                                                 <li><strong>{{__('Request Proposal No')}} :</strong>
                                                     {{$quotation->relRequestProposal->reference_no}}
                                                 </li>
-                                                <li><strong>Project Name:</strong></li>
+     
                                             </ul>
                                         </div>
                                         <div class="col-md-6 well">

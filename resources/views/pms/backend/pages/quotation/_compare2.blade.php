@@ -63,7 +63,7 @@
                                         <ul class="list-unstyled mb0 pull-right">
 
                                             <li><strong>{{__('Reference No')}}:</strong> {{$quotation->reference_no}}</li>
-                                            <li><strong>{{__('RFP No')}}:</strong> {{isset($quotation->relRequestProposal->reference_no)?$quotation->relRequestProposal->reference_no:''}}</li>
+                                            <li><strong>{{__('CS No')}}:</strong> {{isset($quotation->relRequestProposal->reference_no)?$quotation->relRequestProposal->reference_no:''}}</li>
 
                                             <li>
                                                 <div class="form-check">
