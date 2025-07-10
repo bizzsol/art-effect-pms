@@ -103,7 +103,29 @@
                                         </div>
                                     </div>
 
-                                    @if($uncommon > 0)
+                                    <div class="col-md-2 col-sm-12">
+                                        <p class="mb-1 font-weight-bold">
+                                            <label for="warehouse_id">
+                                                <strong>{{ __('Warehouse') }} <span class="text-danger">*</span></strong>
+                                            </label>
+                                        </p>
+                                        <div class="input-group input-group-md mb-3">
+                                            <select name="warehouse_id"
+                                                    id="warehouse_id"
+                                                    class="form-control rounded" required>
+                                                <option value="">Select One</option>
+                                                @foreach($warehouses as $warehouse)
+                                                    <option value="{{ $warehouse->id }}"
+                                                            {{ $warehouses->count() === 1 ? 'selected' : '' }}>
+                                                        {{ $warehouse->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                @if($uncommon > 0)
                                         <div class="col-md-2 col-sm-12">
                                             <p class="mb-1 font-weight-bold"><label
                                                         for="hr_department_id"><strong>{{ __('Department') }} <span
@@ -124,7 +146,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-3 col-sm-12">
+                                    <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold"><label
                                                     for="requisition_id"><strong>{{ __('Requisitions') }} <span
                                                             class="text-danger">*</span></strong></label></p>
@@ -136,7 +158,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12">
+                                    <div class="col-md-2 col-sm-12">
                                             <p><label class="font-weight-bold"
                                                         for="payment_term_id"><strong>Payment
                                                                                     Term
@@ -233,7 +255,8 @@
                                                 {{-- <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td> --}}
                                                 <td>
                                                     @if(isset($item->relProduct->name))
-                                                        {{$item->relProduct->name}} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                                                        {{$item->relProduct->name}}
+{{--                                                        {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->description }}</td>

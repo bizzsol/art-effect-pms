@@ -85,11 +85,11 @@
                                                             </label>
                                                         </p>
                                                         <div class="input-group input-group-md mb-3">
-                                                            <input type="datetime-local"
+                                                            <input type="date"
                                                                 name="supplier_quotation_date"
                                                                 id="supplier_quotation_date"
                                                                 class="form-control rounded"
-                                                                value="{{ old('supplier_quotation_date', isset($quotation) ? date('Y-m-d\TH:i', strtotime($quotation->supplier_quotation_date)) : now()->format('Y-m-d\TH:i')) }}">
+                                                                value="{{ old('supplier_quotation_date', isset($quotation) ? date('Y-m-d', strtotime($quotation->supplier_quotation_date)) : now()->format('Y-m-d')) }}">
                                                         </div>
                                                     </div>
 
@@ -235,7 +235,8 @@
                                                     <td>
                                                         {{isset($item->relProduct->name)?$item->relProduct->name:''}}
                                                         ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}
-                                                        ) {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                                                        )
+{{--                                                        {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                                                         <input type="hidden" name="quotations_item_id[]" class="form-control" value="{{$item->id}}">
                                                     </td>
                                                      <td>

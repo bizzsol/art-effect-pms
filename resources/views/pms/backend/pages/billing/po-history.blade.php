@@ -777,7 +777,7 @@ function viewRemarks(element){
 function openFullViewModal(requestId) {
         $.dialog({
             title: 'Quotation Details Preview',
-            content: "url:{{url("pms/rfp/request-proposal")}}/"+requestId+"?preview",
+            content: "url:{{url("pms/rfp/request-proposal-cs-po-history")}}/"+requestId+"?preview",
             animation: 'scale',
             columnClass: 'col-md-12',
             closeAnimation: 'scale',

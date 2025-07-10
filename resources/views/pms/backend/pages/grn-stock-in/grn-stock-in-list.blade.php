@@ -97,18 +97,32 @@
                                                            value="{{$values->received_qty}}" readonly
                                                            class="form-control rounded text-center"></td>
                                                 <td class="text-right">{{number_format($values->total_amount,2)}}</td>
+                                                @php
+                                                    $warehouse = $values->relGoodsReceivedItems->relGoodsReceivedNote->relPurchaseOrder->warehouse ?? null;
+                                                @endphp
+
                                                 <td>
-                                                    <div class="input-group input-group-md">
-                                                        <select name="warehouse_id[{{$values->id}}]"
-                                                                id="warehouse_id{{$values->id}}"
-                                                                class="form-control rounded" required>
-                                                            <option value="">Select One</option>
-                                                            @foreach($warehouses as $key=> $warehouse)
-                                                                <option value="{{ $warehouse->id }}" {{ $warehouses->count() == 1 ? 'selected' : ''  }}>{{ $warehouse->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                    @if($warehouse!==null)
+                                                        <input type="hidden"
+                                                               name="warehouse_id[{{ $values->id }}]"
+                                                               id="warehouse_id{{ $values->id }}"
+                                                               value="{{ $warehouse->id ?? '' }}"/>
+                                                        {{ $warehouse->name ?? 'No Warehouse' }}
+                                                    @else
+                                                        <div class="input-group input-group-md">
+                                                            <select name="warehouse_id[{{$values->id}}]"
+                                                                    id="warehouse_id{{$values->id}}"
+                                                                    class="form-control rounded" required>
+                                                                <option value="">Select One</option>
+                                                                @foreach($warehouses as $key=> $warehouse)
+                                                                    <option value="{{ $warehouse->id }}" {{ $warehouses->count() == 1 ? 'selected' : ''  }}>{{ $warehouse->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
                                                 </td>
+
+
                                             </tr>
                                         @endforeach
                                     @endif

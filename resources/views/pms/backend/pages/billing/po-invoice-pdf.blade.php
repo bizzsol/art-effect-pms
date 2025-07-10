@@ -224,6 +224,8 @@
 {{--                    {{ $factoryAddress->adddress }}--}}
 {{--                @endif--}}
                 <div>
+                    {!! isset($purchaseOrder->Unit->hr_unit_name) ? $purchaseOrder->Unit->hr_unit_name : '' !!}
+                    <br>
                     {!! isset($purchaseOrder->Unit->hr_unit_address) ? $purchaseOrder->Unit->hr_unit_address : '' !!}
                 </div>
             </td>
@@ -233,11 +235,13 @@
                 <br>
                 <strong>Quotation Date:</strong> {{ isset($purchaseOrder->relQuotation->supplier_quotation_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->supplier_quotation_date)) : '' }}
                 <br>
-                <strong>Deliver
-                        to:</strong> {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}
-                <div>
-                    {!! isset($purchaseOrder->Unit->delivery_address) ? $purchaseOrder->Unit->delivery_address : '' !!}
-                </div>
+                <strong>Deliver to: </strong>
+                {!! $purchaseOrder->warehouse->name ?? 'No Warehouse' !!},
+                {!! $purchaseOrder->warehouse->address ?? 'No Address' !!}
+
+
+                {{--                {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}--}}
+
 
 {{--                <strong>Order is valid--}}
 {{--                        till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>--}}
@@ -275,7 +279,8 @@
             <tr>
                 <td class="text-center">{{ $key+1}}</td>
                 <td>
-                    {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                    {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }}
+{{--                    {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                 </td>
 
                 <td style="text-align: center">{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>

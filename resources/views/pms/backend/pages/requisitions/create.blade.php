@@ -215,7 +215,7 @@
                                                             </div>
                                                         </td>
                                                         <td class="product-attributes-{{ $key+1 }}">
-
+                                                            <input type="text" class="form-control" name="description[]" value="{{ $item['description'] ?? '' }}">
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-md">
@@ -284,7 +284,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="product-attributes-1">
-
+                                                        <input type="text" class="form-control" name="description[]" value="{{ $item['description'] ?? '' }}">
                                                     </td>
                                                     <td>
                                                         <div class="input-group input-group-md">
@@ -850,21 +850,31 @@
 
 
         function getAttributes(element) {
-            element.parent().parent().parent().find('.requisition-unit_price').val(element.find(':selected').attr('data-unit-price'));
-            var product_id = parseInt(element.find(':selected').val());
+            const serial = element.attr('data-serial');
+            const parentRow = element.closest('tr');
+            const attributesContainer = parentRow.find('.product-attributes-' + serial);
+            const unitPrice = element.find(':selected').attr('data-unit-price');
+
+            parentRow.find('.requisition-unit_price').val(unitPrice);
+
+            const product_id = parseInt(element.find(':selected').val());
             if (product_id > 0) {
                 $.ajax({
-                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id=" + product_id + "&serial=" + element.attr('data-serial'),
+                    url: "{{ url('pms/requisition/requisition/create') }}?get-attributes&product_id=" + product_id + "&serial=" + serial,
                     type: 'GET',
-                    data: {},
-                })
-                    .done(function (response) {
-                        element.parent().parent().parent().find('.product-attributes-' + element.attr('data-serial')).html(response);
-                    });
+                }).done(function (response) {
+                    // Preserve the input field
+                    const inputField = attributesContainer.find('input[name="description[]"]').prop('outerHTML') || '<input type="text" class="rounded" name="description[]">';
+
+                    // Add the response + input field (in this order if you want response above input)
+                    attributesContainer.html(response + inputField);
+                });
             } else {
-                element.parent().parent().parent().find('.product-attributes-' + element.attr('data-serial')).html('');
+                // If no product selected, show only the input field
+                attributesContainer.html('<input type="text" class="rounded" name="description[]">');
             }
         }
+
 
         function showAttributeoptions(element) {
             var attributes = element.parent().parent().find('.attributes:checked').map(function () {

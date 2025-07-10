@@ -106,11 +106,11 @@
                                                                     <span class="text-danger">*</span></strong></label>
                                                         </p>
                                                         <div class="input-group input-group-md mb-3 d-">
-                                                            <input type="datetime-local"
+                                                            <input type="date"
                                                                    name="supplier_quotation_date"
                                                                    id="quotation_date"
                                                                    class="form-control rounded"
-                                                                   value="{{ old('supplier_quotation_date') ? old('supplier_quotation_date') : date('Y-m-d\TH:i') }}">
+                                                                   value="{{ old('supplier_quotation_date') ? old('supplier_quotation_date') : date('Y-m-dF') }}">
                                                         </div>
                                                     </div>
 
@@ -301,7 +301,8 @@
                                                     <td>
                                                         {{ isset($item->product->name) ? $item->product->name : '' }}
                                                         ({{ isset($item->product->sku) ? $item->product->sku : '' }}
-                                                        ) {{ getProductAttributesFaster($item->product) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}
+                                                        )
+{{--                                                        {{ getProductAttributesFaster($item->product) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                                                         <input type="hidden" name="product_id[]"
                                                                class="form-control"
                                                                value="{{$item->uid}}">

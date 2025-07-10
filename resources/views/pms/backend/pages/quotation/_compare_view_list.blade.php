@@ -318,15 +318,34 @@
                                                     </td>
                                                 @endforeach
                                             </tr>
+{{--                                            <tr>--}}
+{{--                                                <td colspan="7" class="text-right">Remarks</td>--}}
+{{--                                                @foreach($quotations as $key=>$quotation)--}}
+{{--                                                    <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">--}}
+{{--                                                        <textarea class="form-control" name="remarks" rows="1"--}}
+{{--                                                                  id="remarks"--}}
+{{--                                                                  placeholder="What is the reason for choosing this supplier?">{!! $quotation->remarks?$quotation->remarks:'' !!}</textarea>--}}
+{{--                                                    </td>--}}
+{{--                                                @endforeach--}}
+{{--                                               --}}
+{{--                                            </tr>--}}
+
                                             <tr>
                                                 <td colspan="7" class="text-right">Remarks</td>
-                                                @foreach($quotations as $key=>$quotation)
+                                                @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
-                                                        <textarea class="form-control" name="remarks" rows="1"
-                                                                  id="remarks"
-                                                                  placeholder="What is the reason for choosing this supplier?">{!! $quotation->remarks?$quotation->remarks:'' !!}</textarea>
+                                                        <textarea class="form-control"
+                                                                  name="remarks[{{ $quotation->id }}]"
+                                                                  rows="1"
+                                                                  placeholder="What is the reason for choosing this supplier?">{{ old("remarks.{$quotation->id}", $quotation->remarks) }}</textarea>
                                                     </td>
                                                 @endforeach
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="7" class="text-right">CS Explaination</td>
+                                                 <td colspan="{{ count($quotations)*3}}">{!! $quotation->relRequestProposal->remarks?$quotation->relRequestProposal->remarks:'' !!}
+                                                </td>
                                             </tr>
                                             @if(request()->get('type')=='direct-purchase')
                                             <tr>

@@ -60,6 +60,9 @@
         <div class="col-md-6 well">
             <ul class="list-unstyled mb0">
                 <li><strong>CS Number :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                @if($requisitionItems->isNotEmpty())
+                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                @endif
             </ul>
         </div>
         <div class="col-md-6 well">
@@ -258,12 +261,22 @@
                 @endforeach
             </tr>
             <tr>
-                <td colspan="6" class="text-right">Notes</td>
+                <td colspan="6" class="text-right">Purchaser Notes</td>
                 @foreach($quotations as $key => $quotation)
                 <td
                     colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                     <span><strong>@if(!empty($quotation->note)) {{ $quotation->creator->name }}:
                             @endif</strong> {!! $quotation->note !!} </span>
+                </td>
+                @endforeach
+            </tr>
+            <tr>
+                <td colspan="6" class="text-right">Approver Remarks</td>
+                @foreach($quotations as $key => $quotation)
+                <td
+                    colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                    <span><strong>@if(!empty($quotation->remarks)) {{ $quotation->editor->name }}:
+                            @endif</strong> {!! $quotation->remarks !!} </span>
                 </td>
                 @endforeach
             </tr>
@@ -282,18 +295,18 @@
         <tbody>
             
             @if(isset($quotations->first()->relRequestProposal->approvals[0]))
-            <tr>
-                <td class="text-center"></td>
-                <td>CS Raised at</td>
-                <td class="text-center">Raised</td>
-                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($quotations->first()->relRequestProposal->approvals->first()->created_at)) }}</td>
-            </tr>
+                <tr>
+                    <td style="width: 10%" class="text-center"></td>
+                    <td style="width: 55%">CS Raised at</td>
+                    <td style="width: 15%" class="text-center">Raised</td>
+                    <td style="width: 20%" class="text-center">{{ date('Y-m-d g:i a', strtotime($quotations->first()->relRequestProposal->approvals->first()->created_at)) }}</td>
+                </tr>
             @foreach($quotations->first()->relRequestProposal->approvals as $key => $approval)
             <tr>
-                <td class="text-center">{{ $approval->priority }}</td>
-                <td>{{ $approval->user->name }}</td>
-                <td class="text-center">{{ ucwords($approval->response) }}</td>
-                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($approval->updated_at)) }}</td>
+                <td style="width: 10%" class="text-center">{{ $approval->priority }}</td>
+                <td style="width: 55%">{{ $approval->user->name }}</td>
+                <td style="width: 15%" class="text-center">{{ ucwords($approval->response) }}</td>
+                <td style="width: 20%" class="text-center">{{ date('Y-m-d g:i a', strtotime($approval->updated_at)) }}</td>
             </tr>
             @endforeach
             @endif

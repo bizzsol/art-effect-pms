@@ -59,7 +59,9 @@
                                         <div class="col-md-6">
                                             <ul>
                                                 <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}</li>
-                                               
+                                                @if($requisitionItems->isNotEmpty())
+                                                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                                                @endif
                                             </ul>
                                         </div>
                                         <div class="col-md-6">

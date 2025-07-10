@@ -237,6 +237,9 @@
                                                         </td>
                                                         <td class="product-attributes-{{ $key+1 }}">
                                                             {!! $productAttributes[$requisitionItem->id] !!}
+                                                            <input type="text" name="description[]" class="form-control"
+                                                                   value="{{$requisitionItem->description }}"
+                                                                   placeholder="Enter description" />
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-md mb-3 d-">
@@ -246,7 +249,7 @@
                                                                        @else name="qty[]"
                                                                        value="{{ old('qty',$requisitionItem->qty) }}"
                                                                        @endif  min="1" id="qty_{{$key}}"
-                                                                    
+
                                                                        class="form-control {{ !$modifiedName ? 'requisition-qty' : ''  }} text-right"
                                                                        aria-label="Large"
                                                                        aria-describedby="inputGroup-sizing-sm" required
@@ -259,7 +262,7 @@
                                                                 <div class="input-group input-group-md mb-3 d-">
                                                                     <input type="number" name="qty[]" min="1"
                                                                            id="qty_{{$key}}"
-                                                                        
+
                                                                            class="form-control requisition-qty text-right"
                                                                            aria-label="Large"
                                                                            aria-describedby="inputGroup-sizing-sm"
