@@ -92,7 +92,7 @@ use App\Models\PmsModels\PurchaseReturn;
                         <thead>
                             <tr class="text-center">
                                 <th width="5%">{{__('SL')}}</th>
-                                <th>{{__('Request Proposal')}}</th>
+                                <th>{{__('CS Number')}}</th>
                                 <th>{{__('Date')}}</th>
                                 <th>{{__('Reference No')}}</th>
                                 <th>{{__('Supplier')}}</th>
@@ -776,7 +776,7 @@ function viewRemarks(element){
 
 function openFullViewModal(requestId) {
         $.dialog({
-            title: 'Quotation Details Preview',
+            title: 'CS View',
             content: "url:{{url("pms/rfp/request-proposal-cs-po-history")}}/"+requestId+"?preview",
             animation: 'scale',
             columnClass: 'col-md-12',

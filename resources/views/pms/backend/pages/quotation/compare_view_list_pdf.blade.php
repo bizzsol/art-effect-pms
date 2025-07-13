@@ -63,14 +63,17 @@
                 @if($requisitionItems->isNotEmpty())
                     <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
                 @endif
+                <li>
+                    <strong>Department:</strong> {{isset($quotation->relUsersList->employee->department->hr_department_name)?$quotation->relUsersList->employee->department->hr_department_name:''}}
+                </li>
             </ul>
         </div>
         <div class="col-md-6 well">
             <ul class="list-unstyled mb0">
-                <li><strong>{{__('RFP Provide By')}} :</strong>
+                <li><strong>{{__('CS Provide By')}} :</strong>
                     {{isset($quotation->relRequestProposal->createdBy->name) ? $quotation->relRequestProposal->createdBy->name : ''}}
                 </li>
-                <li><strong>{{__('RFP Date')}} :</strong>
+                <li><strong>{{__('CS Date')}} :</strong>
                     {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                 </li>
             </ul>
@@ -83,7 +86,7 @@
     <table class="table table-bordered table-hover ">
         <thead class="thead">
             <tr>
-                <th colspan="6">Party Name</th>
+                <th colspan="6">Supplier Name</th>
                 @foreach($quotations as $q_key => $quotation)
                 @php
                     $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
@@ -108,8 +111,7 @@
             <tr class="text-center">
                 <th>SL</th>
                 <th>Product</th>
-                <th>Attributes</th>
-                <th>Description</th>
+                <th style="width: 300px">Description</th>
                 <th>UOM</th>
                 <th>Qty</th>
                 @foreach($quotations as $quotation)
@@ -137,7 +139,6 @@
                 <td>
                     <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
                 </td>
-                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
                 <td>{{ $item->description }}</td>
                 <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                 </td>

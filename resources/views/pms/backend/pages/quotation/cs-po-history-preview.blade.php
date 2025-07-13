@@ -1,5 +1,9 @@
 @if($quotations->count() > 0)
+<li class="top-nav-btn">
+    <a href="{{url('pms/quotation/cs-compare-view-pdf/'.$requestId).'?downloadpdf'}}" class="btn btn-sm btn-danger text-white" title="Download CS"> <i class="las la-download"></i>Download CS</a>
+</li>
 <hr class="pt-0 mt-0">
+
 <table class="table preview-table table-bordered table-hover" style="width: {{ ($quotations->count()*300)+500 }}px">
     <tbody>
         <tr>
@@ -8,6 +12,12 @@
                 @if($key==0)
                 <ul class="list-unstyled mb0">
                     <li><strong>CS Number :</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                    @if($requisitionItems->isNotEmpty())
+                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                    @endif
+                    <li>
+                        <strong>Department:</strong> {{isset($quotation->relUsersList->employee->department->hr_department_name)?$quotation->relUsersList->employee->department->hr_department_name:''}}
+                    </li>
 
                 </ul>
                 @endif
@@ -17,10 +27,10 @@
                 @foreach($quotations as $key=>$quotation)
                 @if($key==0)
                 <ul class="list-unstyled mb0">
-                    <li><strong>RFP Provide By :</strong>
+                    <li><strong>CS Provide By :</strong>
                         {{isset($quotation->relRequestProposal->createdBy->name) ? $quotation->relRequestProposal->createdBy->name : ''}}
                     </li>
-                    <li><strong>RFP Date :</strong>
+                    <li><strong>CS Date :</strong>
                         {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                     </li>
                 </ul>
@@ -33,7 +43,7 @@
 <table class="table preview-table table-bordered table-hover" style="width: {{ ($quotations->count()*300)+500 }}px">
     <thead class="thead">
         <tr>
-            <th colspan="6" style="width: 500px">Party Name</th>
+            <th colspan="6" style="width: 500px">Supplier Name</th>
             @foreach($quotations as $q_key => $quotation)
             @php
             $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
@@ -58,8 +68,7 @@
         <tr class="text-center">
             <th style="width: 10px">SL</th>
             <th style="width: 100px">Product</th>
-            <th style="width: 100px">Attributes</th>
-            <th style="width: 100px">Description</th>
+            <th style="width: 300px">Description</th>
             <th style="width: 45px">UOM</th>
             <th style="width: 45px">Qty</th>
             @foreach($quotations as $quotation)
@@ -85,7 +94,6 @@
             <td>
                 {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }} {{ getProductAttributesFaster($item->relProduct) }}
             </td>
-            <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
             <td>{{ $item->description }}</td>
             <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
             </td>

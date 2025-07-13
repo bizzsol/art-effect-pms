@@ -245,7 +245,7 @@
 
 {{--                <strong>Order is valid--}}
 {{--                        till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>--}}
-
+                <br>
                 <strong>Delivery
                         Date: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
             </td>
