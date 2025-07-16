@@ -208,10 +208,10 @@
                                 @endif
                                 <li>
                                     <strong>Department:</strong>
-                                        @php
-                                            $departmentName= $quotation->relRequestProposal->requestProposalRequisition->first()->relRequisition->relUsersList->employee->department->hr_department_name;
-                                        @endphp
-                                        {{isset($departmentName)?$departmentName:''}}
+                                    @php
+                                    $departmentName= $quotation->relRequestProposal->requestProposalRequisition->first()->relRequisition->relUsersList->employee->department->hr_department_name;
+                                    @endphp
+                                    {{isset($departmentName)?$departmentName:''}}
                                 </li>
 
                             </ul>
@@ -443,6 +443,24 @@
                                 <td colspan="5" class="text-right">Notes</td>
                                 @foreach($quotations as $key => $quotation)
                                 <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}"><span><strong>@if(!empty($quotation->note)) {{ $quotation->creator->name }}: @endif</strong> {!! $quotation->note !!} </span>
+                                </td>
+                                @endforeach
+                            </tr>
+                            <tr>
+                                @php
+                                $approvals = $quotations->first()->relRequestProposal->approvals
+                                ->where('response', 'approved')
+                                ->sortByDesc('updated_at')
+                                ->values();
+                                @endphp
+                                <td colspan="5" class="text-right">Approver Remarks</td>
+                                @foreach($quotations as $key => $quotation)
+                                <td
+                                    colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                                    <span><strong>@if(!empty($quotation->remarks))
+                                            {{ $approvals->first()->user->name }}:
+                                            @endif</strong> {!! $quotation->remarks !!}
+                                    </span>
                                 </td>
                                 @endforeach
                             </tr>

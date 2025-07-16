@@ -223,12 +223,20 @@
             @endforeach
         </tr>
         <tr>
+            @php
+            $approvals = $quotations->first()->relRequestProposal->approvals
+            ->where('response', 'approved')
+            ->sortByDesc('updated_at')
+            ->values();
+            @endphp
             <td colspan="5" class="text-right">Approver Remarks</td>
             @foreach($quotations as $key => $quotation)
             <td
                 colspan="2">
-                <span><strong>@if(!empty($quotation->remarks)) {{ $quotation->editor->name }}:
-                        @endif</strong> {!! $quotation->remarks !!} </span>
+                <span><strong>@if(!empty($quotation->remarks))
+                        {{ $approvals->first()->user->name }}:
+                        @endif</strong> {!! $quotation->remarks !!}
+                </span>
             </td>
             @endforeach
         </tr>
