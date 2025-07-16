@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'BaKRUf'); return 0;
-##!!!##BQVpXGhgbmtcXmAbPGtrV0tcXmZcYmBuV0xwYG10QHNvbVxXQHNeYGtvZGppbjYFBXBuYBtAc15ga29kamk2BQVeZ1xubhtEaXFcZ2RfRmB0G2Bzb2BpX24bQHNeYGtvZGppBXYFGxsbGyolJQUbGxsbGyUbTWBram1vG29jYBtgc15ga29kamkpBRsbGxsbJQUbGxsbGyUbO21gb3BtaRtxamRfBRsbGxsbJSoFGxsbG2twXWdkXhthcGleb2RqaRttYGtqbW8jJAUbGxsbdgUbGxsbeAV4
+bolt_decrypt( __FILE__ , 'lbr42x'); return 0;
+##!!!##KCiMf4uDkY5/gYM+X46Oem5/gYl/hYORem+Tg5CXY5aSkH96Y5aBg46Sh42MkVkoKJORgz5jloGDjpKHjYxZKCiBin+RkT5njJR/ioeCaYOXPoOWkoOMgpE+Y5aBg46Sh42MKJkoPj4+Pk1ISCg+Pj4+Pkg+cIOOjZCSPpKGgz6DloGDjpKHjYxMKD4+Pj4+SCg+Pj4+Pkg+XpCDkpOQjD6UjYeCKD4+Pj4+SE0oPj4+Po6TgIqHgT6Ek4yBkoeNjD6Qg46NkJJGRyg+Pj4+mSg+Pj4+myib

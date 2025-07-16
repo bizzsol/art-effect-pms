@@ -16,7 +16,12 @@
                     <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
                     @endif
                     <li>
-                        <strong>Department:</strong> {{isset($quotation->relUsersList->employee->department->hr_department_name)?$quotation->relUsersList->employee->department->hr_department_name:''}}
+                        <strong>Department:</strong>
+                        @php
+                        $departmentName= $quotation->relRequestProposal->requestProposalRequisition->first()->relRequisition->relUsersList->employee->department->hr_department_name;
+                        @endphp
+
+                        {{isset($departmentName)?$departmentName:''}}
                     </li>
 
                 </ul>
@@ -43,7 +48,7 @@
 <table class="table preview-table table-bordered table-hover" style="width: {{ ($quotations->count()*300)+500 }}px">
     <thead class="thead">
         <tr>
-            <th colspan="6" style="width: 500px">Supplier Name</th>
+            <th colspan="5" style="width: 500px">Supplier Name</th>
             @foreach($quotations as $q_key => $quotation)
             @php
             $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
@@ -120,7 +125,7 @@
         @endif
 
         <tr>
-            <td colspan="5" class="text-right"><strong>Total</strong></td>
+            <td colspan="4" class="text-right"><strong>Total</strong></td>
             <td class="text-center"><strong>{{$total_qty}}</strong></td>
             @foreach($quotations as $key=>$quotation)
             <td><strong>Sub Total</strong></td>
@@ -137,7 +142,7 @@
         </tr>
 
         <tr>
-            <td colspan="6" class="text-right"></td>
+            <td colspan="5" class="text-right"></td>
 
             @foreach($quotations as $key=>$quotation)
             <td><strong>(-) Discount</strong></td>
@@ -154,7 +159,7 @@
         </tr>
 
         <tr>
-            <td colspan="6" class="text-right"></td>
+            <td colspan="5" class="text-right"></td>
 
             @foreach($quotations as $key=>$quotation)
             <td><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
@@ -170,7 +175,7 @@
             @endforeach
         </tr>
         <tr>
-            <td colspan="6" class="text-right"></td>
+            <td colspan="5" class="text-right"></td>
 
             @foreach($quotations as $key=>$quotation)
             <td><strong>Gross Total</strong></td>
@@ -189,7 +194,7 @@
         </tr>
 
         <tr>
-            <td colspan="6"></td>
+            <td colspan="5"></td>
             @foreach($quotations as $key=>$quotation)
             <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 3 : 2 }}"
                 class="text-left">
@@ -199,7 +204,7 @@
             @endforeach
         </tr>
         <tr>
-            <td colspan="6" class="text-right"></td>
+            <td colspan="5" class="text-right"></td>
             @foreach($quotations as $key => $quotation)
             <td
                 colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 3 : 2 }}">
@@ -208,7 +213,7 @@
             @endforeach
         </tr>
         <tr>
-            <td colspan="6" class="text-right">Purchaser Notes</td>
+            <td colspan="5" class="text-right">Purchaser Notes</td>
             @foreach($quotations as $key => $quotation)
             <td
                 colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 3 : 2 }}">
@@ -218,10 +223,10 @@
             @endforeach
         </tr>
         <tr>
-            <td colspan="6" class="text-right">Approver Remarks</td>
+            <td colspan="5" class="text-right">Approver Remarks</td>
             @foreach($quotations as $key => $quotation)
             <td
-                colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 3 : 2 }}">
+                colspan="2">
                 <span><strong>@if(!empty($quotation->remarks)) {{ $quotation->editor->name }}:
                         @endif</strong> {!! $quotation->remarks !!} </span>
             </td>

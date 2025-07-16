@@ -79,11 +79,15 @@
                                         <h5 class="floating-title">Organization Information</h5>
                                         <div class="row">
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-3', 'slug' => 'name', 'text' => ucwords('Name'), 'placeholder' => ucwords('Supplier Name'), 'required' => true
+                                                'div' => 'col-md-2', 'slug' => 'code', 'text' => ucwords('Supplier Code'), 'placeholder' => ucwords('Enter Supplier Code (optional)')
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[
-                                                'div' => 'col-md-3', 'slug' => 'phone', 'text' => ucwords('Phone'), 'placeholder' => ucwords('Supplier Phone')
+                                                'div' => 'col-md-2', 'slug' => 'name', 'text' => ucwords('Name'), 'placeholder' => ucwords('Supplier Name'), 'required' => true
+                                            ])
+
+                                            @include('pms.backend.pages.suppliers.element',[
+                                                'div' => 'col-md-2', 'slug' => 'phone', 'text' => ucwords('Phone'), 'placeholder' => ucwords('Supplier Phone')
                                             ])
 
                                             @include('pms.backend.pages.suppliers.element',[

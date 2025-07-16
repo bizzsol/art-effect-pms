@@ -207,7 +207,11 @@
                                 <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
                                 @endif
                                 <li>
-                                    <strong>Department:</strong> {{isset($quotation->relUsersList->employee->department->hr_department_name)?$quotation->relUsersList->employee->department->hr_department_name:''}}
+                                    <strong>Department:</strong>
+                                        @php
+                                            $departmentName= $quotation->relRequestProposal->requestProposalRequisition->first()->relRequisition->relUsersList->employee->department->hr_department_name;
+                                        @endphp
+                                        {{isset($departmentName)?$departmentName:''}}
                                 </li>
 
                             </ul>
@@ -220,6 +224,9 @@
                                 <li><strong>{{__('CS Date')}} :</strong>
                                     {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                 </li>
+                                <li>
+                                    <strong>{{ __('Project Name') }} :</strong> {{ $quotation->relRequestProposal->project_name ?? 'n/a' }}
+                                </li>
                             </ul>
                         </div>
                         @endif
@@ -231,7 +238,7 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead">
                             <tr>
-                                <th colspan="6">Supplier Name</th>
+                                <th colspan="5">Supplier Name</th>
                                 @foreach($quotations as $q_key => $quotation)
                                 @php
                                 $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
@@ -305,7 +312,7 @@
                                 <td>{{ $item->description }}</td>
                                 <td class="text-center">{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}
                                 </td>
-                                <td class="text-center">{{$item->approved_qty}}</td>
+                                <td class="text-center">{{$item->qty}}</td>
 
                                 @foreach($quotations as $key=>$quotation)
                                 {{-- <td class="text-center">
@@ -340,13 +347,13 @@
 
                             </tr>
                             @php
-                            $total_qty += $item->approved_qty;
+                            $total_qty += $item->qty;
                             @endphp
                             @endforeach
                             @endif
 
                             <tr>
-                                <td colspan="5" class="text-right"><strong>Total</strong></td>
+                                <td colspan="4" class="text-right"><strong>Total</strong></td>
                                 <td class="text-center"><strong>{{$total_qty}}</strong></td>
                                 @foreach($quotations as $key=>$quotation)
                                 <td colspan="2"><strong>Sub Total</strong></td>
@@ -363,7 +370,7 @@
                             </tr>
 
                             <tr>
-                                <td colspan="6" class="text-right"></td>
+                                <td colspan="5" class="text-right"></td>
 
                                 @foreach($quotations as $key=>$quotation)
                                 <td colspan="2"><strong>(-) Discount</strong></td>
@@ -380,7 +387,7 @@
                             </tr>
 
                             <tr>
-                                <td colspan="6" class="text-right"></td>
+                                <td colspan="5" class="text-right"></td>
 
                                 @foreach($quotations as $key=>$quotation)
                                 <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
@@ -396,7 +403,7 @@
                                 @endforeach
                             </tr>
                             <tr>
-                                <td colspan="6" class="text-right"></td>
+                                <td colspan="5" class="text-right"></td>
 
                                 @foreach($quotations as $key=>$quotation)
                                 <td colspan="2"><strong>Gross Total</strong></td>
@@ -415,26 +422,25 @@
                             </tr>
 
                             <tr>
-                                <td colspan="6"></td>
+                                <td colspan="5"></td>
                                 @foreach($quotations as $key=>$quotation)
                                 <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}"
                                     class="text-left">
                                     Payment Term:
-                                    <strong>{{ makePaymentTermsString($quotation->supplier_payment_terms_id) }}
-                                        )</strong>
+                                    <strong>{{ makePaymentTermsString($quotation->supplier_payment_terms_id) }}</strong>
                                 </td>
                                 @endforeach
 
                             </tr>
                             <tr>
-                                <td colspan="6" class="text-right"></td>
+                                <td colspan="5" class="text-right"></td>
                                 @foreach($quotations as $key => $quotation)
                                 <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                     Delivery Date: <span><strong>{!! date('d M Y', strtotime($quotation->delivery_date)) !!}</strong></span></td>
                                 @endforeach
                             </tr>
                             <tr>
-                                <td colspan="6" class="text-right">Notes</td>
+                                <td colspan="5" class="text-right">Notes</td>
                                 @foreach($quotations as $key => $quotation)
                                 <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}"><span><strong>@if(!empty($quotation->note)) {{ $quotation->creator->name }}: @endif</strong> {!! $quotation->note !!} </span>
                                 </td>

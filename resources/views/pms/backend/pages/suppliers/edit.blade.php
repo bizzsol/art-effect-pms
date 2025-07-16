@@ -83,11 +83,28 @@ width:  100% !important;
 <h5 class="floating-title">Organization Information</h5>
 <div class="row">
 
-@if(!$freezeSupplier)
-@include('pms.backend.pages.suppliers.element',[
-'div' => 'col-md-3', 'slug' => 'name', 'text' => ucwords('Name'), 'placeholder' => ucwords('Supplier Name'), 'value' => $supplier->name, 'required' => true
-])
-@endif
+{{--@if(!$freezeSupplier)--}}
+{{--        @include('pms.backend.pages.suppliers.element',[--}}
+{{--        'div' => 'col-md-3',--}}
+{{--        'slug' => 'code',--}}
+{{--        'text' => ucwords('Supplier Code'),--}}
+{{--        'placeholder' => ucwords('Enter Supplier Code'),--}}
+{{--        'value' => $supplier->code,--}}
+{{--    ])--}}
+{{--@include('pms.backend.pages.suppliers.element',[--}}
+{{--'div' => 'col-md-3', 'slug' => 'name', 'text' => ucwords('Name'), 'placeholder' => ucwords('Supplier Name'), 'value' => $supplier->name, 'required' => true--}}
+{{--])--}}
+{{--@endif--}}
+    @include('pms.backend.pages.suppliers.element',[
+        'div' => 'col-md-3',
+        'slug' => 'code',
+        'text' => ucwords('Supplier Code'),
+        'placeholder' => ucwords('Enter Supplier Code'),
+        'value' => $supplier->code,
+    ])
+    @include('pms.backend.pages.suppliers.element',[
+    'div' => 'col-md-3', 'slug' => 'name', 'text' => ucwords('Name'), 'placeholder' => ucwords('Supplier Name'), 'value' => $supplier->name, 'required' => true
+    ])
 
 @include('pms.backend.pages.suppliers.element',[
 'div' => 'col-md-3', 'slug' => 'phone', 'text' => ucwords('Phone'), 'placeholder' => ucwords('Supplier Phone'), 'value' => $supplier->phone

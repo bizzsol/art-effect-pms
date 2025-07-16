@@ -130,9 +130,9 @@
                                                                    value="{{ old('supplier_quotation_ref_no') }}">
                                                         </div>
                                                     </div>
-                                                    
 
-                                                    <div class="col-md-6 col-sm-12">
+
+                                                    <div class="col-md-4 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label
                                                                     for="supplier_id"><strong>{{ __('Supplier') }}
                                                                     <span class="text-danger">*</span></strong></label>

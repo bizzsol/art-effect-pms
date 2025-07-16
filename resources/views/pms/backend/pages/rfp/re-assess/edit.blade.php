@@ -83,6 +83,11 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="reassess_note">Re-Assessment Note</label>
+                            <textarea name="reassess_note" id="reassess_note" class="form-control">{{ old('reassess_note', $requisition->reassess_note ?? '') }}</textarea>
+                        </div>
+
                         <div class="row">
                             <div class="col-6">
                             </div>

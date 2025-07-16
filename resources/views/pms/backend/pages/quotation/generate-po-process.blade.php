@@ -106,13 +106,13 @@
                                     <div class="col-md-2 col-sm-12">
                                         <p class="mb-1 font-weight-bold">
                                             <label for="warehouse_id">
-                                                <strong>{{ __('Warehouse') }} <span class="text-danger">*</span></strong>
+                                                <strong>{{ __('Warehouse') }}</strong>
                                             </label>
                                         </p>
                                         <div class="input-group input-group-md mb-3">
                                             <select name="warehouse_id"
                                                     id="warehouse_id"
-                                                    class="form-control rounded" required>
+                                                    class="form-control rounded" >
                                                 <option value="">Select One</option>
                                                 @foreach($warehouses as $warehouse)
                                                     <option value="{{ $warehouse->id }}"

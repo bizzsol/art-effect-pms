@@ -234,10 +234,16 @@
                         Quotation: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->supplier_quotation_ref_no : '' }}</strong>
                 <br>
                 <strong>Quotation Date:</strong> {{ isset($purchaseOrder->relQuotation->supplier_quotation_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->supplier_quotation_date)) : '' }}
-                <br>
-                <strong>Deliver to: </strong>
-                {!! $purchaseOrder->warehouse->name ?? 'No Warehouse' !!},
-                {!! $purchaseOrder->warehouse->address ?? 'No Address' !!}
+
+                @if ($purchaseOrder->relQuotation->type === 'manual')
+                    <br>
+                    <strong>Deliver to: </strong>
+                    {!! $purchaseOrder->warehouse->name ?? '' !!},
+                    {!! $purchaseOrder->warehouse->address ?? '' !!}
+                @endif
+{{--                <strong>Deliver to: </strong>--}}
+{{--                {!! $purchaseOrder->warehouse->name ?? '' !!}--}}
+{{--                {!! $purchaseOrder->warehouse->address ?? '' !!}--}}
 
 
                 {{--                {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}--}}

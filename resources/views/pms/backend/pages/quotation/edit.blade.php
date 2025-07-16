@@ -110,7 +110,6 @@
                                                         </div>
                                                     </div>
 
-
                                                     {{-- <div class="col-md-5 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="discount_percent">{{ __('Discount Percentage %') }}:</label>
                                                         </p>
