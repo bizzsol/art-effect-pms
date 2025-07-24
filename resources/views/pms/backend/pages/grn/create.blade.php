@@ -65,7 +65,7 @@
                                     <tr class="text-center">
                                         <th>SL</th>
                                         <th>Product</th>
-                                        <th>Desription</th>
+                                        <th>Description</th>
                                         <th>UOM</th>
                                         <th>Unit Price</th>
                                         <th>Po Qty</th>

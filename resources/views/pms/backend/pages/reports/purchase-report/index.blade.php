@@ -28,9 +28,11 @@
                                         <label for="hr_unit_id"><strong>Unit</strong></label>
                                         <select name="hr_unit_id" id="hr_unit_id" class="form-control">
                                             @if(isset($units[0]))
-                                            @foreach($units as $unit)
-                                            <option value="{{ $unit->hr_unit_id }}">{{ $unit->hr_unit_name }}</option>
-                                            @endforeach
+                                                @foreach($units as $unit)
+                                                    <option value="{{ $unit->hr_unit_id }}"
+                                                            {{request()->has('hr_unit_id')?(request()->get('hr_unit_id')==$unit->hr_unit_id?'selected':''):''}}>
+                                                        {{ $unit->hr_unit_name }}</option>
+                                                @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -49,25 +51,25 @@
                 </div>
 
                 @if(request()->has('timeline'))
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12 table-responsive">
-                                @include('pms.backend.pages.reports.exports.show', [
-                                    'folder' => 'purchase-report'
-                                ])
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 table-responsive">
+                                    @include('pms.backend.pages.reports.exports.show', [
+                                        'folder' => 'purchase-report'
+                                    ])
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endif
             </div>
         </div>
     </div>
 @endsection
 @section('page-script')
-<script>
-        
-</script>
-@include('pms.backend.pages.reports.tools.js')
+    <script>
+
+    </script>
+    @include('pms.backend.pages.reports.tools.js')
 @endsection

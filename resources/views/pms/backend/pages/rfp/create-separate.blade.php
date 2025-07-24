@@ -81,8 +81,11 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <div class="form-line">
+
                                             {!! Form::label('project_name', 'Project Name', array('class' => 'mb-1 font-weight-bold')) !!}
-                                            {!! Form::text('project_name',(request()->old('project_name'))?request()->old('project_name'):'',['id'=>'project_name','required'=>false,'class' => 'form-control rounded']) !!}
+                                            <span
+                                                    class="text-danger">&nbsp;*</span>
+                                            {!! Form::text('project_name',(request()->old('project_name'))?request()->old('project_name'):'',['id'=>'project_name','required'=>true,'class' => 'form-control rounded']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -232,8 +235,7 @@
                                 <div class="col-md-12">
 
                                     <p class="mb-1 font-weight-bold"><label
-                                                for="remarks"><strong>Explaination:</strong></label><span
-                                                class="text-danger text-capitalize">*</span>
+                                                for="remarks"><strong>Explaination:</strong></label>
                                     </p>
                                     <div class="form-group form-group-lg mb-3 d-">
                                     <textarea rows="2" name="remarks" id="remarks"

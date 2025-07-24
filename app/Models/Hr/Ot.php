@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'hBbnHo'); return 0;
+bolt_decrypt( __FILE__ , 'A5scyl'); return 0;
 ##!!!##Ozufkp6WpKGSlJZRcqGhjX6glZadpI15o2w7O6akllF6nZ2mnpqfkqWWjXWSpZKTkqSWjXadoKKmlp+ljX6glZadbDs7lJ2SpKRRgKVRlqmllp+VpFF+oJWWnTusO1FRUVGho6CllpSllpVRVaWSk52WUW5RWJmjkKClWGw7UVFRUaGmk52alFFVpZqelqSlkp6hpFFuUZeSnaSWbDuuOw==

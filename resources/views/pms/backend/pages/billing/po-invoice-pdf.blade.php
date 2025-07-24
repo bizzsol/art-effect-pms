@@ -194,7 +194,6 @@
                     {!! printBarcode($purchaseOrder->reference_no, 'float: right !important') !!}
                 </div>
                 <br>
-                <br>
                 <strong>PO Reference:</strong> {{ $purchaseOrder->reference_no }}
                 <br>
                 <strong>Date:</strong> {{ date('d-M-y', strtotime($purchaseOrder->po_date)) }}
@@ -264,12 +263,12 @@
     <table class="table table-bordered">
         <thead>
         <tr class="text-center">
-            <td style="text-align:  center;width: 5% !important"><strong>Item No.</strong></td>
+            <td style="text-align:  center;width: 5% !important"><strong>#</strong></td>
             <td style="text-align:  center;width: 16% !important"><strong>Product</strong></td>
 
             <td style="text-align:  center;width: 21% !important"><strong>Description</strong></td>
             <td style="text-align:  center;width: 8% !important"><strong>Qty</strong></td>
-            <td style="text-align:  center;width: 10% !important"><strong>Unit</strong></td>
+            <td style="text-align:  center;width: 8% !important"><strong>Unit</strong></td>
             <td style="text-align:  center;width: 10% !important"><strong>Unit Price</strong></td>
             {{-- @if($purchaseOrder->relPurchaseOrderItems->sum('vat') > 0)
                 <td style="text-align:  center;width: 7.5% !important"><strong>Item Total</strong></td>
@@ -284,7 +283,7 @@
         @foreach($purchaseOrder->relPurchaseOrderItems as $key=>$item)
             <tr>
                 <td class="text-center">{{ $key+1}}</td>
-                <td>
+                <td class="text-center">
                     {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }}
 {{--                    {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                 </td>

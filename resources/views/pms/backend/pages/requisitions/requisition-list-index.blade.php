@@ -354,26 +354,26 @@
             });
         }
 
-        function trackingRequistionStatus(id) {
-            $.ajax({
-                url: "{{ url('pms/requisition/tracking-show') }}",
-                type: 'POST',
-                dataType: 'json',
-                data: {_token: "{{ csrf_token() }}", id: id},
-            })
-                .done(function (response) {
-                    if (response.result == 'success') {
-                        $('#requisitionDetailModal').find('.modal-title').html(`Requisition Tracking`);
-                        $('#requisitionDetailModal').find('#tableData').html(response.body);
-                        $('#requisitionDetailModal').modal('show');
-                    } else {
-                        notify(response.message, response.result);
-                    }
-                })
-                .fail(function (response) {
-                    notify('Something went wrong!', 'error');
-                });
-        }
+        {{--function trackingRequistionStatus(id) {--}}
+        {{--    $.ajax({--}}
+        {{--        url: "{{ url('pms/requisition/tracking-show') }}",--}}
+        {{--        type: 'POST',--}}
+        {{--        dataType: 'json',--}}
+        {{--        data: {_token: "{{ csrf_token() }}", id: id},--}}
+        {{--    })--}}
+        {{--        .done(function (response) {--}}
+        {{--            if (response.result == 'success') {--}}
+        {{--                $('#requisitionDetailModal').find('.modal-title').html(`Requisition Tracking`);--}}
+        {{--                $('#requisitionDetailModal').find('#tableData').html(response.body);--}}
+        {{--                $('#requisitionDetailModal').modal('show');--}}
+        {{--            } else {--}}
+        {{--                notify(response.message, response.result);--}}
+        {{--            }--}}
+        {{--        })--}}
+        {{--        .fail(function (response) {--}}
+        {{--            notify('Something went wrong!', 'error');--}}
+        {{--        });--}}
+        {{--}--}}
 
         function sendToManagement(element) {
             let requisition_id = element.attr('data-id');

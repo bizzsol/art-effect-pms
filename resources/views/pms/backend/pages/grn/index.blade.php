@@ -30,7 +30,7 @@
 
             <div class="page-content">
                 <div class="panel panel-body">
-                    <form action="{{ url('pms/grn/grn-process') }}" method="get" accept-charset="utf-8">
+                    <form action="{{ url(request()->getRequestUri()) }}" method="get" accept-charset="utf-8">
                         <div class="row">
                             <div class="col-md-2 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="from_date">{{ __('From Date') }}:</label>
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-2 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <p class="mb-1 font-weight-bold"><label for="searchGRNList"></label></p>
                                 <div class="input-group input-group-md">
                                     <button class="btn btn-success rounded mt-8" type="submit"><i

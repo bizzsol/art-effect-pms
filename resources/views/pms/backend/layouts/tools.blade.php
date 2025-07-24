@@ -19,7 +19,7 @@
 </div>
 
 <!-- Requisition Details Modal Start -->
-<div class="modal" id="requisitionDetailModal">
+<div class="modal requisitionDetailModal" id="requisitionDetailModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
@@ -55,7 +55,7 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-            
+
             </div>
         </div>
     </div>
@@ -73,7 +73,7 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-            
+
             </div>
         </div>
     </div>
@@ -93,18 +93,18 @@
                     dataType: 'json',
                     data: '',
                 })
-                .done(function(response) {
+                    .done(function (response) {
 
-                    if (response.result=='success') {
-                        $('#POdetailsModel').find('#body').html(response.body);
-                        $('#POdetailsModel').find('.modal-title').html(`Purchase Order Details`);
-                        $('#POdetailsModel').modal('show');
-                    }
+                        if (response.result == 'success') {
+                            $('#POdetailsModel').find('#body').html(response.body);
+                            $('#POdetailsModel').find('.modal-title').html(`Purchase Order Details`);
+                            $('#POdetailsModel').modal('show');
+                        }
 
-                })
-                .fail(function(response){
-                    notify('Something went wrong!','error');
-                });
+                    })
+                    .fail(function (response) {
+                        notify('Something went wrong!', 'error');
+                    });
             });
         };
         showPODetails();
@@ -117,9 +117,9 @@
                     dataType: 'json',
                     data: '',
                     success: function (response) {
-                         $('#requisitionDetailModal').find('#tableData').html(response);
-                         $('#requisitionDetailModal').find('.modal-title').html(`Requisition Details`);
-                         $('#requisitionDetailModal').modal('show');
+                        $('#requisitionDetailModal').find('#tableData').html(response);
+                        $('#requisitionDetailModal').find('.modal-title').html(`Requisition Details`);
+                        $('#requisitionDetailModal').modal('show');
                     }
                 });
             });
@@ -128,7 +128,7 @@
 
     })(jQuery);
 
- 
+
     function purchaseOrderDetails(element) {
         $.ajax({
             url: element.attr('data-src'),
@@ -136,16 +136,16 @@
             dataType: 'json',
             data: '',
         })
-        .done(function(response) {
-            if (response.result=='success') {
-                $('#POdetailsModel').find('#body').html(response.body);
-                $('#POdetailsModel').find('.modal-title').html(`Purchase Order Details`);
-                $('#POdetailsModel').modal('show');
-            }
-        })
-        .fail(function(response){
-            notify('Something went wrong!','error');
-        });
+            .done(function (response) {
+                if (response.result == 'success') {
+                    $('#POdetailsModel').find('#body').html(response.body);
+                    $('#POdetailsModel').find('.modal-title').html(`Purchase Order Details`);
+                    $('#POdetailsModel').modal('show');
+                }
+            })
+            .fail(function (response) {
+                notify('Something went wrong!', 'error');
+            });
     }
 
     function requistionDetails(element) {
@@ -160,5 +160,31 @@
                 $('#requisitionDetailModal').modal('show');
             }
         });
+    }
+
+    function trackRequisitionProgress(element) {
+        let id = $(element).data('id');
+
+        $.ajax({
+            url: "{{ url('pms/requisition/tracking-show') }}",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id
+            },
+        })
+            .done(function (response) {
+                if (response.result === 'success') {
+                    $('.requisitionDetailModal').find('.modal-title').html(`Requisition Tracking`);
+                    $('.requisitionDetailModal').find('#tableData').html(response.body);
+                    $('.requisitionDetailModal').modal('show');
+                } else {
+                    notify(response.message, response.result);
+                }
+            })
+            .fail(function () {
+                notify('Something went wrong!', 'error');
+            });
     }
 </script>
