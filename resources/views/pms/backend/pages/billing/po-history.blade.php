@@ -42,7 +42,9 @@ use App\Models\PmsModels\PurchaseReturn;
                                 <th width="2%">{{__('SL')}}</th>
                                 <th>{{__('Unit')}}</th>
                                 <th>{{__('Department')}}</th>
-                                <th>{{__('Date')}}</th>
+                                <th>{{__('Requisition Date')}}</th>
+                                <th>{{__('Department Head Approval')}}</th>
+                                <th>{{__('Finance Approval')}}</th>
                                 <th>{{__('Ref: No')}}</th>
                                 <th>{{__('Requisition By')}}</th>
                                 <th>{{__('Qty')}}</th>
@@ -62,6 +64,21 @@ use App\Models\PmsModels\PurchaseReturn;
                                 </td>
                                 <td>
                                     {{ date('d-m-Y',strtotime($values->relRequisition->requisition_date)) }}
+                                </td>
+
+                                <td>
+                                    @php
+                                        $stage = stageFinder($values->requisition_id, 'approved_by_department_head');
+                                    @endphp
+
+                                    {{ $stage && $stage->stage_updated_at ? date('d-m-Y', strtotime($stage->stage_updated_at)) : '' }}
+                                </td>
+                                <td>
+                                    @php
+                                        $stage = stageFinder($values->requisition_id, 'approved_by_finance');
+                                    @endphp
+
+                                    {{ $stage && $stage->stage_updated_at ? date('d-m-Y', strtotime($stage->stage_updated_at)) : '' }}
                                 </td>
 
                                 <td><a href="javascript:void(0)" data-src="{{route('pms.requisition.list.view.show',$values->relRequisition->id)}}" class="btn btn-link requisition btn-xs m-1 rounded showRequistionDetails">{{ isset($values->relRequisition->reference_no)?$values->relRequisition->reference_no:'' }}</a></td>
@@ -93,7 +110,8 @@ use App\Models\PmsModels\PurchaseReturn;
                             <tr class="text-center">
                                 <th width="5%">{{__('SL')}}</th>
                                 <th>{{__('CS Number')}}</th>
-                                <th>{{__('Date')}}</th>
+                                <th>{{__('Quotation Date')}}</th>
+                                <th>{{__('CS Approval')}}</th>
                                 <th>{{__('Reference No')}}</th>
                                 <th>{{__('Supplier')}}</th>
                                 <th>{{__('Total Price')}}</th>
@@ -116,6 +134,14 @@ use App\Models\PmsModels\PurchaseReturn;
                                 @endif
 
                                 <td>{{date('d-m-Y',strtotime($values->quotation_date))}}</td>
+                                <td>
+                                    @php
+                                        $stage = stageFinder($values->relRequestProposal->requestProposalRequisition->first()->requisition_id, 'cs_approved');
+                                    @endphp
+
+                                    {{ $stage && $stage->stage_updated_at ? date('d-m-Y', strtotime($stage->stage_updated_at)) : '' }}
+                                </td>
+
                                 <td>
                                     <a href="javascript:void(0)" onclick="openModal({{$values->id}})"  class="btn btn-link">{{$values->reference_no}}</a>
 
@@ -196,9 +222,10 @@ use App\Models\PmsModels\PurchaseReturn;
                                 <th width="5%">{{__('SL')}}</th>
                                 <th>{{__('PO Referance')}}</th>
                                 <th>{{__('PO Date')}}</th>
+                                <th>{{__('Gate in Date')}}</th>
                                 <th>{{__('Challan')}}</th>
                                 <th>{{__('Reference No')}}</th>
-                                <th>{{__('Gate In Date')}}</th>
+{{--                                <th>{{__('Gate In Date')}}</th>--}}
                                 <th>{{__('Gate In Qty')}}</th>
                                 <th class="text-center">{{__('Status')}}</th>
                             </tr>
@@ -210,10 +237,17 @@ use App\Models\PmsModels\PurchaseReturn;
                                 @if($key == 0)
                                 <td rowspan="{{ $purchaseOrder->relGoodReceiveNote->count() }}"><a href="javascript:void(0)" class="btn btn-link" onclick="purchaseOrderDetails($(this))" data-src="{{route('pms.purchase.order-list.show', $grn->relPurchaseOrder->id)}}" data-title="Purchase Order Details">{{$grn->relPurchaseOrder->reference_no}}
                                 </a>
-                            </td>
+                                </td>
                             @endif
                             <td>
                                 {{date('Y-m-d', strtotime($grn->relPurchaseOrder->po_date))}}
+                            </td>
+                            <td>
+                                @php
+                                    $stage = stageFinder($grn->relPurchaseOrder->relQuotation->relRequestProposal->requestProposalRequisition->first()->requisition_id, 'gate_in');
+                                @endphp
+
+                                {{ $stage && $stage->stage_updated_at ? date('d-m-Y', strtotime($stage->stage_updated_at)) : '' }}
                             </td>
                             <td>
                                 {{$grn->challan}}
@@ -228,9 +262,9 @@ use App\Models\PmsModels\PurchaseReturn;
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                {{date('Y-m-d', strtotime($grn->received_date))}}
-                            </td>
+{{--                            <td>--}}
+{{--                                {{date('Y-m-d', strtotime($grn->received_date))}}--}}
+{{--                            </td>--}}
                             <td class="text-center">{{$grn->relGoodsReceivedItems->sum('qty')}}</td>
                             <td class="text-center">
 
@@ -578,6 +612,7 @@ use App\Models\PmsModels\PurchaseReturn;
                     <th>{{__('Bill No')}}</th>
                     <th class="text-center">{{__('Status')}}</th>
                     <th class="text-center">{{__('Invoice')}}</th>
+                    <th class="text-center">{{__('Invoice Submission Date')}}</th>
                     <th class="text-center">{{__('Vat')}}</th>
                     <th class="text-center">{{__('Option')}}</th>
                 </tr>
@@ -666,6 +701,11 @@ use App\Models\PmsModels\PurchaseReturn;
                         <a href="{{asset($poAttachment->invoice_file)}}" target="__blank" class="btn btn-success btn-xs"><i class="las la-file-invoice"></i></a>
                         @endif
                         @endif
+                    </td>
+
+                    <td class="text-center"
+                        rowspan="{{ $billManage->count() }}">
+                        {{ optional(stageFinder($billManage->id, 'invoice_submitted'))->stage_updated_at ? date('Y-m-d', strtotime(optional(stageFinder($billManage->id, 'invoice_submitted'))->stage_updated_at)) : '-' }}
                     </td>
 
                     <td>
