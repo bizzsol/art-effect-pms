@@ -317,11 +317,15 @@
             <td colspan="6" class="text-right">
                 {{-- <strong>VAT ({{ ucwords($purchaseOrder->relPurchaseOrderItems->first()->vat_type) }} {{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage > 0 ? ', '.$purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' : '' }})</strong> --}}
                 <strong>VAT ({{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' }})
-                    {{ucfirst($purchaseOrder->relPurchaseOrderItems->first()->vat_type)}}
+
                 </strong>
             </td>
             <td class="text-right">
-                <strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong>
+                @if ($purchaseOrder->relPurchaseOrderItems->first()->vat_type === 'exclusive')
+                    <strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong>
+                @endif
+
+                <strong>{{ ucfirst($purchaseOrder->relPurchaseOrderItems->first()->vat_type) }}</strong>
             </td>
         </tr>
         <tr>
