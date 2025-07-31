@@ -62,7 +62,10 @@
                                                             <ul class="list-unstyled mb0">
                                                                 <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}
                                                                 </li>
-
+                                                                @if($requisitionItems->isNotEmpty())
+                                                                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                                                                @endif
+                                                                <li><strong>Project Name: </strong>{{ $quotation->relRequestProposal-> project_name}}</li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-md-6 well">
@@ -83,7 +86,7 @@
                                         <table class="table table-bordered table-hover ">
                                             <thead>
                                             <tr>
-                                                <th colspan="7">Party Name</th>
+                                                <th colspan="7">Supplier Name</th>
                                                 @foreach($quotations as $q_key => $quotation)
                                                     @php
                                                         $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);

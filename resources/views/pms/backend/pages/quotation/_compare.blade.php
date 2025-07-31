@@ -62,6 +62,7 @@
                                                 @if($requisitionItems->isNotEmpty())
                                                     <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
                                                 @endif
+                                                <li><strong>Project Name: </strong>{{ $quotation->relRequestProposal-> project_name}}</li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6">
@@ -79,7 +80,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover ">
                                                 <tr>
-                                                    <th colspan="6">Party Name</th>
+                                                    <th colspan="6">Supplier Name</th>
                                                     @if(isset($quotations[0]))
                                                         @foreach($quotations as $quotation)
                                                         @php

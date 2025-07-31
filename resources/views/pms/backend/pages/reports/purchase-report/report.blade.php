@@ -92,7 +92,7 @@
                         <td class="text-center"
                             rowspan="{{ $requisition->items->count() }}">
 
-                            {{ optional(stageFinder($requisition->id, 'approved_by_sbu_head'))->stage_updated_at ? date('Y-m-d', strtotime(optional(stageFinder($requisition->id, 'approved_by_sbu_head'))->stage_updated_at)) : '-' }}
+                            {{ optional(stageFinder($requisition->id, 'dh_send_to_mng'))->stage_updated_at ? date('Y-m-d', strtotime(optional(stageFinder($requisition->id, 'dh_send_to_mng'))->stage_updated_at)) : '-' }}
                         </td>
                         <td class="text-center"
                             rowspan="{{ $requisition->items->count() }}">

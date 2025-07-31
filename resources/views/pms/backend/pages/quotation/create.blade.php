@@ -155,7 +155,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-12">
+                                                    <div class="col-md-4 col-sm-12">
                                                         <p><label class="font-weight-bold"
                                                                   for="currency_id"><strong>{{ __('Currency') }}
                                                                     <span class="text-danger">*</span></strong></label>
@@ -168,7 +168,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-12">
+                                                    <div class="col-md-4 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label
                                                                     for="validation_days"><strong>Validation
                                                                                                   Days<span
@@ -182,6 +182,12 @@
                                                                    required>
                                                         </div>
                                                     </div>
+
+{{--                                                    //project name show--}}
+{{--                                                    <div class="col-md-4 mt-4">--}}
+{{--                                                        <p><strong>Project Name: </strong>{{ optional($requestProposal)->project_name ?? 'N\A' }}</p>--}}
+{{--                                                    </div>--}}
+
                                                     {{-- <div class="col-md-4 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="discount_percent"><strong>Discount (%)</strong></label>
                                                         </p>

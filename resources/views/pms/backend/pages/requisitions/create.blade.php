@@ -623,7 +623,7 @@
                     '\n' +
                     '                                            </td>\n' +
                     '<td class="product-attributes-' + x + '">' +
-
+                    '  <input type="text" class="form-control" name="description[]">' +
                     '</td>' +
                     '                                            <td>\n' +
                     '                                                <div class="input-group input-group-md">\n' +
