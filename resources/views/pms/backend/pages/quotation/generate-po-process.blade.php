@@ -61,16 +61,17 @@
                                         </div>
                                     </div>
 
-                                     <div class="col-md-2 col-sm-12">
-                                    <p class="mb-1 font-weight-bold"><label for="delivery_date"><strong>{{ __('Delivery Date') }}
-                                                <span class="text-danger">*</span></strong></label></p>
-                                    <div class="input-group input-group-md mb-3 d-">
-                                        <input type="text" name="delivery_date" id="delivery_date"
-                                            class="form-control rounded cc-datepicker" aria-label="Large" min
-                                            aria-describedby="inputGroup-sizing-sm" required readonly
-                                            value="{{$quotation->delivery_date }}">
+                                    <div class="col-md-2 col-sm-12">
+                                        <p class="mb-1 font-weight-bold"><label
+                                                    for="delivery_date"><strong>{{ __('Delivery Date') }}
+                                                    <span class="text-danger">*</span></strong></label></p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <input type="text" name="delivery_date" id="delivery_date"
+                                                   class="form-control rounded cc-datepicker" aria-label="Large" min
+                                                   aria-describedby="inputGroup-sizing-sm" required readonly
+                                                   value="{{$quotation->delivery_date }}">
+                                        </div>
                                     </div>
-                                </div>
 
 
                                     <div class="col-md-2 col-sm-12">
@@ -112,7 +113,7 @@
                                         <div class="input-group input-group-md mb-3">
                                             <select name="warehouse_id"
                                                     id="warehouse_id"
-                                                    class="form-control rounded" >
+                                                    class="form-control rounded">
                                                 <option value="">Select One</option>
                                                 @foreach($warehouses as $warehouse)
                                                     <option value="{{ $warehouse->id }}"
@@ -125,7 +126,7 @@
                                     </div>
 
 
-                                @if($uncommon > 0)
+                                    @if($uncommon > 0)
                                         <div class="col-md-2 col-sm-12">
                                             <p class="mb-1 font-weight-bold"><label
                                                         for="hr_department_id"><strong>{{ __('Department') }} <span
@@ -159,59 +160,59 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-sm-12">
-                                            <p><label class="font-weight-bold"
-                                                        for="payment_term_id"><strong>Payment
-                                                                                    Term
-                                                        <span class="text-danger">*</span></strong></label>
-                                            </p>
-                                            <div class="input-group input-group-md mb-3 d-">
-                                                <select name="payment_term_id"
-                                                        id="payment_term_id"
-                                                        class="form-control rounded"
-                                                        onchange="printPaymentTermInformation()">
-                                                        <option value="{{null}}">--Select One--</option>
-                                                    @if(isset($paymentTerms[0]))
-                                                        @foreach($paymentTerms as $paymentTerm)
-                                                    
-                                                            <option value="{{ $paymentTerm->id }}" 
-                                                                    {{$paymentTerm->id==$quotation->relSupplierPaymentTerm->payment_term_id?'selected':''}}
-                                                                    data-percentage="{{ $quotation->relSupplierPaymentTerm->payment_percent }}"
-                                                                    data-type="{{ $quotation->relSupplierPaymentTerm->type }}"
-                                                                    data-payment-mode="{{ $quotation->relSupplierPaymentTerm->payment_mode }}">{{ $paymentTerm->term}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
+                                        <p><label class="font-weight-bold"
+                                                  for="payment_term_id"><strong>Payment
+                                                    Term
+                                                    <span class="text-danger">*</span></strong></label>
+                                        </p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <select name="payment_term_id"
+                                                    id="payment_term_id"
+                                                    class="form-control rounded"
+                                                    onchange="printPaymentTermInformation()">
+                                                <option value="{{null}}">--Select One--</option>
+                                                @if(isset($paymentTerms[0]))
+                                                    @foreach($paymentTerms as $paymentTerm)
+
+                                                        <option value="{{ $paymentTerm->id }}"
+                                                                {{$paymentTerm->id==$quotation->relSupplierPaymentTerm->payment_term_id?'selected':''}}
+                                                                data-percentage="{{ $quotation->relSupplierPaymentTerm->payment_percent }}"
+                                                                data-type="{{ $quotation->relSupplierPaymentTerm->type }}"
+                                                                data-payment-mode="{{ $quotation->relSupplierPaymentTerm->payment_mode }}">{{ $paymentTerm->term}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                         </div>
-                                      
-                                                <div class="col-md-6">
-                                                
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <th style="width:20%">Percentage</th>
-                                                            <th style="width:20%">Payment Type</th>
-                                                            <th style="width:45%">Payment Mode</th>
-                    
-                                                        </thead>
-                                                        <tbody id="payment-percentages-div">
+                                    </div>
 
-                                                        </tbody>
-                                                    </table>
-                                                
-                                                </div>
-                                           
+                                    <div class="col-md-6">
 
-{{--                                    <div class="col-md-3 col-sm-12">--}}
-{{--                                        <p class="mb-1 font-weight-bold"><label--}}
-{{--                                                    for="cost_centre_id"><strong>{{ __('Cost Centre') }} <span--}}
-{{--                                                            class="text-danger">*</span></strong></label></p>--}}
-{{--                                        <div class="input-group input-group-md mb-3 d-">--}}
-{{--                                            <select name="cost_centre_id" id="cost_centre_id"--}}
-{{--                                                    class="form-control rounded">--}}
-{{--                                                <option value="0">Choose Cost Centre</option>--}}
-{{--                                            </select>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <th style="width:20%">Percentage</th>
+                                            <th style="width:20%">Payment Type</th>
+                                            <th style="width:45%">Payment Mode</th>
+
+                                            </thead>
+                                            <tbody id="payment-percentages-div">
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+
+                                    {{--                                    <div class="col-md-3 col-sm-12">--}}
+                                    {{--                                        <p class="mb-1 font-weight-bold"><label--}}
+                                    {{--                                                    for="cost_centre_id"><strong>{{ __('Cost Centre') }} <span--}}
+                                    {{--                                                            class="text-danger">*</span></strong></label></p>--}}
+                                    {{--                                        <div class="input-group input-group-md mb-3 d-">--}}
+                                    {{--                                            <select name="cost_centre_id" id="cost_centre_id"--}}
+                                    {{--                                                    class="form-control rounded">--}}
+                                    {{--                                                <option value="0">Choose Cost Centre</option>--}}
+                                    {{--                                            </select>--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
 
                                     <input type="hidden" name="cost_centre_id" id="cost_centre_id">
                                 </div>
@@ -247,19 +248,27 @@
                                                 <td class="text-center">
                                                     {{$key+1}}
                                                     <input type="hidden" name="product_id[]" value="{{$item->uid}}">
-                                                    <input type="hidden" name="unit_price" id="unit_price" value="{{$item->unit_price}}">
-                                                    <input type="hidden" name="discount_percentage[{{ $item->id }}]" id="discount_percentage" value="{{$item->discount}}" class="discount_percentage">
-                                                    <input type="hidden" name="vat_type[{{ $item->id }}]" id="vat_type" value="{{$item->vat_type}}">
-                                                    <input type="hidden" name="vat_percentage[{{ $item->id }}]" id="vat_percentage" value="{{$item->vat_percentage}}">
+                                                    <input type="hidden" name="unit_price" id="unit_price"
+                                                           value="{{$item->unit_price}}">
+                                                    <input type="hidden" name="discount_percentage[{{ $item->id }}]"
+                                                           id="discount_percentage" value="{{$item->discount}}"
+                                                           class="discount_percentage">
+                                                    <input type="hidden" name="vat_type[{{ $item->id }}]" id="vat_type"
+                                                           value="{{$item->vat_type}}">
+                                                    <input type="hidden" name="vat_percentage[{{ $item->id }}]"
+                                                           id="vat_percentage" value="{{$item->vat_percentage}}">
                                                 </td>
                                                 {{-- <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td> --}}
                                                 <td>
                                                     @if(isset($item->relProduct->name))
                                                         {{$item->relProduct->name}}
-{{--                                                        {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
+                                                        {{--                                                        {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                                                     @endif
                                                 </td>
-                                                <td>{{ $item->description }}</td>
+                                                <td><textarea name="description[{{ $item->id }}]" class="form-control"
+                                                              cols="2" rows="2"
+                                                              style="line-height: 15px!important;">{{ $item->description }}</textarea>
+                                                </td>
                                                 <td class="text-center">
                                                     @if(isset($item->relProduct->name))
                                                         {{$item->relProduct->productUnit->unit_name}}
@@ -275,7 +284,8 @@
                                                     <span class="view-data">0</span>
                                                 </td>
                                                 <td class="text-right">{{ systemDoubleValue($item->unit_price, 2) }}</td>
-                                                <td class="text-right"><span class="po-amount">0.00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                <td class="text-right"><span class="po-amount">0.00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </td>
                                                 {{-- <td class="text-right">{{$item->discount}}</td>
                                                 <td class="text-right">
                                                     {{ $item->unit_price-($item->discount > 0 ? ($item->unit_price*($item->discount/100)) : 0) }}
@@ -312,25 +322,34 @@
 
                                         <tr>
                                             <td colspan="6" class="text-right"><strong>Sub Total</strong></td>
-                                            <td class="text-right"><strong class="po-sub-total">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td class="text-right"><strong class="po-sub-total">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" class="text-right"><strong>Discount</strong></td>
                                             <td class="text-right">
-                                                <input type="number" step="any" min="0" value="0" class="form-control text-right po-discount" style="font-weight: bold;" onchange="distributeDiscount()" onkeyup="distributeDiscount()">
+                                                <input type="number" step="any" min="0" value="0"
+                                                       class="form-control text-right po-discount"
+                                                       style="font-weight: bold;" onchange="distributeDiscount()"
+                                                       onkeyup="distributeDiscount()">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" class="text-right"><strong>After Discount</strong></td>
-                                            <td class="text-right"><strong class="po-after-discount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td class="text-right"><strong class="po-after-discount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="text-right"><strong>VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }} {{ $quotation->relQuotationItems->first()->vat_percentage > 0 ? ', '.systemDoubleValue($quotation->relQuotationItems->first()->vat_percentage, 2).'%' : '' }})</strong></td>
-                                            <td class="text-right"><strong class="po-vat-amount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td colspan="6" class="text-right"><strong>VAT
+                                                    ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }} {{ $quotation->relQuotationItems->first()->vat_percentage > 0 ? ', '.systemDoubleValue($quotation->relQuotationItems->first()->vat_percentage, 2).'%' : '' }}
+                                                    )</strong></td>
+                                            <td class="text-right"><strong class="po-vat-amount">0.00</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" class="text-right"><strong>PO Total Amount</strong></td>
-                                            <td class="text-right"><strong class="total-po-amount"></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td class="text-right"><strong class="total-po-amount"></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </td>
                                         </tr>
 
                                         {{-- <tr>
@@ -368,29 +387,32 @@
                                             <td class="text-right total-po-amount-system-currency">0.00</td>
                                         </tr> --}}
 
-                                        <input type="hidden" class="quotation-id" name="quotation_id" value="{{$quotation->id}}">
+                                        <input type="hidden" class="quotation-id" name="quotation_id"
+                                               value="{{$quotation->id}}">
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
                                 <!-- testing -->
-                            
+
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <h6 class="mb-2"><strong>Work Progresses</strong></h6>
                                         <table class="table table-bordered">
                                             <thead>
-                                                <tr>
-                                                    <th style="width: 70%">Milestone</th>
-                                                    <th style="width: 20%">Payment Percentage (%)</th>
-                                                    <th style="width: 10%">Actions</th>
-                                                </tr>
+                                            <tr>
+                                                <th style="width: 70%">Milestone</th>
+                                                <th style="width: 20%">Payment Percentage (%)</th>
+                                                <th style="width: 10%">Actions</th>
+                                            </tr>
                                             </thead>
                                             <tbody id="milestones">
-                                                
+
                                             </tbody>
                                         </table>
-                                        <a class="btn btn-xs btn-success text-white pull-right" onclick="addMilestone()"><i class="las la-plus"></i>&nbsp;Add new Milstone</a>
+                                        <a class="btn btn-xs btn-success text-white pull-right"
+                                           onclick="addMilestone()"><i class="las la-plus"></i>&nbsp;Add new
+                                            Milstone</a>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -551,13 +573,13 @@
                 var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
                 var discounted = (unit_total - discount);
 
-                if(vat_type == 'inclusive'){
-                    var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted*vat_percentage)/(100+vat_percentage)) : 0);
+                if (vat_type == 'inclusive') {
+                    var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);
                     var total = discounted;
-                }else if(vat_type == 'exclusive'){
+                } else if (vat_type == 'exclusive') {
                     var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
                     var total = (discounted + vat);
-                }else{
+                } else {
                     var vat = 0;
                     var total = discounted;
                 }
@@ -573,7 +595,7 @@
             });
 
             $('.po-sub-total').html(parseFloat(sub_total).toFixed(2));
-            if(show_discount){
+            if (show_discount) {
                 $('.po-discount').val(parseFloat(total_discount).toFixed(2));
             }
             $('.po-after-discount').html(parseFloat(total_discounted).toFixed(2));
@@ -592,7 +614,7 @@
             var discount = parseFloat($('.po-discount').val());
             var sub_total = parseFloat($('.po-sub-total').text());
 
-            var percentage = discount > 0 && sub_total > 0 ? (discount/sub_total)*100 : 0;
+            var percentage = discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0;
             console.log(percentage);
 
             $('.discount_percentage').val(percentage);
@@ -630,17 +652,17 @@
 
         // addMilestone();
         function addMilestone() {
-            $('#milestones').append('<tr>'+
-                                        '<td>'+
-                                            '<input type="text" name="milestone_names[]" class="form-control" required>'+
-                                        '</td>'+
-                                        '<td>'+
-                                            '<input type="number" name="milestone_percentages[]" min="0" max="100" value="0" class="form-control text-right milestones" onchange="calculateMilestone($(this))" onkeyup="calculateMilestone($(this))" required>'+
-                                        '</td>'+
-                                        '<td class="text-center">'+
-                                            '<a class="btn btn-xs btn-danger text-white" onclick="removeMilestone($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>'+
-                                        '</td>'+
-                                    '</tr>');
+            $('#milestones').append('<tr>' +
+                '<td>' +
+                '<input type="text" name="milestone_names[]" class="form-control" required>' +
+                '</td>' +
+                '<td>' +
+                '<input type="number" name="milestone_percentages[]" min="0" max="100" value="0" class="form-control text-right milestones" onchange="calculateMilestone($(this))" onkeyup="calculateMilestone($(this))" required>' +
+                '</td>' +
+                '<td class="text-center">' +
+                '<a class="btn btn-xs btn-danger text-white" onclick="removeMilestone($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>' +
+                '</td>' +
+                '</tr>');
         }
 
         function removeMilestone(element) {
@@ -652,66 +674,66 @@
             var max = parseInt(element.attr('max'));
             var min = parseInt(element.attr('min'));
 
-            if(value > max){
+            if (value > max) {
                 element.val(max);
             }
 
-            if(value < min){
+            if (value < min) {
                 element.val(min);
             }
 
             var milestone = 0;
-            $.each($('.milestones'), function(index, val) {
+            $.each($('.milestones'), function (index, val) {
                 milestone += parseInt($(this).val());
             });
 
-            if(milestone > max){
+            if (milestone > max) {
                 element.val(0);
             }
         }
     </script>
 
-    <script> 
+    <script>
         printPaymentTermInformation();
 
-            function printPaymentTermInformation() {
-                var percentage = $('#payment_term_id').find(':selected').attr('data-percentage');
-                var type = $('#payment_term_id').find(':selected').attr('data-type');
-                var payment_mode = $('#payment_term_id').find(':selected').attr('data-payment-mode');
-                $('#payment-percentages-div').html('<tr>' +
-                    '<td>' +
-                    '<input type="number" name="payment_percentages" value="' + percentage + '" class="form-control payment-percentages" min="1" max="100" placeholder="%" onchange="validatePaymentTerms()" onkeyup="validatePaymentTerms()" required />' +
-                    '</td>' +
-    
-                    '<td>' +
-                    '<select name="payment_types" class="form-control payment-types" required>' +
-                    '<option value="paid" ' + (type == 'paid' ? 'selected' : '') + '>Advance</option>' +
-                    '<option value="due" ' + (type == 'due' ? 'selected' : '') + '>Credit</option>' +
-                    '</select>' +
-                    '</td>' +
-                    '<td>' +
-                    '<input type="text" name="payment_modes" class="form-control payment-modes" value="' + payment_mode + '" required />' +
-                    '</td>' +
-                    '</tr>');
-                $('.payment-types').select2();
-            }
+        function printPaymentTermInformation() {
+            var percentage = $('#payment_term_id').find(':selected').attr('data-percentage');
+            var type = $('#payment_term_id').find(':selected').attr('data-type');
+            var payment_mode = $('#payment_term_id').find(':selected').attr('data-payment-mode');
+            $('#payment-percentages-div').html('<tr>' +
+                '<td>' +
+                '<input type="number" name="payment_percentages" value="' + percentage + '" class="form-control payment-percentages" min="1" max="100" placeholder="%" onchange="validatePaymentTerms()" onkeyup="validatePaymentTerms()" required />' +
+                '</td>' +
+
+                '<td>' +
+                '<select name="payment_types" class="form-control payment-types" required>' +
+                '<option value="paid" ' + (type == 'paid' ? 'selected' : '') + '>Advance</option>' +
+                '<option value="due" ' + (type == 'due' ? 'selected' : '') + '>Credit</option>' +
+                '</select>' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" name="payment_modes" class="form-control payment-modes" value="' + payment_mode + '" required />' +
+                '</td>' +
+                '</tr>');
+            $('.payment-types').select2();
+        }
 
 
-            function validatePaymentTerms() {
-                var percentages = 0;
-                $.each($('.payment-percentages'), function (index, val) {
-                    var max = parseInt($(this).attr('max'));
+        function validatePaymentTerms() {
+            var percentages = 0;
+            $.each($('.payment-percentages'), function (index, val) {
+                var max = parseInt($(this).attr('max'));
 
-                    if ($(this).val() > max) {
-                        $(this).val(0);
-                    } else {
-                        percentages += parseInt($(this).val());
-                    }
+                if ($(this).val() > max) {
+                    $(this).val(0);
+                } else {
+                    percentages += parseInt($(this).val());
+                }
 
-                    if (percentages > max) {
-                        $(this).val(0);
-                    }
-                });
-            }
+                if (percentages > max) {
+                    $(this).val(0);
+                }
+            });
+        }
     </script>
 @endsection

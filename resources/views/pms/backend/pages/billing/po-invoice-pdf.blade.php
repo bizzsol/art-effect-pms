@@ -146,7 +146,7 @@
 <htmlpagefooter name="page-footer">
     <table class="table-bordered">
         <tbody>
-       
+
         <tr>
             <td colspan="2" style="text-align: right;border: none !important;">
                 <small>{PAGENO} of {nb}</small>
@@ -202,7 +202,7 @@
                 <br>
                 <strong>
                     Contact
-                        Person:</strong> {!! isset($purchaseOrder->creator) ?  $purchaseOrder->creator->name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator->employee->designation)->hr_designation_name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator)->phone : '' !!}
+                    Person:</strong> {!! isset($purchaseOrder->creator) ?  $purchaseOrder->creator->name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator->employee->designation)->hr_designation_name.'&nbsp;&nbsp;|&nbsp;&nbsp;'.optional($purchaseOrder->creator)->phone : '' !!}
                 <br>
                 <strong>
                     CS Ref: {{ optional($purchaseOrder->relQuotation->relRequestProposal)->reference_no }}
@@ -212,16 +212,16 @@
         </tr>
         <tr>
             <td style="width: 50% !important">
-{{--                <strong>Your vendor code no. with--}}
-{{--                        us:</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name) ? $purchaseOrder->relQuotation->relSuppliers->code : ''}}--}}
+                {{--                <strong>Your vendor code no. with--}}
+                {{--                        us:</strong> {{isset($purchaseOrder->relQuotation->relSuppliers->name) ? $purchaseOrder->relQuotation->relSuppliers->code : ''}}--}}
 
                 <strong>Invoice Address:</strong>
                 <br>
-{{--                @if(isset($factoryAddress->id))--}}
-{{--                    {{ $factoryAddress->village.' '.$factoryAddress->road.', '.$factoryAddress->city.'-'.$factoryAddress->zip.', '.$factoryAddress->country }}--}}
-{{--                    <br>--}}
-{{--                    {{ $factoryAddress->adddress }}--}}
-{{--                @endif--}}
+                {{--                @if(isset($factoryAddress->id))--}}
+                {{--                    {{ $factoryAddress->village.' '.$factoryAddress->road.', '.$factoryAddress->city.'-'.$factoryAddress->zip.', '.$factoryAddress->country }}--}}
+                {{--                    <br>--}}
+                {{--                    {{ $factoryAddress->adddress }}--}}
+                {{--                @endif--}}
                 <div>
                     {!! isset($purchaseOrder->Unit->hr_unit_name) ? $purchaseOrder->Unit->hr_unit_name : '' !!}
                     <br>
@@ -230,9 +230,10 @@
             </td>
             <td style="width: 50% !important">
                 <strong>Supplier
-                        Quotation: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->supplier_quotation_ref_no : '' }}</strong>
+                    Quotation: {{ isset($purchaseOrder->relQuotation->id) ? $purchaseOrder->relQuotation->supplier_quotation_ref_no : '' }}</strong>
                 <br>
-                <strong>Quotation Date:</strong> {{ isset($purchaseOrder->relQuotation->supplier_quotation_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->supplier_quotation_date)) : '' }}
+                <strong>Quotation
+                    Date:</strong> {{ isset($purchaseOrder->relQuotation->supplier_quotation_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->supplier_quotation_date)) : '' }}
 
                 @if ($purchaseOrder->relQuotation->type === 'manual')
                     <br>
@@ -240,30 +241,30 @@
                     {!! $purchaseOrder->warehouse->name ?? '' !!},
                     {!! $purchaseOrder->warehouse->address ?? '' !!}
                 @endif
-{{--                <strong>Deliver to: </strong>--}}
-{{--                {!! $purchaseOrder->warehouse->name ?? '' !!}--}}
-{{--                {!! $purchaseOrder->warehouse->address ?? '' !!}--}}
+                {{--                <strong>Deliver to: </strong>--}}
+                {{--                {!! $purchaseOrder->warehouse->name ?? '' !!}--}}
+                {{--                {!! $purchaseOrder->warehouse->address ?? '' !!}--}}
 
 
                 {{--                {{isset($purchaseOrder->Unit->hr_unit_name)?$purchaseOrder->Unit->hr_unit_name:''}}--}}
 
 
-{{--                <strong>Order is valid--}}
-{{--                        till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>--}}
+                {{--                <strong>Order is valid--}}
+                {{--                        till: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>--}}
                 <br>
                 <strong>Delivery
-                        Date: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
+                    Date: {{ isset($purchaseOrder->relQuotation->delivery_date) ? date('d-M-y', strtotime($purchaseOrder->relQuotation->delivery_date)) : '' }}</strong>
             </td>
         </tr>
 
-        
+
         </tbody>
     </table>
 
     <table class="table table-bordered">
         <thead>
         <tr class="text-center">
-            <td style="text-align:  center;width: 5% !important"><strong>#</strong></td>
+            <td style="text-align:  center;width: 5% !important"><strong>SL</strong></td>
             <td style="text-align:  center;width: 16% !important"><strong>Product</strong></td>
 
             <td style="text-align:  center;width: 21% !important"><strong>Description</strong></td>
@@ -285,7 +286,7 @@
                 <td class="text-center">{{ $key+1}}</td>
                 <td class="text-center">
                     {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }}
-{{--                    {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
+                    {{--                    {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                 </td>
 
                 <td style="text-align: center">{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
@@ -315,9 +316,13 @@
         <tr>
             <td colspan="6" class="text-right">
                 {{-- <strong>VAT ({{ ucwords($purchaseOrder->relPurchaseOrderItems->first()->vat_type) }} {{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage > 0 ? ', '.$purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' : '' }})</strong> --}}
-                <strong>VAT ({{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' }})</strong>
+                <strong>VAT ({{ $purchaseOrder->relPurchaseOrderItems->first()->vat_percentage.'%' }})
+                    {{ucfirst($purchaseOrder->relPurchaseOrderItems->first()->vat_type)}}
+                </strong>
             </td>
-            <td class="text-right"><strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong></td>
+            <td class="text-right">
+                <strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong>
+            </td>
         </tr>
         <tr>
             <td colspan="5">
@@ -382,7 +387,7 @@
         <table class="table table-bordered">
             <thead>
             <tr class="text-center">
-                <td style="width: 10% !important" class="text-center"><strong>SL#</strong></td>
+                <td style="width: 10% !important" class="text-center"><strong>SL</strong></td>
                 <td style="width: 70% !important" class="text-center"><strong>Work Progress</strong></td>
                 <td style="width: 20% !important" class="text-center"><strong>% of Payment</strong></td>
             </tr>
@@ -391,7 +396,7 @@
             @foreach($purchaseOrder->milestones as $key => $milestone)
                 <tr>
                     <td class="text-center">{{ $key+1 }}</td>
-                    <td class="text-center">{{ $milestone->name }}</td>
+                    <td class="text-left">{{ $milestone->name }}</td>
                     <td class="text-center">{{ $milestone->percentage }}%</td>
                 </tr>
             @endforeach
@@ -422,7 +427,7 @@
                         <center style="text-decoration: underline; text-align: center">{{$purchaseOrder->Unit->hr_unit_reference_heading??''}}</center>
                     @else
                         <small style="text-decoration: underline;">N.B.: This is an electronic version of the document,
-                                                                   therefore no signature is required.</small>
+                            therefore no signature is required.</small>
                     @endif
                 </div>
                 <br>

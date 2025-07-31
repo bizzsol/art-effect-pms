@@ -1,6 +1,6 @@
 <tbody>
 <tr>
-    <td class="text-center" colspan="28">
+    <td class="text-center" colspan="29">
         <h1><strong>{{ $title }}</strong></h1>
     </td>
 </tr>
@@ -21,6 +21,7 @@
     <td class="text-center"><strong>Materials Name</strong></td>
     <td class="text-center"><strong>Quantity</strong></td>
     <td class="text-center"><strong>Unit Price</strong></td>
+    <td class="text-center"><strong>Vat</strong></td>
     <td class="text-center"><strong>Total Amount</strong></td>
     <td class="text-center"><strong>Negotiation Savings</strong></td>
     <td class="text-center"><strong>Company</strong></td>
@@ -112,6 +113,17 @@
                     </td>
                     <td class="text-center">{{ isset($purchaseOrderItem->id) ? $purchaseOrderItem->qty.' '.$item->product->productUnit->unit_name : '-' }}</td>
                     <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->unit_price) : '-' }}</td>
+                        @php
+                            $vatTypeMap = [
+                                'inclusive' => 'INC',
+                                'exempted'  => 'EX',
+                                'exclusive' => 'EXC',
+                            ];
+                            $vatTypeShort = isset($purchaseOrderItem->vat_type)
+                                ? ($vatTypeMap[$purchaseOrderItem->vat_type] ?? $purchaseOrderItem->vat_type)
+                                : '-';
+                        @endphp
+                    <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->vat)  .'('.$vatTypeShort.')' : '-' }}</td>
                     <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->total_price) : '-' }}</td>
                     <td class="text-center">-</td>
 
