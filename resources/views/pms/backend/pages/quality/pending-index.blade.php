@@ -97,11 +97,11 @@
                                                     <th>Category</th>
                                                     <th>Product</th>
                                                     <th>UOM</th>
+                                                    <th>Qty</th>
                                                     <th>Unit Price
                                                         ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }}
                                                         )
                                                     </th>
-                                                    <th>Qty</th>
                                                     <th>Price
                                                         ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }}
                                                         )
@@ -125,8 +125,8 @@
                                                         <td>{{isset($item->relProduct->category->name)?$item->relProduct->category->name:''}}</td>
                                                         <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} ({{isset($item->relProduct->sku)?$item->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relProduct) }}{{ getProductAttributesFaster($item) }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
-                                                        <td class="text-right">{{number_format($item->unit_amount,2)}}</td>
                                                         <td class="text-center">{{number_format($item->qty,0)}}</td>
+                                                        <td class="text-right">{{number_format($item->unit_amount,2)}}</td>
                                                         <td class="text-right">{{number_format($item->sub_total,2)}}</td>
                                                         <td class="text-center">
                                                             <button class="btn btn-dark btn-xs">

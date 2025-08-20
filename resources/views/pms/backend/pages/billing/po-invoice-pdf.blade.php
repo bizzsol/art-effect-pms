@@ -324,8 +324,7 @@
                 @if ($purchaseOrder->relPurchaseOrderItems->first()->vat_type === 'exclusive')
                     <strong>{{ systemMoneyFormat($purchaseOrder->vat) }}</strong>
                 @endif
-
-                <strong>{{ ucfirst($purchaseOrder->relPurchaseOrderItems->first()->vat_type) }}</strong>
+                <strong>{{ $purchaseOrder->relPurchaseOrderItems->first()->vat_type!=='exclusive'? ucfirst($purchaseOrder->relPurchaseOrderItems->first()->vat_type):'' }}</strong>
             </td>
         </tr>
         <tr>
