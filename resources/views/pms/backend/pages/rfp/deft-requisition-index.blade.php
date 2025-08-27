@@ -171,7 +171,7 @@
 <script>
     function convertToRfp(element) {
         $.dialog({
-            title: 'RFP Submission Form',
+            title: 'CS Submission Form',
             content: "url:{{ url('pms/rfp/requisitions') }}?send-to-rfp&requisition_id=" + element.attr('data-id'),
             animation: 'scale',
             columnClass: 'col-md-12',

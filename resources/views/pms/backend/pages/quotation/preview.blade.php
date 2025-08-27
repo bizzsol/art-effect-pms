@@ -17,10 +17,10 @@
                     @foreach($quotations as $key=>$quotation)
                     @if($key==0)
                         <ul class="list-unstyled mb0">
-                            <li><strong>RFP Provide By :</strong>
+                            <li><strong>CS Provide By :</strong>
                                 {{isset($quotation->relRequestProposal->createdBy->name) ? $quotation->relRequestProposal->createdBy->name : ''}}
                             </li>
-                            <li><strong>RFP Date :</strong>
+                            <li><strong>CS Date :</strong>
                                 {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                             </li>
                         </ul>

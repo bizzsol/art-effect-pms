@@ -67,8 +67,8 @@
                         <th>Description</th>
                         <th>Specs</th>
                         <th>UOM</th>
-                        <th>Unit Price ({{ $quotations->exchangeRate->currency->code }})</th>
                         <th>Qty</th>
+                        <th>Unit Price ({{ $quotations->exchangeRate->currency->code }})</th>
                         <th>Price ({{ $quotations->exchangeRate->currency->code }})</th>
                         @if(!$same)
                             <th>Price ({{ $systemCurrency->code }})</th>
@@ -97,8 +97,8 @@
                                 @endif
                             </td>
                             <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:''}}</td>
-                            <td class="text-right">{{number_format($item->unit_price,2)}}</td>
                             <td class="text-center">{{$item->qty}}</td>
+                            <td class="text-right">{{number_format($item->unit_price,2)}}</td>
                             <td class="text-right">{{number_format($item->sub_total_price,2)}}</td>
                             @if(!$same)
                                 <td class="text-right">{{number_format($item->sub_total_price*$exchangeRate,2)}}</td>

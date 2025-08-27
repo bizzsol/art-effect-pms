@@ -67,9 +67,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>RFP Provide By:</strong> {{$quotation->relRequestProposal->createdBy->name}}
+                                                <li><strong>CS Provide By:</strong> {{$quotation->relRequestProposal->createdBy->name}}
                                                 </li>
-                                                <li><strong>RFP Date:</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
+                                                <li><strong>CS Date:</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                 </li>
                                             </ul>
                                         </div>
@@ -357,7 +357,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success submit-button"><i class="la la-check"></i>&nbsp;Send for Management Approval
+                                        <button type="submit" class="btn btn-success submit-button"><i class="la la-check"></i>&nbsp;Send for Approval
                                         </button>
                                         <a type="button" class="btn btn-danger" href="{{route('pms.quotation.quotations.cs.analysis')}}">Close</a>
                                     </div>

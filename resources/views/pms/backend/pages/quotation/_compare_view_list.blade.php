@@ -70,10 +70,10 @@
                                                         </div>
                                                         <div class="col-md-6 well">
                                                             <ul class="list-unstyled mb0">
-                                                                <li><strong>{{__('RFP Provide By')}}
+                                                                <li><strong>{{__('CS Provide By')}}
                                                                         :</strong> {{$quotation->relRequestProposal->createdBy->name}}
                                                                 </li>
-                                                                <li><strong>{{__('RFP Date')}}
+                                                                <li><strong>{{__('CS Date')}}
                                                                         :</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                                 </li>
                                                             </ul>
@@ -321,6 +321,11 @@
                                                     </td>
                                                 @endforeach
                                             </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-right">CS Explaination</td>
+                                                <td colspan="{{ count($quotations)*3}}">{!! $quotation->relRequestProposal->remarks?$quotation->relRequestProposal->remarks:'' !!}
+                                                </td>
+                                            </tr>
 {{--                                            <tr>--}}
 {{--                                                <td colspan="7" class="text-right">Remarks</td>--}}
 {{--                                                @foreach($quotations as $key=>$quotation)--}}
@@ -333,6 +338,18 @@
 {{--                                               --}}
 {{--                                            </tr>--}}
 
+{{--                                            new column for old approval--}}
+{{--                                            @foreach($approvals as $approval)--}}
+{{--                                                <tr>--}}
+{{--                                                    <td colspan="7" class="text-right">--}}
+{{--                                                        {{ $approval->user->name ?? 'Unknown User' }}--}}
+{{--                                                        ({{ ucfirst($approval->response) }})--}}
+{{--                                                    </td>--}}
+{{--                                                    <td colspan="{{ count($quotations)*3}}">--}}
+{{--                                                        {{ $approval->quotation->remarks ?? '-' }}--}}
+{{--                                                    </td>--}}
+{{--                                                </tr>--}}
+{{--                                            @endforeach--}}
                                             <tr>
                                                 <td colspan="7" class="text-right">Remarks</td>
                                                 @foreach($quotations as $key => $quotation)
@@ -343,12 +360,6 @@
                                                                   placeholder="What is the reason for choosing this supplier?">{{ old("remarks.{$quotation->id}", $quotation->remarks) }}</textarea>
                                                     </td>
                                                 @endforeach
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="7" class="text-right">CS Explaination</td>
-                                                 <td colspan="{{ count($quotations)*3}}">{!! $quotation->relRequestProposal->remarks?$quotation->relRequestProposal->remarks:'' !!}
-                                                </td>
                                             </tr>
                                             @if(request()->get('type')=='direct-purchase')
                                             <tr>

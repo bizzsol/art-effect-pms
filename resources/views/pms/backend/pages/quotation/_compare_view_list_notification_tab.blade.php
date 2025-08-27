@@ -72,10 +72,10 @@ use \App\Models\PmsModels\QuotationsItems;
                                         </div>
                                         <div class="col-md-6 well">
                                             <ul class="list-unstyled mb0">
-                                                <li><strong>{{__('RFP Provide By')}} :</strong>
+                                                <li><strong>{{__('CS Provide By')}} :</strong>
                                                     {{$quotation->relRequestProposal->createdBy->name}}
                                                 </li>
-                                                <li><strong>{{__('RFP Date')}} :</strong>
+                                                <li><strong>{{__('CS Date')}} :</strong>
                                                     {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                 </li>
                                             </ul>
