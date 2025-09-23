@@ -8,18 +8,18 @@
 
         @if($quotations->count() > 2)
             thead, tbody tr {
-                display: table;
-                width: {{ ($quotations->count()*400)+400 }}px;
-                table-layout: fixed;
-            }
+            display: table;
+            width: {{ ($quotations->count()*400)+400 }}px;
+            table-layout: fixed;
+        }
 
-            thead {
-                width: calc({{ ($quotations->count()*400)+400 }}px)
-            }
+        thead {
+            width: calc({{ ($quotations->count()*400)+400 }}px)
+        }
 
-            ul {
-                list-style: none;
-            }
+        ul {
+            list-style: none;
+        }
         @endif
     </style>
 @endsection
@@ -60,12 +60,17 @@
 
                                                         <div class="col-md-6 well">
                                                             <ul class="list-unstyled mb0">
-                                                                <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}
+                                                                <li><strong>CS
+                                                                        Number:</strong> {{$quotation->relRequestProposal->reference_no}}
                                                                 </li>
                                                                 @if($requisitionItems->isNotEmpty())
-                                                                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                                                                    <li><strong>Requisition Ref Number
+                                                                            :</strong> {{ $requisitionItems->first()->requisition->reference_no }}
+                                                                    </li>
                                                                 @endif
-                                                                <li><strong>Project Name: </strong>{{ $quotation->relRequestProposal-> project_name}}</li>
+                                                                <li><strong>Project
+                                                                        Name: </strong>{{ $quotation->relRequestProposal-> project_name}}
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-md-6 well">
@@ -121,7 +126,7 @@
                                             <tr class="text-center">
                                                 <th>SL</th>
                                                 <th>Product</th>
-                                                <th>Attributes</th>
+{{--                                                <th>Attributes</th>--}}
                                                 <th>Description</th>
                                                 <th>UOM</th>
                                                 <th class="text-center">Qty</th>
@@ -161,9 +166,10 @@
                                                     <tr>
                                                         <td class="text-right">{{$key+1}}</td>
                                                         <td>
-                                                            <a class="text-primary" style="cursor: pointer;" onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
+                                                            <a class="text-primary" style="cursor: pointer;"
+                                                               onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
                                                         </td>
-                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
+{{--                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
                                                         <td>{{ $item->description }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                         <td class="text-center">{{$item->qty}}</td>
@@ -210,10 +216,12 @@
                                                                 <span style="display: none"
                                                                       class="this-exchange-vat-amount exchange-vat-amount-{{ $quotation->id }}">{{ isset($this_prices['vat']) ? $this_prices['vat']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0 }}</span>
                                                             </td>
-                                                            <td class="text-right">{{number_format(isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0, 2)}}</td>
-                                                            <td class="text-right sub-total-price-{{ $quotation->id }}">{{number_format(isset($this_prices['sub_total_price']) ? $this_prices['sub_total_price'] : 0, 2)}}</td>
+                                                            <td class="text-right">{{systemMoneyFormat(isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0)}}</td>
+
+                                                            <td class="text-right sub-total-price-{{ $quotation->id }}">{{systemMoneyFormat(isset($this_prices['sub_total_price']) ? $this_prices['sub_total_price'] : 0)}}</td>
+
                                                             @if($systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : ''))
-                                                                <td class="text-right exchange-sub-total-price-{{ $quotation->id }}">{{number_format(isset($this_prices['sub_total_price']) ? $this_prices['sub_total_price']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0,2)}}</td>
+                                                                <td class="text-right exchange-sub-total-price-{{ $quotation->id }}">{{systemMoneyFormat(isset($this_prices['sub_total_price']) ? $this_prices['sub_total_price']*exchangeRate($quotation->exchangeRate, $systemCurrency->id) : 0)}}</td>
                                                             @endif
                                                         @endforeach
 
@@ -223,7 +231,7 @@
                                             @endif
 
                                             <tr>
-                                                <td colspan="5" class="text-right"><strong>Total</strong></td>
+                                                <td colspan="4" class="text-right"><strong>Total</strong></td>
                                                 <td class="text-center"><strong>{{$total_qty}}</strong></td>
                                                 <td class="text-center total-left-quantity"><strong>0</strong></td>
                                                 @foreach($quotations as $key => $quotation)
@@ -240,7 +248,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="7" class="text-right"></td>
+                                                <td colspan="6" class="text-right"></td>
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>(-) Discount</strong></td>
                                                     <td class="text-right">
@@ -255,10 +263,12 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="7" class="text-right"></td>
+                                                <td colspan="6" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
-                                                    <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
+                                                    <td colspan="2"><strong>(+) VAT
+                                                            ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
+                                                            )</strong></td>
                                                     <td class="text-right"><strong
                                                                 id="total-vat-amount-{{ $quotation->id }}">{{$quotation->vat}}</strong>
                                                     </td>
@@ -270,7 +280,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="7" class="text-right"></td>
+                                                <td colspan="6" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
                                                     <td colspan="2"><strong>Gross Total</strong></td>
@@ -286,19 +296,21 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="7"></td>
+                                                <td colspan="6"></td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}"
                                                         class="text-left">
                                                         Payment Term:
                                                         <strong>{{ makePaymentTermsString($quotation->supplier_payment_terms_id)}}</strong>
                                                         <br>
-                                                        Quotation validated for <strong>{{ inWordBn($quotation->validation_days, false, '') }}</strong> days
+                                                        Quotation validated for
+                                                        <strong>{{ inWordBn($quotation->validation_days, false, '') }}</strong>
+                                                        days
                                                     </td>
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="7" class="text-right"></td>
+                                                <td colspan="6" class="text-right"></td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         Delivery Date:
@@ -307,7 +319,7 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="7" class="text-right">Notes</td>
+                                                <td colspan="6" class="text-right">Notes</td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <span>
@@ -322,58 +334,80 @@
                                                 @endforeach
                                             </tr>
                                             <tr>
-                                                <td colspan="7" class="text-right">CS Explaination</td>
+                                                <td colspan="6" class="text-right">CS Explanation</td>
                                                 <td colspan="{{ count($quotations)*3}}">{!! $quotation->relRequestProposal->remarks?$quotation->relRequestProposal->remarks:'' !!}
                                                 </td>
                                             </tr>
-{{--                                            <tr>--}}
-{{--                                                <td colspan="7" class="text-right">Remarks</td>--}}
-{{--                                                @foreach($quotations as $key=>$quotation)--}}
-{{--                                                    <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">--}}
-{{--                                                        <textarea class="form-control" name="remarks" rows="1"--}}
-{{--                                                                  id="remarks"--}}
-{{--                                                                  placeholder="What is the reason for choosing this supplier?">{!! $quotation->remarks?$quotation->remarks:'' !!}</textarea>--}}
-{{--                                                    </td>--}}
-{{--                                                @endforeach--}}
-{{--                                               --}}
-{{--                                            </tr>--}}
+                                            {{--                                            <tr>--}}
+                                            {{--                                                <td colspan="7" class="text-right">Remarks</td>--}}
+                                            {{--                                                @foreach($quotations as $key=>$quotation)--}}
+                                            {{--                                                    <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">--}}
+                                            {{--                                                        <textarea class="form-control" name="remarks" rows="1"--}}
+                                            {{--                                                                  id="remarks"--}}
+                                            {{--                                                                  placeholder="What is the reason for choosing this supplier?">{!! $quotation->remarks?$quotation->remarks:'' !!}</textarea>--}}
+                                            {{--                                                    </td>--}}
+                                            {{--                                                @endforeach--}}
+                                            {{--                                               --}}
+                                            {{--                                            </tr>--}}
 
-{{--                                            new column for old approval--}}
-{{--                                            @foreach($approvals as $approval)--}}
-{{--                                                <tr>--}}
-{{--                                                    <td colspan="7" class="text-right">--}}
-{{--                                                        {{ $approval->user->name ?? 'Unknown User' }}--}}
-{{--                                                        ({{ ucfirst($approval->response) }})--}}
-{{--                                                    </td>--}}
-{{--                                                    <td colspan="{{ count($quotations)*3}}">--}}
-{{--                                                        {{ $approval->quotation->remarks ?? '-' }}--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                            @endforeach--}}
+                                            {{--                                            new column for old approval--}}
+                                            {{--                                            @foreach($approvals as $approval)--}}
+                                            {{--                                                <tr>--}}
+                                            {{--                                                    <td colspan="7" class="text-right">--}}
+                                            {{--                                                        {{ $approval->user->name ?? 'Unknown User' }}--}}
+                                            {{--                                                        ({{ ucfirst($approval->response) }})--}}
+                                            {{--                                                    </td>--}}
+                                            {{--                                                    <td colspan="{{ count($quotations)*3}}">--}}
+                                            {{--                                                        {{ $approval->quotation->remarks ?? '-' }}--}}
+                                            {{--                                                    </td>--}}
+                                            {{--                                                </tr>--}}
+                                            {{--                                            @endforeach--}}
+                                            @php
+                                                $hasRemarks = $quotations->contains(function ($q) {
+                                                    return !empty($q->remarks);
+                                                });
+                                            @endphp
+
+                                            @if($hasRemarks)
+                                                <tr>
+                                                    <td colspan="6" class="text-right">Previous Remarks</td>
+                                                    @foreach($quotations as $key => $quotation)
+                                                        <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                                                            @if(!empty($quotation->remarks))
+                                                                <strong>{{ optional($quotation->editor)->name }}:</strong>
+                                                                {{ $quotation->remarks }}
+                                                            @endif
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+
+
                                             <tr>
-                                                <td colspan="7" class="text-right">Remarks</td>
+                                                <td colspan="6" class="text-right">Remarks</td>
                                                 @foreach($quotations as $key => $quotation)
                                                     <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <textarea class="form-control"
                                                                   name="remarks[{{ $quotation->id }}]"
                                                                   rows="1"
-                                                                  placeholder="What is the reason for choosing this supplier?">{{ old("remarks.{$quotation->id}", $quotation->remarks) }}</textarea>
+                                                                  placeholder="What is the reason for choosing this supplier?"></textarea>
                                                     </td>
                                                 @endforeach
                                             </tr>
                                             @if(request()->get('type')=='direct-purchase')
-                                            <tr>
-                                                <td colspan="7" class="text-right">Choose Cost Centre</td>
-                                                @foreach($quotations as $key=>$quotation)
-                                                    <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                                                <tr>
+                                                    <td colspan="6" class="text-right">Choose Cost Centre</td>
+                                                    @foreach($quotations as $key=>$quotation)
+                                                        <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
 
-                                                        <select name="cost_centre_id" id="cost_centre_id" class="form-control">
-                                                            {!! getCostCenterForDirectPurchase($quotation->relRequestProposal->requestProposalRequisition[0]->requisition_id,$quotation->relRequestProposal->requestProposalRequisition[0]->relRequisition->hr_unit_id) !!}
-                                                        </select>
+                                                            <select name="cost_centre_id" id="cost_centre_id"
+                                                                    class="form-control">
+                                                                {!! getCostCenterForDirectPurchase($quotation->relRequestProposal->requestProposalRequisition[0]->requisition_id,$quotation->relRequestProposal->requestProposalRequisition[0]->relRequisition->hr_unit_id) !!}
+                                                            </select>
 
-                                                    </td>
-                                                @endforeach
-                                            </tr>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
                                             @endif
 
                                             </tbody>
@@ -385,9 +419,9 @@
                                     </button>
 
                                     <a type="button" class="btn btn-danger"
-                                           onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
-                                                    class="la la-ban"></i>&nbsp;Reject</a>
-                                                    
+                                       onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
+                                                class="la la-ban"></i>&nbsp;Reject</a>
+
                                     @if(request()->get('type')=='direct-purchase')
                                         <a type="button" class="btn btn-dark"
                                            href="{{route('pms.quotation.quotations.estimate.approval.list')}}"><i
@@ -477,7 +511,7 @@
                 });
             });
 
-            $.each($('.item-quantities'), function(index, val) {
+            $.each($('.item-quantities'), function (index, val) {
                 checkQuantity($(this));
             });
 
@@ -514,7 +548,7 @@
             var value = parseInt(element.val());
             var min = parseInt(element.attr('min'));
             var max = parseInt(element.attr('max'));
-            
+
             if (value > max) {
                 element.val(max);
                 value = max;
@@ -545,29 +579,31 @@
 
             $('.total-left-quantity').html('<strong>' + total_left + '</strong>');
 
-
             var unit_price = parseFloat(element.attr('data-unit-price'));
             var exchange_rate = parseFloat(element.attr('data-exchange-rate'));
             var discount = parseFloat(element.attr('data-discount'));
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
 
-            /* var sub_total = unit_price * parseFloat(element.val()); */
-            var sub_total = unit_price * parseFloat(element.val() > 0 ? element.val(): element.attr('max'));
-            element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
+            var sub_total = unit_price * parseFloat(element.val() > 0 ? element.val() : element.attr('max'));
+            element.parent().parent()
+                .find('.sub-total-price-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(sub_total));
 
             var exchange_sub_total = sub_total * exchange_rate;
-            element.parent().parent().find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
+            element.parent().parent()
+                .find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(exchange_sub_total));
 
             var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
             var exchange_discount_amount = discount_amount * exchange_rate;
-            element.parent().find('.this-discount-amount').html(discount_amount);
-            element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
+            element.parent().find('.this-discount-amount').html(systemMoneyFormat(discount_amount));
+            element.parent().find('.this-exchange-discount-amount').html(systemMoneyFormat(exchange_discount_amount));
 
             var after_discount = sub_total - discount_amount;
             var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
             var exchange_vat_amount = vat_amount * exchange_rate;
-            element.parent().find('.this-vat-amount').html(vat_amount);
-            element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
+            element.parent().find('.this-vat-amount').html(systemMoneyFormat(vat_amount));
+            element.parent().find('.this-exchange-vat-amount').html(systemMoneyFormat(exchange_vat_amount));
 
             var total_sub_total = 0;
             $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
@@ -593,7 +629,7 @@
             var exclusive_vat = 0;
             $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_vat += parseFloat($(this).text().split(",").join(""));
-                if($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive'){
+                if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
                     exclusive_vat += parseFloat($(this).text().split(",").join(""));
                 }
             });
@@ -602,33 +638,160 @@
             var exchange_exclusive_vat = 0;
             $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_vat += parseFloat($(this).text().split(",").join(""));
-                if($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive'){
+                if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
                     exchange_exclusive_vat += parseFloat($(this).text().split(",").join(""));
                 }
             });
 
-            $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
-            $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
+            $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_sub_total));
+            $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_exchange_sub_total));
 
-            $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
-            $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
+            $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_discount));
+            $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_exchange_discount));
 
-            $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
-            $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
+            $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_vat));
+            $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_exchange_vat));
 
-            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + exclusive_vat).toFixed(2));
-            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + exchange_exclusive_vat).toFixed(2));
+            $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_sub_total - total_discount + exclusive_vat));
+            $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_exchange_sub_total - total_exchange_discount + exchange_exclusive_vat));
         }
+
+
+        // function checkQuantity(element) {
+        //     var value = parseInt(element.val());
+        //     var min = parseInt(element.attr('min'));
+        //     var max = parseInt(element.attr('max'));
+        //
+        //     if (value > max) {
+        //         element.val(max);
+        //         value = max;
+        //     } else if (value < min) {
+        //         element.val(min);
+        //         value = min;
+        //     }
+        //
+        //     var total = 0;
+        //     $.each($('.itemized-quantity-' + parseInt(element.attr('data-item-id'))), function (index, val) {
+        //         total += parseInt($(this).val());
+        //     });
+        //
+        //     if (total > max) {
+        //         element.val(parseInt(value - (total - max)));
+        //         value = parseInt(value - (total - max));
+        //         var left = 0;
+        //     } else {
+        //         var left = max - total;
+        //     }
+        //
+        //     $('.left-quantity-' + parseInt(element.attr('data-item-id'))).html(left);
+        //
+        //     var total_left = 0;
+        //     $.each($('.left-quantity'), function (index, val) {
+        //         total_left += parseInt($(this).text());
+        //     });
+        //
+        //     $('.total-left-quantity').html('<strong>' + total_left + '</strong>');
+        //
+        //
+        //     var unit_price = parseFloat(element.attr('data-unit-price'));
+        //     var exchange_rate = parseFloat(element.attr('data-exchange-rate'));
+        //     var discount = parseFloat(element.attr('data-discount'));
+        //     var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
+        //
+        //     /* var sub_total = unit_price * parseFloat(element.val()); */
+        //     var sub_total = unit_price * parseFloat(element.val() > 0 ? element.val() : element.attr('max'));
+        //     element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
+        //
+        //     var exchange_sub_total = sub_total * exchange_rate;
+        //     element.parent().parent().find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
+        //
+        //     var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
+        //     var exchange_discount_amount = discount_amount * exchange_rate;
+        //     element.parent().find('.this-discount-amount').html(discount_amount);
+        //     element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
+        //
+        //     var after_discount = sub_total - discount_amount;
+        //     var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
+        //     var exchange_vat_amount = vat_amount * exchange_rate;
+        //     element.parent().find('.this-vat-amount').html(vat_amount);
+        //     element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
+        //
+        //     var total_sub_total = 0;
+        //     $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_sub_total += parseFloat($(this).text().split(",").join(""));
+        //     });
+        //
+        //     var total_exchange_sub_total = 0;
+        //     $.each($('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_exchange_sub_total += parseFloat($(this).text().split(",").join(""));
+        //     });
+        //
+        //     var total_discount = 0;
+        //     $.each($('.discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_discount += parseFloat($(this).text().split(",").join(""));
+        //     });
+        //
+        //     var total_exchange_discount = 0;
+        //     $.each($('.exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_exchange_discount += parseFloat($(this).text().split(",").join(""));
+        //     });
+        //
+        //     var total_vat = 0;
+        //     var exclusive_vat = 0;
+        //     $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_vat += parseFloat($(this).text().split(",").join(""));
+        //         if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
+        //             exclusive_vat += parseFloat($(this).text().split(",").join(""));
+        //         }
+        //     });
+        //
+        //     var total_exchange_vat = 0;
+        //     var exchange_exclusive_vat = 0;
+        //     $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
+        //         total_exchange_vat += parseFloat($(this).text().split(",").join(""));
+        //         if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
+        //             exchange_exclusive_vat += parseFloat($(this).text().split(",").join(""));
+        //         }
+        //     });
+        //
+        //     $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
+        //     $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
+        //
+        //     $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
+        //     $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
+        //
+        //     $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
+        //     $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
+        //
+        //     $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + exclusive_vat).toFixed(2));
+        //     $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + exchange_exclusive_vat).toFixed(2));
+        // }
 
         function productLogs(uid) {
             $.dialog({
                 title: 'Product CS logs',
-                content: "url:"+location.href+"&get-product-logs&request_proposal_id={{ $requestProposalId }}&uid="+uid,
+                content: "url:" + location.href + "&get-product-logs&request_proposal_id={{ $requestProposalId }}&uid="+uid,
                 animation: 'scale',
                 columnClass: 'col-md-12',
                 closeAnimation: 'scale',
                 backgroundDismiss: true,
             });
+        }
+
+        function systemMoneyFormat(amount, symbol = '') {
+            if (isNaN(amount)) amount = 0;
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount) + symbol;
         }
     </script>
 @endsection

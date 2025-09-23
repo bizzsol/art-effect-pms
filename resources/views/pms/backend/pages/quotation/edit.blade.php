@@ -123,7 +123,7 @@
                                                         </div>
                                                     </div> --}}
 
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <div class="col-md-4 col-sm-12">
                                                         <p class="mb-1 font-weight-bold"><label for="supplier_id"><strong>{{ __('Supplier') }}<span class="text-danger">*</span></strong></label></p>
                                                         <div class="input-group input-group-md mb-3 d-">
                                                             <input type="text" class="form-control rounded" value="{{isset($quotation->relSuppliers->name)?$quotation->relSuppliers->name:''}}" readonly>
@@ -241,7 +241,7 @@
                                                      <td>
                                                         <textarea name="product_description[{{$item->id}}]" class="form-control" style="min-height: 80px;">{{ $item->description }}</textarea>
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         {{$item->relProduct->productUnit->unit_name}}
                                                     </td>
                                                     <td>

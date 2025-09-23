@@ -23,9 +23,11 @@
                     <thead>
                         <tr>
                             <th style="width: 10%">SL</th>
-                            <th style="width: 45%">Supplier</th>
+                            <th style="width: 30%">Supplier</th>
                             <th style="width: 25%">Reference</th>
-                            <th style="width: 20%">Quantity</th>
+                            <th style="width: 10%">Quantity</th>
+                            <th style="width: 40%">Remarks</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +37,7 @@
                             <td>{{ $suppliers->where('id', $quotation->supplier_id)->first()->name }}</td>
                             <td class="text-center">{{ $quotation->reference_no }}</td>
                             <td class="text-center">{{ collect($quotation->rel_quotation_items)->where('uid', $uid)->first()->approved_qty }}</td>
+                            <td>{{!empty($quotation->remarks) ? $quotation->remarks : 'No Remarks'}}</td>
                         </tr>
                         @endforeach
                     </tbody>

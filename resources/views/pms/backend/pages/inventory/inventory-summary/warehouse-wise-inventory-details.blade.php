@@ -23,6 +23,7 @@ $stockQty = $stockQty->sum('qty');
                     <tr class="text-center">
                         <th width="5%">{{__('SL')}}</th>
                         <th>{{__('Warehouses')}}</th>
+{{--                        <th>{{__('Attribute')}}</th>--}}
                         <th>{{__('Unit Price')}}</th>
                         <th>{{__('Qty')}}</th>
                         <th>{{__('Price')}}</th>
@@ -41,6 +42,7 @@ $stockQty = $stockQty->sum('qty');
                             {{$key+1}}
                         </td>
                         <td>{{isset($values->relWarehouse->name)?$values->relWarehouse->name:''}}</td>
+{{--                        <td>{{ getProductAttributesFaster($values->product) }}</td>--}}
                         <td class="text-right">{{number_format($values->unit_price,2)}}</td>
                         <td class="text-center">{{$values->qty}}</td>
                         <td class="text-right">{{number_format($values->unit_price*$values->qty,2)}}</td>

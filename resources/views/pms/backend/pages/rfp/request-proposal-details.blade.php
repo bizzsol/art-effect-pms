@@ -7,7 +7,8 @@
                     <ul class="list-unstyled mb0">
 
                         <li>
-                            <strong>Name :</strong> {{ $requestProposal->defineToSupplier->pluck('supplier.name')->implode(', ') }}
+                            <strong>Name
+                                :</strong> {{ $requestProposal->defineToSupplier->pluck('supplier.name')->implode(', ') }}
                         </li>
                     </ul>
                 </div>
@@ -23,37 +24,39 @@
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
-                    <tr class="text-center">
-                        <th>SL</th>
-                        <th>Category</th>
-                        <th>Product</th>
-                        <th>Attributes</th>
-                        <th>Qty</th>
-                    </tr>
+                <tr class="text-center">
+                    <th>SL</th>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th>Attributes</th>
+                    <th>Qty</th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    @if(isset($requestProposal->requestProposalDetails[0]))
+                @if(isset($requestProposal->requestProposalDetails[0]))
                     @foreach($requestProposal->requestProposalDetails as $key => $requestProposalDetail)
-                    <tr>
-                        <td class="text-center">{{$key+1}}</td>
-                        <td>
-                            {{isset($requestProposalDetail->product->category->name)?$requestProposalDetail->product->category->name:''}}
-                        </td>
-                        <td>
-                            {{isset($requestProposalDetail->product->name) ? $requestProposalDetail->product->name:  ''}} ({{isset($requestProposalDetail->product->sku) ? $requestProposalDetail->product->sku : ''}}) {{ isset($requestProposalDetail->product_id) ? getProductAttributesFaster($requestProposalDetail->product) : ''}}
-                        </td>
-                        <td>
-                            {{ getProductAttributesFaster($requisitionItems->where('uid', $requestProposalDetail->uid)->first()) }}
-                        </td>
-                        <td class="text-center">{{ $requestProposalDetail->request_qty }}</td>
-                    </tr>
+                        <tr>
+                            <td class="text-center">{{$key+1}}</td>
+                            <td>
+                                {{isset($requestProposalDetail->product->category->name)?$requestProposalDetail->product->category->name:''}}
+                            </td>
+                            <td>
+                                {{isset($requestProposalDetail->product->name) ? $requestProposalDetail->product->name:  ''}}
+                                ({{isset($requestProposalDetail->product->sku) ? $requestProposalDetail->product->sku : ''}}
+                                ) {{ isset($requestProposalDetail->product_id) ? getProductAttributesFaster($requestProposalDetail->product) : ''}}
+                            </td>
+                            <td>
+                                {{ getProductAttributesFaster($requisitionItems->where('uid', $requestProposalDetail->uid)->first()) }}
+                            </td>
+                            <td class="text-center">{{ number_format($requestProposalDetail->request_qty) }}</td>
+                        </tr>
                     @endforeach
-                    @endif
-                    <tr class="text-center">
-                        <td colspan="4">Total</td>
-                        <td>{{ $requestProposal->requestProposalDetails->sum('request_qty') }}</td>
-                    </tr>
+                @endif
+                <tr class="text-center">
+                    <td colspan="4">Total</td>
+                    <td>{{ number_format($requestProposal->requestProposalDetails->sum('request_qty')) }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

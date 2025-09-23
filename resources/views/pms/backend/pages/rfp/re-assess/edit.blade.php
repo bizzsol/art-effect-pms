@@ -62,9 +62,9 @@
                                         <tr>
                                             <th style="width: 7.5%">Sub Category</th>
                                             <th style="width: 10%">Product</th>
-                                            <th style="width: 60%">Attributes</th>
-                                            <th style="width: 7.5%">Unit price</th>
-                                            <th style="width: 5%">Quantity</th>
+                                            <th style="width: 30%">Attributes</th>
+                                            <th style="width: 10%">Unit price</th>
+                                            <th style="width: 10%">Quantity</th>
                                             <th style="width: 10%">Approved Quantity</th>
                                         </tr>
                                         </thead>
@@ -79,9 +79,9 @@
                                                     data-item-id="{{ $item->id }}">
 
                                                 </td>
-                                                <td class="text-right">{{ $item->unit_price }}</td>
-                                                <td class="text-right">{{ $item->requisition_qty }} {{ $item->product->productUnit->unit_name }}</td>
-                                                <td class="text-right">{{ $item->qty }} {{ $item->product->productUnit->unit_name }}</td>
+                                                <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
+                                                <td class="text-right">{{ number_format($item->requisition_qty) }} {{ $item->product->productUnit->unit_name }}</td>
+                                                <td class="text-right">{{ number_format($item->qty) }} {{ $item->product->productUnit->unit_name }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

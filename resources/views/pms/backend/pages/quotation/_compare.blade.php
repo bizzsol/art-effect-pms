@@ -58,18 +58,26 @@
                                     @if($key==0)
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>CS Number:</strong> {{$quotation->relRequestProposal->reference_no}}</li>
+                                                <li><strong>CS
+                                                        Number:</strong> {{$quotation->relRequestProposal->reference_no}}
+                                                </li>
                                                 @if($requisitionItems->isNotEmpty())
-                                                    <li><strong>Requisition Ref Number :</strong> {{ $requisitionItems->first()->requisition->reference_no }}</li>
+                                                    <li><strong>Requisition Ref Number
+                                                            :</strong> {{ $requisitionItems->first()->requisition->reference_no }}
+                                                    </li>
                                                 @endif
-                                                <li><strong>Project Name: </strong>{{ $quotation->relRequestProposal-> project_name}}</li>
+                                                <li><strong>Project
+                                                        Name: </strong>{{ $quotation->relRequestProposal-> project_name}}
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>CS Provide By:</strong> {{$quotation->relRequestProposal->createdBy->name}}
+                                                <li><strong>CS Provide
+                                                        By:</strong> {{$quotation->relRequestProposal->createdBy->name}}
                                                 </li>
-                                                <li><strong>CS Date:</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
+                                                <li><strong>CS
+                                                        Date:</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                 </li>
                                             </ul>
                                         </div>
@@ -80,16 +88,16 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover ">
                                                 <tr>
-                                                    <th colspan="6">Supplier Name</th>
+                                                    <th colspan="5">Supplier Name</th>
                                                     @if(isset($quotations[0]))
                                                         @foreach($quotations as $quotation)
-                                                        @php
-                                                            $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
-                                                            $TC = $quotation->relSuppliers->SupplierRatings->count();
+                                                            @php
+                                                                $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
+                                                                $TC = $quotation->relSuppliers->SupplierRatings->count();
 
-                                                            $totalScore = isset($TS) ? $TS : 0;
-                                                            $totalCount = isset($TC) ? $TC : 0;
-                                                        @endphp
+                                                                $totalScore = isset($TS) ? $TS : 0;
+                                                                $totalCount = isset($TC) ? $TC : 0;
+                                                            @endphp
                                                             <th class="invoiceBody fixed-width"
                                                                 colspan="{{ $systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : '') ? 4 : 3 }}">
 
@@ -106,11 +114,14 @@
 
                                                                 <p>
                                                                 <div class="form-check">
-                                                                    <input type="hidden" name="quotation_id[]" value="{{$quotation->id}}">
+                                                                    <input type="hidden" name="quotation_id[]"
+                                                                           value="{{$quotation->id}}">
                                                                     <input class="form-check-input setRequiredOnSupplierPaymentTerm setRequiredOnSupplierPaymentTerm-{{$quotation->id}}"
-                                                                           type="checkbox" name="quotation_recommendations[]"
+                                                                           type="checkbox"
+                                                                           name="quotation_recommendations[]"
                                                                            id="is_approved_{{$quotation->id}}"
-                                                                           value="{{$quotation->id}}" {{ $quotation->recommendation == 'yes' ? 'checked' : '' }} onchange="checkRecommendationFields($(this))">
+                                                                           value="{{$quotation->id}}"
+                                                                           {{ $quotation->recommendation == 'yes' ? 'checked' : '' }} onchange="checkRecommendationFields($(this))">
                                                                     <input type="hidden" name="request_proposal_id"
                                                                            value="{{$quotation->request_proposal_id}}">
                                                                     <label class="form-check-label"
@@ -127,7 +138,7 @@
                                                 <tr class="text-center">
                                                     <th width="1%" class="text-center">SL</th>
                                                     <th>Product</th>
-                                                    <th>Attributes</th>
+{{--                                                    <th>Attributes</th>--}}
                                                     <th>Description</th>
                                                     <th>UOM</th>
                                                     <th class="text-center">Qty</th>
@@ -139,8 +150,7 @@
                                                                 )
                                                             </th>
                                                             <th class="text-center">Item Total
-                                                                ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
-                                                                )
+                                                                ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }})
                                                             </th>
                                                             @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                 <th class="text-center">Item Total
@@ -153,15 +163,15 @@
 
                                                 <tbody>
                                                 @if(isset($quotation->id))
-                                                @php
-                                                    $total_qty = 0;
-                                                @endphp
+                                                    @php
+                                                        $total_qty = 0;
+                                                    @endphp
                                                     @if(isset($quotation->relQuotationItems[0]))
                                                         @foreach($quotation->relQuotationItems as $key=>$item)
                                                             <tr>
                                                                 <td>{{$key+1}}</td>
                                                                 <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>
+{{--                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
                                                                 <td>{{ $item->description }}</td>
                                                                 <td>{{ isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                                 <td class="text-center max-quantity">{{$item->qty}}</td>
@@ -171,16 +181,22 @@
                                                                             $this_prices = ($quotation->relQuotationItems->where('uid', $item->uid)->count() > 0 ? collect($quotation->relQuotationItems->where('uid', $item->uid)->first()) : false);
                                                                         @endphp
                                                                         <td>
-                                                                            <input type="number" name="recommendations[{{ $this_prices['id'] }}]" id="recommendations-{{ $this_prices['id'] }}" value="{{ $quotation_key == 0 ? $item->qty : 0 }}" min="0" max="{{ $item->qty }}"
-                                                                               
-                                                                               data-quotation-id="{{ $quotation->id }}"
-                                                                               data-item-id="{{ $item->id }}"
-                                                                               data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
-                                                                               data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
-                                                                               data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
-                                                                               data-vat-percentage="{{ isset($this_prices['vat_percentage']) ? $this_prices['vat_percentage'] : 0 }}"
+                                                                            <input type="number"
+                                                                                   name="recommendations[{{ $this_prices['id'] }}]"
+                                                                                   id="recommendations-{{ $this_prices['id'] }}"
+                                                                                   value="{{ $quotation_key == 0 ? $item->qty : 0 }}"
+                                                                                   min="0" max="{{ $item->qty }}"
 
-                                                                                class="form-control recommendations recommendations-{{ $quotation->id }}" onchange="checkRecommendation($(this))" onkeyup="checkRecommendation($(this))"
+                                                                                   data-quotation-id="{{ $quotation->id }}"
+                                                                                   data-item-id="{{ $item->id }}"
+                                                                                   data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
+                                                                                   data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
+                                                                                   data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
+                                                                                   data-vat-percentage="{{ isset($this_prices['vat_percentage']) ? $this_prices['vat_percentage'] : 0 }}"
+
+                                                                                   class="form-control recommendations recommendations-{{ $quotation->id }}"
+                                                                                   onchange="checkRecommendation($(this))"
+                                                                                   onkeyup="checkRecommendation($(this))"
                                                                             >
 
                                                                             <span style="display: none"
@@ -208,7 +224,7 @@
                                                         @endforeach
                                                     @endif
                                                     <tr>
-                                                        <td colspan="5" class="text-right"><strong>Total</strong></td>
+                                                        <td colspan="4" class="text-right"><strong>Total</strong></td>
                                                         <td class="text-center"><strong>{{$total_qty}}</strong></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
@@ -228,7 +244,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="6" class="text-right"></td>
+                                                        <td colspan="5" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 @php
@@ -250,17 +266,20 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td colspan="6" class="text-right"></td>
+                                                        <td colspan="5" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
-                                                            @php
-                                                                $total_price = $quotation->relQuotationItems->sum('sub_total_price');
-                                                                $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
-                                                            @endphp
-                                                                <td colspan="2"><strong>(+) VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
+                                                                @php
+                                                                    $total_price = $quotation->relQuotationItems->sum('sub_total_price');
+                                                                    $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
+                                                                @endphp
+                                                                <td colspan="2"><strong>(+) VAT
+                                                                        ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
+                                                                        )</strong></td>
                                                                 <td class="text-right">
                                                                     <strong
-                                                                id="total-vat-amount-{{ $quotation->id }}"> {{$quotation->vat}}</strong></td>
+                                                                            id="total-vat-amount-{{ $quotation->id }}"> {{$quotation->vat}}</strong>
+                                                                </td>
                                                                 @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                     <td class="text-right">
                                                                         <strong id="total-exchange-vat-amount-{{ $quotation->id }}"> {{$quotation->vat*$exchangeRate}}</strong>
@@ -270,13 +289,13 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="6" class="text-right"></td>
+                                                        <td colspan="5" class="text-right"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
-                                                            @php
-                                                                $total_price = $quotation->relQuotationItems->sum('sub_total_price');
-                                                                $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
-                                                            @endphp
+                                                                @php
+                                                                    $total_price = $quotation->relQuotationItems->sum('sub_total_price');
+                                                                    $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
+                                                                @endphp
                                                                 <td colspan="2"><strong>Gross Total</strong></td>
                                                                 <td class="text-right">
                                                                     <strong id="total-gross-amount-{{ $quotation->id }}">@php number_format($quotation->gross_price, 2); @endphp</strong>
@@ -291,7 +310,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td colspan="6"></td>
+                                                        <td colspan="5"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td class="text-left"
@@ -304,7 +323,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="6"></td>
+                                                        <td colspan="5"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td colspan="{{ ($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : '')) ? 4 : 3 }}">
@@ -315,7 +334,7 @@
                                                         @endif
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="6"></td>
+                                                        <td colspan="5"></td>
                                                         @if(isset($quotations[0]))
                                                             @foreach($quotations as $key=>$quotation)
                                                                 <td colspan="{{ ($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : '')) ? 4 : 3 }}">
@@ -337,29 +356,33 @@
                                             <div class="col-md-12">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                        <tr>
-                                                            <th style="width: 90%">Approver</th>
-                                                            <th style="width: 10%">Actions</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th style="width: 90%">Approver</th>
+                                                        <th style="width: 10%">Actions</th>
+                                                    </tr>
                                                     </thead>
                                                     <tbody id="approvers">
-                                                        
+
                                                     </tbody>
                                                     <tfoot>
-                                                        <tr>
-                                                            <td colspan="5" class="text-right">
-                                                                <a class="btn btn-xs btn-success text-white" onclick="newApprover()"><i class="las la-plus"></i>&nbsp;New Approver</a>
-                                                            </td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <a class="btn btn-xs btn-success text-white"
+                                                               onclick="newApprover()"><i class="las la-plus"></i>&nbsp;New
+                                                                Approver</a>
+                                                        </td>
+                                                    </tr>
                                                     </tfoot>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success submit-button"><i class="la la-check"></i>&nbsp;Send for Approval
+                                        <button type="submit" class="btn btn-success submit-button"><i
+                                                    class="la la-check"></i>&nbsp;Send for Approval
                                         </button>
-                                        <a type="button" class="btn btn-danger" href="{{route('pms.quotation.quotations.cs.analysis')}}">Close</a>
+                                        <a type="button" class="btn btn-danger"
+                                           href="{{route('pms.quotation.quotations.cs.analysis')}}">Close</a>
                                     </div>
                                 </div>
                         </div>
@@ -403,12 +426,12 @@
                     });
             });
 
-            $.each($('.recommendations'), function(index, val) {
+            $.each($('.recommendations'), function (index, val) {
                 checkRecommendation($(this), true);
             });
         });
 
-        function checkRecommendationFields(element){
+        function checkRecommendationFields(element) {
             // if(element.is(':checked')){
             //     $('.recommendations-'+element.val()).prop('readonly', false);
             // }else{
@@ -417,118 +440,173 @@
         }
 
         function checkRecommendation(element, loading = false) {
-            var value = loading ? parseInt(element.attr('max')) : parseInt(element.val());
-            var max = parseInt(element.attr('max'));
-            var min = parseInt(element.attr('min'));
+            let value = loading ? parseInt(element.attr('max')) : parseInt(element.val());
+            const max = parseInt(element.attr('max'));
+            const min = parseInt(element.attr('min'));
+            const quotationId = parseInt(element.attr('data-quotation-id'));
 
-            if(value > max){
-                value = max;
-                element.val(value);
-            }
+            // clamp between min & max
+            if (value > max) { value = max; element.val(value); }
+            if (value < min) { value = min; element.val(value); }
 
-            if(value < min){
-                value = min;
-                element.val(value);
-            }
-
-            if(!loading){
-                var total_recommendation = 0;
-                $.each(element.parent().parent().find('.recommendations'), function(index, val) {
-                    total_recommendation += parseInt($(this).val());
+            // prevent total recommendations from exceeding max
+            if (!loading) {
+                let total_recommendation = 0;
+                element.closest('tr').find('.recommendations').each(function () {
+                    total_recommendation += parseInt($(this).val()) || 0;
                 });
-
-                if(total_recommendation > max){
+                if (total_recommendation > max) {
                     value = 0;
                     element.val(value);
                 }
             }
 
-            var unit_price = parseFloat(element.attr('data-unit-price'));
-            var exchange_rate = parseFloat(element.attr('data-exchange-rate'));
-            var discount = parseFloat(element.attr('data-discount'));
-            var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
+            // raw values
+            const unit_price     = parseFloat(element.attr('data-unit-price')) || 0;
+            const exchange_rate  = parseFloat(element.attr('data-exchange-rate')) || 1;
+            const discount       = parseFloat(element.attr('data-discount')) || 0;
+            const vat_percentage = parseFloat(element.attr('data-vat-percentage')) || 0;
 
-            var sub_total = unit_price * parseFloat(loading ? element.attr('max') : element.val());
-            element.parent().parent().find('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(sub_total.toFixed(2));
+            // subtotal
+            const sub_total = unit_price * value;
+            element.closest('tr').find('.sub-total-price-' + quotationId)
+                .data('value', sub_total)
+                .html(formatNumber(sub_total));
 
-            var exchange_sub_total = sub_total * exchange_rate;
-            element.parent().parent().find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(exchange_sub_total.toFixed(2));
+            // exchange subtotal
+            const exchange_sub_total = sub_total * exchange_rate;
+            element.closest('tr').find('.exchange-sub-total-price-' + quotationId)
+                .data('value', exchange_sub_total)
+                .html(formatNumber(exchange_sub_total));
 
-            if(loading){
-                var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
-                var exchange_discount_amount = discount_amount * exchange_rate;
-                element.parent().find('.this-discount-amount').html(discount_amount);
-                element.parent().find('.this-exchange-discount-amount').html(exchange_discount_amount);
+            // discount + VAT only when loading
+            if (loading) {
+                const discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
+                const exchange_discount_amount = discount_amount * exchange_rate;
 
-                var after_discount = sub_total - discount_amount;
-                var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
-                var exchange_vat_amount = vat_amount * exchange_rate;
-                element.parent().find('.this-vat-amount').html(vat_amount);
-                element.parent().find('.this-exchange-vat-amount').html(exchange_vat_amount);
+                element.parent().find('.this-discount-amount')
+                    .data('value', discount_amount)
+                    .html(formatNumber(discount_amount));
 
-                var total_sub_total = 0;
-                $.each($('.sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_sub_total += parseFloat($(this).text().split(",").join(""));
-                });
+                element.parent().find('.this-exchange-discount-amount')
+                    .data('value', exchange_discount_amount)
+                    .html(formatNumber(exchange_discount_amount));
 
-                var total_exchange_sub_total = 0;
-                $.each($('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_exchange_sub_total += parseFloat($(this).text().split(",").join(""));
-                });
+                const after_discount = sub_total - discount_amount;
+                const vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
+                const exchange_vat_amount = vat_amount * exchange_rate;
 
-                var total_discount = 0;
-                $.each($('.discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_discount += parseFloat($(this).text().split(",").join(""));
-                });
+                element.parent().find('.this-vat-amount')
+                    .data('value', vat_amount)
+                    .html(formatNumber(vat_amount));
 
-                var total_exchange_discount = 0;
-                $.each($('.exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_exchange_discount += parseFloat($(this).text().split(",").join(""));
-                });
-
-                var total_vat = 0;
-                $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_vat += parseFloat($(this).text().split(",").join(""));
-                });
-
-                var total_exchange_vat = 0;
-                $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
-                    total_exchange_vat += parseFloat($(this).text().split(",").join(""));
-                });
-
-                $('#total-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_sub_total.toFixed(2));
-                $('#total-exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_sub_total.toFixed(2));
-
-                $('#total-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_discount.toFixed(2));
-                $('#total-exchange-discount-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_discount.toFixed(2));
-
-                $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_vat.toFixed(2));
-                $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))).html(total_exchange_vat.toFixed(2));
-
-                $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_sub_total - total_discount + total_vat).toFixed(2));
-                $('#total-exchange-gross-amount-' + parseInt(element.attr('data-quotation-id'))).html(parseFloat(total_exchange_sub_total - total_exchange_discount + total_exchange_vat).toFixed(2));
+                element.parent().find('.this-exchange-vat-amount')
+                    .data('value', exchange_vat_amount)
+                    .html(formatNumber(exchange_vat_amount));
             }
-        }
 
+            // 🔥 Always recalc totals (moved outside)
+            let total_sub_total = 0;
+            $('.sub-total-price-' + quotationId).each(function () {
+                total_sub_total += $(this).data('value') || 0;
+            });
+
+            let total_exchange_sub_total = 0;
+            $('.exchange-sub-total-price-' + quotationId).each(function () {
+                total_exchange_sub_total += $(this).data('value') || 0;
+            });
+
+            let total_discount = 0;
+            $('.discount-amount-' + quotationId).each(function () {
+                total_discount += $(this).data('value') || 0;
+            });
+
+            let total_exchange_discount = 0;
+            $('.exchange-discount-amount-' + quotationId).each(function () {
+                total_exchange_discount += $(this).data('value') || 0;
+            });
+
+            let total_vat = 0;
+            $('.vat-amount-' + quotationId).each(function () {
+                total_vat += $(this).data('value') || 0;
+            });
+
+            let total_exchange_vat = 0;
+            $('.exchange-vat-amount-' + quotationId).each(function () {
+                total_exchange_vat += $(this).data('value') || 0;
+            });
+
+            // update totals
+            $('#total-sub-total-price-' + quotationId)
+                .data('value', total_sub_total)
+                .html(formatNumber(total_sub_total));
+
+            $('#total-exchange-sub-total-price-' + quotationId)
+                .data('value', total_exchange_sub_total)
+                .html(formatNumber(total_exchange_sub_total));
+
+            $('#total-discount-amount-' + quotationId)
+                .data('value', total_discount)
+                .html(formatNumber(total_discount));
+
+            $('#total-exchange-discount-amount-' + quotationId)
+                .data('value', total_exchange_discount)
+                .html(formatNumber(total_exchange_discount));
+
+            $('#total-vat-amount-' + quotationId)
+                .data('value', total_vat)
+                .html(formatNumber(total_vat));
+
+            $('#total-exchange-vat-amount-' + quotationId)
+                .data('value', total_exchange_vat)
+                .html(formatNumber(total_exchange_vat));
+
+            const gross = total_sub_total - total_discount + total_vat;
+            const exchange_gross = total_exchange_sub_total - total_exchange_discount + total_exchange_vat;
+
+            $('#total-gross-amount-' + quotationId)
+                .data('value', gross)
+                .html(formatNumber(gross));
+
+            $('#total-exchange-gross-amount-' + quotationId)
+                .data('value', exchange_gross)
+                .html(formatNumber(exchange_gross));
+        }
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
         newApprover();
+
         function newApprover() {
             var approvers = '';
-            $.each(<?php echo json_encode($approvers); ?>, function(index, approver) {
-                approvers += '<option value="'+approver.id+'">'+approver.name+'</option>';
+            $.each(<?php echo json_encode($approvers); ?>, function (index, approver) {
+                approvers += '<option value="' + approver.id + '">' + approver.name + '</option>';
             });
-            $('#approvers').append('<tr>'+
-                                        '<td>'+
-                                            '<select class="form-control select2" name="approvers[]">'+approvers+'</select>'+
-                                        '</td>'+
-                                        '<td class="text-center">'+
-                                            '<a class="btn btn-xs btn-danger text-white" onclick="removeApprover($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>'+
-                                        '</td>'+
-                                    '</tr>');
+            $('#approvers').append('<tr>' +
+                '<td>' +
+                '<select class="form-control select2" name="approvers[]">' + approvers + '</select>' +
+                '</td>' +
+                '<td class="text-center">' +
+                '<a class="btn btn-xs btn-danger text-white" onclick="removeApprover($(this))"><i class="las la-trash"></i>&nbsp;Remove</a>' +
+                '</td>' +
+                '</tr>');
             $('.select2').select2();
         }
 
         function removeApprover(element) {
             element.parent().parent().remove();
         }
+
+        function systemMoneyFormat(amount, symbol = '') {
+            if (isNaN(amount)) amount = 0;
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount) + symbol;
+        }
+
     </script>
 @endsection

@@ -4,19 +4,24 @@
             <div class="invoice-details mt25 row">
                 <div class="well col-6">
                     <ul class="list-unstyled mb0">
-                        <li><strong>Name:</strong> {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}
+                        <li>
+                            <strong>Name:</strong> {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}
                         </li>
 
                         <li><strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
                         </li>
                         <li>
-                            <strong>Requisitor Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
+                            <strong>Requisitor
+                                Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
                         </li>
                         <li>
                             <strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
                         </li>
                         <li>
                             <strong>Department Head:</strong> {{getDepartmentHeadName($requisition->author_id)}}
+                        </li>
+                        <li>
+                            <strong>SBU Head:</strong> {{ getSbuHeadName() }}
                         </li>
                     </ul>
                 </div>
@@ -35,16 +40,16 @@
 
         <div class="table-responsive">
             @if($requisition->projectTask)
-            <table class="table table-bordered table-hover">
-                <thead>
+                <table class="table table-bordered table-hover">
+                    <thead>
                     <tr class="text-center">
                         <th>Project</th>
                         <th>Phase</th>
                         <th>Milestone</th>
                         <th>Task</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>{{ isset($requisition->projectTask->subDeliverable->deliverable->project)?$requisition->projectTask->subDeliverable->deliverable->project->name:'' }}</td>
                         <td>{{ isset($requisition->projectTask->subDeliverable->deliverable)?$requisition->projectTask->subDeliverable->deliverable->name:'' }}</td>
@@ -52,37 +57,37 @@
                         <td>{{ isset($requisition->projectTask)?$requisition->projectTask->name:'' }}</td>
 
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             @endif
             <table class="table table-bordered table-hover">
                 <thead>
-                    <tr class="text-center">
-                        <th>SL</th>
-                        <th>Category</th>
-                        <th>Product</th>
-                        <th>Attributes</th>
-                        <th>UOM</th>
-                        @can('requisition-acknowledge')
+                <tr class="text-center">
+                    <th>SL</th>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th>Attributes</th>
+                    <th>UOM</th>
+                    @can('requisition-acknowledge')
                         <th>Stock Qty</th>
-                        @endcan
-                        <th>Requisition Qty</th>
-                        <th>Approved Qty</th>
-                        <th class="text-right">Budgeted Price</th>
-                        <th class="text-right">Estimated Amount</th>
-                    </tr>
+                    @endcan
+                    <th>Requisition Qty</th>
+                    <th>Approved Qty</th>
+                    <th class="text-right">Budgeted Price</th>
+                    <th class="text-right">Estimated Amount</th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    @php
+                @php
                     $total_stock_qty = 0;
                     $total_requisition_qty = 0;
                     $total_approved_qty = 0;
                     $totalEstimation = 0;
-                    @endphp
-                    @forelse($requisition->items as $key=>$item)
+                @endphp
+                @forelse($requisition->items as $key=>$item)
                     @php
-                    $totalEstimation += ($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty));
+                        $totalEstimation += ($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty));
                     @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}</td>
@@ -93,29 +98,28 @@
                         <td>{{ getProductAttributesFaster($item) }}</td>
                         <td>{{ isset($item->product->productUnit->unit_name)?$item->product->productUnit->unit_name:'' }}</td>
                         @can('requisition-acknowledge')
-                        <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
+                            <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
                         @endcan
                         <td class="text-center">{{number_format($item->requisition_qty,0)}}</td>
-                        <td class="text-center">{{$item->qty}}</td>
+                        <td class="text-center">{{number_format($item->qty)}}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
                     @can('requisition-acknowledge')
-                    @php
+                        @php
 
-                    $total_stock_qty += isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0;
+                            $total_stock_qty += isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0;
 
-                    @endphp
+                        @endphp
                     @endcan
                     @php
-                    $total_requisition_qty += $item->requisition_qty;
-                    $total_approved_qty += $item->qty;
+                        $total_requisition_qty += $item->requisition_qty;
+                        $total_approved_qty += $item->qty;
                     @endphp
-                    @empty
-                    @endforelse
+                @empty
+                @endforelse
                 </tbody>
             </table>
-
 
 
             <div class="row">
@@ -134,21 +138,22 @@
                         {{$requisition->remarks}}
                     </div>
                     @if($requisition->status==2 && !empty($requisition->admin_remark))
-                    <div>
-                        <strong> Holding Reason: </strong>
-                        {!!$requisition->admin_remark!!}
-                    </div>
+                        <div>
+                            <strong> Holding Reason: </strong>
+                            {!!$requisition->admin_remark!!}
+                        </div>
                     @endif
                 </div>
                 @if($requisition->attachments->isNotEmpty())
-                <div class="col-6">
-                    <h4>Attachment List:</h4>
-                    <ol type="number">
-                        @foreach($requisition->attachments as $key => $value)
-                            <li><a href="{{ url($value->file_location) }}" target="_blank">Attachment{{++$key}}</a></li>
-                        @endforeach
-                    </ol>
-                </div>
+                    <div class="col-6">
+                        <h4>Attachment List:</h4>
+                        <ol type="number">
+                            @foreach($requisition->attachments as $key => $value)
+                                <li><a href="{{ url($value->file_location) }}" target="_blank">Attachment{{++$key}}</a>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
                 @endif
             </div>
 

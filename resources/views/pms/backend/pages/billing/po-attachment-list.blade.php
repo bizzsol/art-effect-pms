@@ -60,24 +60,24 @@
                                                     <p class="mb-1 font-weight-bold"><label
                                                                 for="from_date">{{ __('From Date') }}:</label></p>
                                                     <div class="input-group input-group-md mb-3 d-">
-                                                        <input type="text" name="from_date" id="from_date"
-                                                               class="form-control rounded search-datepicker"
+                                                        <input type="date" name="from_date" id="from_date"
+                                                               class="form-control rounded"
                                                                aria-label="Large"
                                                                aria-describedby="inputGroup-sizing-sm" required
-                                                               value="{{  request()->has('from_date')? request()->get('from_date'):date("d-m-Y", strtotime(date('Y-m-01'))) }}"
-                                                               readonly>
+                                                               value="{{  request()->has('from_date')? request()->get('from_date'):'' }}"
+                                                               >
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 col-sm-6">
                                                     <p class="mb-1 font-weight-bold"><label
                                                                 for="to_date">{{ __('To Date') }}:</label></p>
                                                     <div class="input-group input-group-md mb-3 d-">
-                                                        <input type="text" name="to_date" id="to_date"
-                                                               class="form-control rounded search-datepicker"
+                                                        <input type="date" name="to_date" id="to_date"
+                                                               class="form-control rounded"
                                                                aria-label="Large"
                                                                aria-describedby="inputGroup-sizing-sm" required
-                                                               value="{{ request()->has('to_date')? request()->get('to_date'):date('d-m-Y') }}"
-                                                               readonly>
+                                                               value="{{ request()->has('to_date')? request()->get('to_date'):'' }}"
+                                                               >
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 col-sm-6">
@@ -271,7 +271,7 @@
                     yes: {
                         text: 'Yes',
                         btnClass: 'btn-blue',
-                        action: function(){
+                        action: function () {
                             $.ajax({
                                 url: "{{ url('pms/billing-audit/billing-po-attachment-list') }}?cancel-bill&bill="+element.attr('data-id'),
                                 type: 'GET',

@@ -40,8 +40,8 @@
                                     <th>Category</th>
                                     <th>Product</th>
                                     <th>UOM</th>
-                                    <th>Unit Price ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }})</th>
                                     <th>Qty</th>
+                                    <th>Unit Price ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }})</th>
                                     <th>Received Qty</th>
                                     <th>Price ({{ $grn->relPurchaseOrder->relQuotation->exchangeRate->currency->code }})</th>
                                 </tr>
@@ -75,16 +75,16 @@
                                     <td>{{isset($item->relGoodsReceivedItems->relProduct->category->name)?$item->relGoodsReceivedItems->relProduct->category->name:''}}</td>
                                     <td>{{isset($item->relGoodsReceivedItems->relProduct->name)?$item->relGoodsReceivedItems->relProduct->name:''}} ({{isset($item->relGoodsReceivedItems->relProduct->sku)?$item->relGoodsReceivedItems->relProduct->sku:''}}) {{ getProductAttributesFaster($item->relGoodsReceivedItems->relProduct)}} {{ getProductAttributesFaster($item->relGoodsReceivedItems)}}</td>
                                     <td class="text-center">{{isset($item->relGoodsReceivedItems->relProduct->productUnit->unit_name)?$item->relGoodsReceivedItems->relProduct->productUnit->unit_name:''}}</td>
-                                    <td class="text-right">{{$item->unit_amount}}</td>
                                     <td class="text-center">{{systemDoubleValue($item->relGoodsReceivedItems->qty,0)}}</td>
+                                    <td class="text-right">{{$item->unit_amount}}</td>
                                     <td class="text-center">{{$item->received_qty}}</td>
                                     <td class="text-right">{{systemMoneyFormat($item->unit_amount*$item->received_qty)}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
                                     <td colspan="4" class="text-right">Total</td>
-                                    <td colspan="" class="text-right">{{isset($approval_list)?systemMoneyFormat($approval_list->sum('unit_amount')):0}}</td>
                                     <td colspan="" class="text-center">{{isset($sumOfItemQty)?systemMoneyFormat($sumOfItemQty,0):0}}</td>
+                                    <td colspan="" class="text-right">{{isset($approval_list)?systemMoneyFormat($approval_list->sum('unit_amount')):0}}</td>
                                     <td class="text-center">{{isset($sumOfReceivedtQty)?systemMoneyFormat($sumOfReceivedtQty):0}}</td>
                                     
                                     <td colspan="" class="text-right">{{isset($approval_list)?systemMoneyFormat($sumOfSubtotal):0}}</td>

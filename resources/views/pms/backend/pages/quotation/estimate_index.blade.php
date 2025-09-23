@@ -68,7 +68,7 @@
 
         function openRequestProposalModal(id) {
             $('#tableData').load('{{URL::to('pms/rfp/request-proposal')}}/' + id);
-            $('#requisitionDetailModal').find('.modal-title').html(`Proposal Details`);
+            $('#requisitionDetailModal').find('.modal-title').html(`CS Details`);
             $('#requisitionDetailModal').modal('show')
         }
 

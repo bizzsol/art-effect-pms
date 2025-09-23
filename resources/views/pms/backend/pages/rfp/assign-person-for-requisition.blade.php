@@ -114,11 +114,11 @@
                             <td>{{ getProductAttributesFaster($item) }}</td>
                             <td>{{ isset($item->product->productUnit->unit_name)?$item->product->productUnit->unit_name:'' }}</td>
                             @can('requisition-acknowledge')
-                                <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
+                                <td class="text-center">{{isset($item->product->relInventorySummary->qty)? number_format($item->product->relInventorySummary->qty):0}}</td>
                             @endcan
                             <td class="text-center">{{number_format($item->requisition_qty,0)}}</td>
                             @if($requisition->status==1)
-                                <td class="text-center">{{$item->qty}}</td>
+                                <td class="text-center">{{number_format($item->qty)}}</td>
                             @endif
                             <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                             <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>

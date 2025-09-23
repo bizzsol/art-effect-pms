@@ -455,44 +455,113 @@
                                 @endphp
                                 <td colspan="5" class="text-right">Approver Remarks</td>
                                 @foreach($quotations as $key => $quotation)
-                                <td
-                                    colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
-                                    <span><strong>@if(!empty($quotation->remarks))
-                                            {{ $approvals->first()->user->name }}:
-                                            @endif</strong> {!! $quotation->remarks !!}
-                                    </span>
-                                </td>
+                                    <td
+                                            colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                                                        <span><strong>
+                                                                    {{ $approvals->first()->user->name }}:
+                                                                </strong> {!! !empty($quotation->remarks) ? $quotation->remarks : 'No Remarks' !!}
+                                                        </span>
+                                    </td>
                                 @endforeach
                             </tr>
                         </tbody>
                     </table>
 
+{{--                    <table class="table table-bordered">--}}
+{{--                        <thead>--}}
+{{--                            <tr>--}}
+{{--                                <th style="width: 10%" class="text-center">Priority</th>--}}
+{{--                                <th style="width: 55%">Approver</th>--}}
+{{--                                <th style="width: 15%" class="text-center">Response</th>--}}
+{{--                                <th style="width: 20%" class="text-center">Approved at</th>--}}
+{{--                            </tr>--}}
+{{--                        </thead>--}}
+{{--                        <tbody>--}}
+{{--                            @if(isset($quotations->first()->relRequestProposal->approvals[0]))--}}
+{{--                            <tr>--}}
+{{--                                <td class="text-center"></td>--}}
+{{--                                <td>CS Raised at</td>--}}
+{{--                                <td class="text-center">Raised</td>--}}
+{{--                                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($quotations->first()->relRequestProposal->approvals->first()->created_at)) }}</td>--}}
+{{--                            </tr>--}}
+{{--                            @foreach($quotations->first()->relRequestProposal->approvals as $key => $approval)--}}
+{{--                            <tr>--}}
+{{--                                <td class="text-center">{{ $approval->priority }}</td>--}}
+{{--                                <td>{{ $approval->user->name }}</td>--}}
+{{--                                <td class="text-center">{{ ucwords($approval->response) }}</td>--}}
+{{--                                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($approval->updated_at)) }}</td>--}}
+{{--                            </tr>--}}
+{{--                            @endforeach--}}
+{{--                            @endif--}}
+{{--                        </tbody>--}}
+{{--                    </table>--}}
+
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
-                                <th style="width: 10%" class="text-center">Priority</th>
-                                <th style="width: 55%">Approver</th>
-                                <th style="width: 15%" class="text-center">Response</th>
-                                <th style="width: 20%" class="text-center">Approved at</th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">Priority</th>
+                            <th>Approver</th>
+                            <th style="width: 55%">Logs</th>
+                            <th class="text-center">Response</th>
+                            <th class="text-center">Approved at</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if(isset($quotations->first()->relRequestProposal->approvals[0]))
+                        @if(isset($quotations->first()->relRequestProposal->approvals[0]))
                             <tr>
                                 <td class="text-center"></td>
                                 <td>CS Raised at</td>
+                                <td class="text-center"></td>
                                 <td class="text-center">Raised</td>
                                 <td class="text-center">{{ date('Y-m-d g:i a', strtotime($quotations->first()->relRequestProposal->approvals->first()->created_at)) }}</td>
                             </tr>
-                            @foreach($quotations->first()->relRequestProposal->approvals as $key => $approval)
-                            <tr>
-                                <td class="text-center">{{ $approval->priority }}</td>
-                                <td>{{ $approval->user->name }}</td>
-                                <td class="text-center">{{ ucwords($approval->response) }}</td>
-                                <td class="text-center">{{ date('Y-m-d g:i a', strtotime($approval->updated_at)) }}</td>
-                            </tr>
+
+                            @foreach($quotations->first()->relRequestProposal->approvals as $approval)
+                                <tr>
+                                    <td class="text-center">{{ $approval->priority }}</td>
+                                    <td>{{ $approval->user->name }}</td>
+                                    <td>
+                                        @php
+                                            $logs = $approval->logs ? json_decode($approval->logs, true) : [];
+                                        @endphp
+
+                                        @if(count($logs))
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                <tr>
+                                                    <th>Supplier</th>
+                                                    <th>Reference No</th>
+                                                    <th>Qty</th>
+                                                    <th style="width: 30%">Remarks</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($logs as $log)
+                                                    @php
+                                                        // Get supplier name from quotations collection
+                                                        $supplierName = $quotations->where('id', $log['id'])->first()->relSuppliers->name ?? 'N/A';
+                                                        $approvedQty = collect($log['rel_quotation_items'] ?? [])->sum('approved_qty');
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $supplierName }}</td>
+                                                        <td>{{ $log['reference_no'] }}</td>
+                                                        <td class="text-center">{{ $approvedQty }}</td>
+                                                        <td>{{ $log['remarks'] ?? 'No Remarks' }}</td>
+
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        @else
+                                            <em>No Remarks</em>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">{{ ucwords($approval->response) }}</td>
+                                    <td class="text-center">{{ date('Y-m-d g:i a', strtotime($approval->updated_at)) }}</td>
+                                </tr>
                             @endforeach
-                            @endif
+                        @endif
                         </tbody>
                     </table>
                 </div>

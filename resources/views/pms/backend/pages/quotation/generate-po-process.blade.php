@@ -46,7 +46,7 @@
                                             <input type="text" name="po_date" id="po_date"
                                                    class="form-control rounded air-datepicker" aria-label="Large"
                                                    aria-describedby="inputGroup-sizing-sm" required readonly
-                                                   value="{{ old('po_date')?old('po_date'):date('d-m-Y h:i:s') }}">
+                                                   value="{{ old('po_date')?old('po_date'):date('Y-m-d h:i:s') }}">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-sm-12">
@@ -155,7 +155,6 @@
                                             <select name="requisition_id[]" id="requisition_id"
                                                     class="form-control rounded select2 select2-tags requisition-wise-items"
                                                     multiple onchange="getCostCentres()">
-
                                             </select>
                                         </div>
                                     </div>
@@ -283,7 +282,7 @@
                                                            onchange="checkPOQty()" onkeyup="checkPOQty()">
                                                     <span class="view-data">0</span>
                                                 </td>
-                                                <td class="text-right">{{ systemDoubleValue($item->unit_price, 2) }}</td>
+                                                <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                                                 <td class="text-right"><span class="po-amount">0.00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </td>
                                                 {{-- <td class="text-right">{{$item->discount}}</td>
@@ -556,32 +555,103 @@
             calculatePayAmount();
         }
 
+        {{--function calculatePayAmount(show_discount = true) {--}}
+        {{--    var exchangeRate = parseFloat("{{ $exchangeRate }}");--}}
+        {{--    var sub_total = 0;--}}
+        {{--    var total_discount = 0;--}}
+        {{--    var total_discounted = 0;--}}
+        {{--    var total_vat = 0;--}}
+        {{--    var grand_total = 0;--}}
+        {{--    $.each($('.check-po-qty'), function (event) {--}}
+        {{--        var po_qty = parseFloat($(this).val());--}}
+        {{--        var unit_price = parseFloat($(this).parent().parent().find('#unit_price').val());--}}
+        {{--        var discount_percentage = parseFloat($(this).parent().parent().find('#discount_percentage').val());--}}
+        {{--        var vat_type = $(this).parent().parent().find('#vat_type').val();--}}
+        {{--        var vat_percentage = parseFloat($(this).parent().parent().find('#vat_percentage').val());--}}
+        {{--        var unit_total = (po_qty * unit_price);--}}
+        {{--        var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);--}}
+        {{--        var discounted = (unit_total - discount);--}}
+
+        {{--        if (vat_type == 'inclusive') {--}}
+        {{--            var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);--}}
+        {{--            var total = discounted;--}}
+        {{--        } else if (vat_type == 'exclusive') {--}}
+        {{--            var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);--}}
+        {{--            var total = (discounted + vat);--}}
+        {{--        } else {--}}
+        {{--            var vat = 0;--}}
+        {{--            var total = discounted;--}}
+        {{--        }--}}
+
+        {{--        sub_total += unit_total;--}}
+        {{--        total_discount += discount;--}}
+        {{--        total_discounted += discounted;--}}
+        {{--        total_vat += vat;--}}
+        {{--        grand_total += total;--}}
+
+        {{--        $(this).parent().parent().find('.po-amount').html(parseFloat(unit_total).toFixed(2));--}}
+        {{--        // $(this).parent().parent().find('.po-amount-system-currency').html(parseFloat(discounted * exchangeRate).toFixed(2));--}}
+        {{--    });--}}
+
+        {{--    $('.po-sub-total').html(parseFloat(sub_total).toFixed(2));--}}
+        {{--    if (show_discount) {--}}
+        {{--        $('.po-discount').val(parseFloat(total_discount).toFixed(2));--}}
+        {{--    }--}}
+        {{--    $('.po-after-discount').html(parseFloat(total_discounted).toFixed(2));--}}
+        {{--    $('.po-vat-amount').html(parseFloat(total_vat).toFixed(2));--}}
+        {{--    $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));--}}
+
+        {{--    // $('.total-po-item-amount').html(parseFloat(sub_total).toFixed(2));--}}
+        {{--    // $('.total-po-item-amount-system-currency').html(parseFloat(sub_total * exchangeRate).toFixed(2));--}}
+        {{--    // $('.total-po-vat-amount').html(parseFloat(total_vat).toFixed(2));--}}
+        {{--    // $('.total-po-vat-amount-system-currency').html(parseFloat(total_vat * exchangeRate).toFixed(2));--}}
+        {{--    // $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));--}}
+        {{--    // $('.total-po-amount-system-currency').html(parseFloat(grand_total * exchangeRate).toFixed(2));--}}
+        {{--}--}}
+
+        {{--function distributeDiscount() {--}}
+        {{--    var discount = parseFloat($('.po-discount').val());--}}
+        {{--    var sub_total = parseFloat($('.po-sub-total').text());--}}
+
+        {{--    var percentage = discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0;--}}
+        {{--    console.log(percentage);--}}
+
+        {{--    $('.discount_percentage').val(percentage);--}}
+        {{--    calculatePayAmount(false);--}}
+        {{--}--}}
+
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
         function calculatePayAmount(show_discount = true) {
-            var exchangeRate = parseFloat("{{ $exchangeRate }}");
+            var exchangeRate = parseFloat("{{ $exchangeRate }}") || 1;
             var sub_total = 0;
             var total_discount = 0;
             var total_discounted = 0;
             var total_vat = 0;
             var grand_total = 0;
-            $.each($('.check-po-qty'), function (event) {
-                var po_qty = parseFloat($(this).val());
-                var unit_price = parseFloat($(this).parent().parent().find('#unit_price').val());
-                var discount_percentage = parseFloat($(this).parent().parent().find('#discount_percentage').val());
-                var vat_type = $(this).parent().parent().find('#vat_type').val();
-                var vat_percentage = parseFloat($(this).parent().parent().find('#vat_percentage').val());
-                var unit_total = (po_qty * unit_price);
-                var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
-                var discounted = (unit_total - discount);
 
-                if (vat_type == 'inclusive') {
-                    var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);
-                    var total = discounted;
-                } else if (vat_type == 'exclusive') {
-                    var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
-                    var total = (discounted + vat);
-                } else {
-                    var vat = 0;
-                    var total = discounted;
+            $('.check-po-qty').each(function () {
+                var po_qty = parseFloat($(this).val()) || 0;
+                var unit_price = parseFloat($(this).closest('tr').find('#unit_price').val()) || 0;
+                var discount_percentage = parseFloat($(this).closest('tr').find('#discount_percentage').val()) || 0;
+                var vat_type = $(this).closest('tr').find('#vat_type').val();
+                var vat_percentage = parseFloat($(this).closest('tr').find('#vat_percentage').val()) || 0;
+
+                var unit_total = po_qty * unit_price;
+                var discount = (discount_percentage > 0 && unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
+                var discounted = unit_total - discount;
+
+                var vat = 0, total = discounted;
+                if (vat_type === 'inclusive') {
+                    vat = (vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);
+                } else if (vat_type === 'exclusive') {
+                    vat = (vat_percentage > 0 && discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
+                    total = discounted + vat;
                 }
 
                 sub_total += unit_total;
@@ -590,32 +660,26 @@
                 total_vat += vat;
                 grand_total += total;
 
-                $(this).parent().parent().find('.po-amount').html(parseFloat(unit_total).toFixed(2));
-                // $(this).parent().parent().find('.po-amount-system-currency').html(parseFloat(discounted * exchangeRate).toFixed(2));
+                $(this).closest('tr').find('.po-amount')
+                    .data('value', unit_total)
+                    .html(formatNumber(unit_total));
             });
 
-            $('.po-sub-total').html(parseFloat(sub_total).toFixed(2));
+            $('.po-sub-total').data('value', sub_total).html(formatNumber(sub_total));
             if (show_discount) {
-                $('.po-discount').val(parseFloat(total_discount).toFixed(2));
+                $('.po-discount').val(total_discount.toFixed(2)); // keep input plain
             }
-            $('.po-after-discount').html(parseFloat(total_discounted).toFixed(2));
-            $('.po-vat-amount').html(parseFloat(total_vat).toFixed(2));
-            $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));
-
-            // $('.total-po-item-amount').html(parseFloat(sub_total).toFixed(2));
-            // $('.total-po-item-amount-system-currency').html(parseFloat(sub_total * exchangeRate).toFixed(2));
-            // $('.total-po-vat-amount').html(parseFloat(total_vat).toFixed(2));
-            // $('.total-po-vat-amount-system-currency').html(parseFloat(total_vat * exchangeRate).toFixed(2));
-            // $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));
-            // $('.total-po-amount-system-currency').html(parseFloat(grand_total * exchangeRate).toFixed(2));
+            $('.po-after-discount').data('value', total_discounted).html(formatNumber(total_discounted));
+            $('.po-vat-amount').data('value', total_vat).html(formatNumber(total_vat));
+            $('.total-po-amount').data('value', grand_total).html(formatNumber(grand_total));
         }
 
         function distributeDiscount() {
-            var discount = parseFloat($('.po-discount').val());
-            var sub_total = parseFloat($('.po-sub-total').text());
+            var discount = parseFloat($('.po-discount').val()) || 0;
+            var sub_total = parseFloat($('.po-sub-total').data('value')) || 0;
 
-            var percentage = discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0;
-            console.log(percentage);
+            var percentage = (discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0);
+            console.log("Distributed discount %:", percentage);
 
             $('.discount_percentage').val(percentage);
             calculatePayAmount(false);

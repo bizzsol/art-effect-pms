@@ -95,7 +95,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="5%">{{__('SL')}}</th>
-                                <th>{{__('Request Proposal')}}</th>
+                                <th>{{__('CS Number')}}</th>
                                 <th>{{__('Date')}}</th>
                                 <th>{{__('Reference No')}}</th>
                                 <th>{{__('Supplier')}}</th>
@@ -113,7 +113,7 @@
                             <tr>
                                 <td class="text-center">{{ $rkey+ 1 }}</td>
                                 @if($rkey == 0)
-                                <td rowspan="{{ $proposals->relQuotations->count() }}"><a href="javascript:void(0)" onclick="openRequestProposalModal({{$values->request_proposal_id}})"  class="btn btn-link">{{$values->relRequestProposal->reference_no}}</a></td>
+                                <td rowspan="{{ $proposals->relQuotations->count() }}"><a href="javascript:void(0)" onclick="openModalNew({{$values->request_proposal_id}})"  class="btn btn-link">{{$values->relRequestProposal->reference_no}}</a></td>
                                 @endif
 
                                 <td>{{date('d-m-Y',strtotime($values->quotation_date))}}</td>
@@ -766,10 +766,15 @@
     $('#requisitionDetailModal').modal('show');
 }
 
-function openRequestProposalModal(id) {
-    $('#tableData').load('{{URL::to('pms/rfp/request-proposal')}}/'+id);
-    $('#requisitionDetailModal').find('.modal-title').html(`Proposal Details`);
-    $('#requisitionDetailModal').modal('show')
-}
+   function openModalNew(requestId) {
+       $.dialog({
+           title: 'CS Preview',
+           content: "url:{{url("pms/rfp/request-proposal")}}/"+requestId+"?preview",
+           animation: 'scale',
+           columnClass: 'col-md-12',
+           closeAnimation: 'scale',
+           backgroundDismiss: true,
+       });
+   }
 </script>
 @endsection
