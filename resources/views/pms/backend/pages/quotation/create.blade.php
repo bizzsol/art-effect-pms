@@ -561,13 +561,13 @@
                                         <textarea name="note" id="note" class="form-control rounded" rows="3" placeholder="Write any note..."></textarea>
                                     </div>
                                 </div>
-                                @if($requisitionItems->count() > 0 && $requisitionItems->filter(fn($item) => $item->requisition->attachments->count() > 0)->count() > 0)
+                                @if($requisitions->count() > 0)
                                     <div class="col-md-6 pl-5">
                                         <h4>Attachment List:</h4>
-                                        @foreach($requisitionItems as $item)
-                                            @if($item->requisition->attachments->count() > 0)
+                                        @foreach($requisitions as $requisition)
+                                            @if($requisition->attachments->count() > 0)
                                                 <ol type="number">
-                                                    @foreach($item->requisition->attachments as $key => $attachment)
+                                                    @foreach($requisition->attachments as $key => $attachment)
                                                         <li>
                                                             <a href="{{ url($attachment->file_location) }}" target="_blank">
                                                                 Attachment{{ $key + 1 }}

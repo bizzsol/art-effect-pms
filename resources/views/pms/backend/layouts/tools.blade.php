@@ -22,7 +22,6 @@
 <div class="modal requisitionDetailModal" id="requisitionDetailModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Requisition Details</h4>
@@ -155,9 +154,9 @@
             dataType: 'json',
             data: '',
             success: function (response) {
-                $('#requisitionDetailModal').find('#tableData').html(response);
-                $('#requisitionDetailModal').find('.modal-title').html(`Requisition Details`);
-                $('#requisitionDetailModal').modal('show');
+                $('.requisitionDetailModal').find('#tableData').html(response);
+                $('.requisitionDetailModal').find('.modal-title').html(`Requisition Details`);
+                $('.requisitionDetailModal').modal('show');
             }
         });
     }

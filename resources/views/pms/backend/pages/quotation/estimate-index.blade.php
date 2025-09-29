@@ -112,5 +112,7 @@
         $('#requisitionDetailModal').modal('show');
     }
 
+
+
 </script>
 @endsection

@@ -107,7 +107,7 @@
 
     function requestProposalDetails(request_proposal_id) {
         $('.modal-body').load('{{URL::to(Request()->route()->getPrefix()."/request-proposal-details")}}/'+request_proposal_id);
-        $('#requisitionDetailModal').find('.modal-title').html(`Request Proposal Details`);
+        $('#requisitionDetailModal').find('.modal-title').html(`CS Details`);
         $('#requisitionDetailModal').find('.modal-body #qty-submit-btn').hide();
         $('#requisitionDetailModal').modal('show');
     }

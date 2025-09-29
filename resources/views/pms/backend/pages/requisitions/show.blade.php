@@ -5,26 +5,40 @@
                 <div class="well col-6">
                     <ul class="list-unstyled mb0">
                         <li>
-                            <strong>Name:</strong> {{isset($requisition->relUsersList->name)?$requisition->relUsersList->name:''}}
+                            <strong>Name:</strong> {{ isset($requisition->relUsersList->name) ? $requisition->relUsersList->name : '' }}
                         </li>
 
-                        <li><strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
-                        </li>
                         <li>
-                            <strong>Requisitor
-                                Location:</strong> {{isset($requisition->relUsersList->employee->location->hr_location_name)?$requisition->relUsersList->employee->location->hr_location_name:''}}
+                            <strong>Unit:</strong> {{ $requisition->unit->hr_unit_short_name }}
                         </li>
+
                         <li>
-                            <strong>Department:</strong> {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
+                            <strong>Requisitor Location:</strong>
+                            {{ isset($requisition->relUsersList->employee->location->hr_location_name) ? $requisition->relUsersList->employee->location->hr_location_name : '' }}
                         </li>
+
                         <li>
-                            <strong>Department Head:</strong> {{getDepartmentHeadName($requisition->author_id)}}
+                            <strong>Department:</strong>
+                            {{ isset($requisition->relUsersList->employee->department->hr_department_name) ? $requisition->relUsersList->employee->department->hr_department_name : '' }}
                         </li>
-                        <li>
-                            <strong>SBU Head:</strong> {{ getSbuHeadName() }}
-                        </li>
+
+                        {{-- Check if requisitor is department head --}}
+                        @php
+                            $departmentHeadId = getDepartmentHead($requisition->author_id);
+                        @endphp
+
+                        @if($requisition->author_id == $departmentHeadId)
+                            <li>
+                                <strong>SBU Head:</strong> {{ getSbuHeadName() }}
+                            </li>
+                        @else
+                            <li>
+                                <strong>Department Head:</strong> {{ getDepartmentHeadName($requisition->author_id) }}
+                            </li>
+                        @endif
                     </ul>
                 </div>
+
                 <div class="col-6">
                     <ul class="list-unstyled mb0 pull-right">
                         <li><strong>Date:</strong> {{date('d-m-Y',strtotime($requisition->requisition_date))}}</li>
@@ -105,6 +119,7 @@
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
+{{--                    @dump($item)--}}
                     @can('requisition-acknowledge')
                         @php
 
