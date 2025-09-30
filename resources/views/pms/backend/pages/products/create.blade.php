@@ -213,7 +213,7 @@
                                                 data-placeholder="Choose Item Attributes" onchange="updateAttributes()">
                                             @if(isset($attributes[0]))
                                                 @foreach($attributes as $key => $attribute)
-                                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</attribute>
+                                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
