@@ -85,6 +85,16 @@
                                                                 <li><strong>{{__('CS Date')}}
                                                                         :</strong> {{date('d-m-Y h:i:s A',strtotime($quotation->relRequestProposal->request_date))}}
                                                                 </li>
+                                                                @if($quotation->parentQuotation)
+                                                                    <li>
+                                                                        <strong>Cancelled CS:</strong>
+                                                                        <a
+                                                                                href="javascript:void(0)"
+                                                                                onclick="openFullViewModal({{$quotation->parentQuotation->request_proposal_id}})"
+                                                                                class="btn btn-link">{{$quotation->parentQuotation->relRequestProposal->reference_no}}</a>
+                                                                    </li>
+
+                                                                @endif
                                                             </ul>
                                                         </div>
                                                     @endif
@@ -94,74 +104,74 @@
                                     <div class="table-responsive" style="width: auto;">
                                         <table class="table table-bordered table-hover">
                                             <thead class="thead custom-thead">
-                                                <tr class="custom-tr">
-                                                    <th colspan="6">Supplier Name</th>
-                                                    @foreach($quotations as $q_key => $quotation)
-                                                        @php
-                                                            $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
-                                                            $TC = $quotation->relSuppliers->SupplierRatings->count();
+                                            <tr class="custom-tr">
+                                                <th colspan="6">Supplier Name</th>
+                                                @foreach($quotations as $q_key => $quotation)
+                                                    @php
+                                                        $TS = number_format($quotation->relSuppliers->SupplierRatings->sum('total_score'), 2);
+                                                        $TC = $quotation->relSuppliers->SupplierRatings->count();
 
-                                                            $totalScore = isset($TS)?$TS:0;
-                                                            $totalCount = isset($TC)?$TC:0;
-                                                        @endphp
-                                                        <th class="invoiceBody"
-                                                            colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
-                                                            <p class="ratings text-dark">
-                                                                <a href="{{route('pms.supplier.profile',$quotation->relSuppliers->id)}}"
-                                                                   target="_blank"><span>{{$quotation->relSuppliers->name}} ({{$quotation->relSuppliers->code}})</span></a>
-                                                                @if(in_array($quotation->type,['manual','online']))
-                                                                    ({!! ratingGenerate($totalScore,$totalCount) !!})
-                                                                @endif
-                                                            </p>
-                                                            <p class="text-dark"><strong>{{__('Q:Ref:No')}}
-                                                                    :</strong> {{$quotation->reference_no}}</p>
-                                                            <input type="hidden" name="request_proposal_id"
-                                                                   value="{{$quotation->request_proposal_id}}">
-                                                            <p>
-                                                                @if($quotation->recommendation == 'yes')
-                                                                    <a class="btn btn-xs btn-success"><i
-                                                                                class="las la-check"></i>&nbsp;Recommended
-                                                                        by Purchaser</a>
-                                                                @endif
-                                                            </p>
-                                                        </th>
-                                                    @endforeach
-                                                </tr>
-                                                <tr class="text-center custom-tr">
-                                                    <th>SL</th>
-                                                    <th>Product</th>
-    {{--                                                <th>Attributes</th>--}}
-                                                    <th>Description</th>
-                                                    <th>UOM</th>
-                                                    <th class="text-center">Qty</th>
-                                                    <th class="text-center">Left Qty</th>
-                                                    @foreach($quotations as $quotation)
-                                                        <th class="text-center" style="width: 25px">
-                                                            {{-- <input type="checkbox" name="quotaion_radios"
-                                                                   value="{{ $quotation->id }}"
-                                                                   class="quotation-radios quotation-radio-{{ $quotation->id }}"
-                                                                   data-quotation-id="{{ $quotation->id }}"
-                                                                   style="cursor: pointer;transform: scale(1.5, 1.5)"> --}}
-                                                            Approved Qty
-                                                            <input type="hidden" name="quotaion_qty"
-                                                                   data-quotation-id="{{ $quotation->id }}"
-                                                                   value="{{ $quotation->qty }}">
-                                                        </th>
-                                                        <th class="text-center">Unit Price
-                                                            ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
+                                                        $totalScore = isset($TS)?$TS:0;
+                                                        $totalCount = isset($TC)?$TC:0;
+                                                    @endphp
+                                                    <th class="invoiceBody"
+                                                        colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
+                                                        <p class="ratings text-dark">
+                                                            <a href="{{route('pms.supplier.profile',$quotation->relSuppliers->id)}}"
+                                                               target="_blank"><span>{{$quotation->relSuppliers->name}} ({{$quotation->relSuppliers->code}})</span></a>
+                                                            @if(in_array($quotation->type,['manual','online']))
+                                                                ({!! ratingGenerate($totalScore,$totalCount) !!})
+                                                            @endif
+                                                        </p>
+                                                        <p class="text-dark"><strong>{{__('Q:Ref:No')}}
+                                                                :</strong> {{$quotation->reference_no}}</p>
+                                                        <input type="hidden" name="request_proposal_id"
+                                                               value="{{$quotation->request_proposal_id}}">
+                                                        <p>
+                                                            @if($quotation->recommendation == 'yes')
+                                                                <a class="btn btn-xs btn-success"><i
+                                                                            class="las la-check"></i>&nbsp;Recommended
+                                                                    by Purchaser</a>
+                                                            @endif
+                                                        </p>
+                                                    </th>
+                                                @endforeach
+                                            </tr>
+                                            <tr class="text-center custom-tr">
+                                                <th>SL</th>
+                                                <th>Product</th>
+                                                {{--                                                <th>Attributes</th>--}}
+                                                <th>Description</th>
+                                                <th>UOM</th>
+                                                <th class="text-center">Qty</th>
+                                                <th class="text-center">Left Qty</th>
+                                                @foreach($quotations as $quotation)
+                                                    <th class="text-center" style="width: 25px">
+                                                        {{-- <input type="checkbox" name="quotaion_radios"
+                                                               value="{{ $quotation->id }}"
+                                                               class="quotation-radios quotation-radio-{{ $quotation->id }}"
+                                                               data-quotation-id="{{ $quotation->id }}"
+                                                               style="cursor: pointer;transform: scale(1.5, 1.5)"> --}}
+                                                        Approved Qty
+                                                        <input type="hidden" name="quotaion_qty"
+                                                               data-quotation-id="{{ $quotation->id }}"
+                                                               value="{{ $quotation->qty }}">
+                                                    </th>
+                                                    <th class="text-center">Unit Price
+                                                        ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
+                                                        )
+                                                    </th>
+                                                    <th class="text-center">Item Total
+                                                        ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
+                                                        )
+                                                    </th>
+                                                    @if($systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : ''))
+                                                        <th class="text-center">Item Total ({{ $systemCurrency->code }}
                                                             )
                                                         </th>
-                                                        <th class="text-center">Item Total
-                                                            ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
-                                                            )
-                                                        </th>
-                                                        @if($systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : ''))
-                                                            <th class="text-center">Item Total ({{ $systemCurrency->code }}
-                                                                )
-                                                            </th>
-                                                        @endif
-                                                    @endforeach
-                                                </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tr>
                                             </thead>
                                             <tbody class="custom-tbody">
                                             @php $total_qty = 0; @endphp
@@ -173,7 +183,7 @@
                                                             <a class="text-primary" style="cursor: pointer;"
                                                                onclick="productLogs('{{ $item->uid }}')">{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</a>
                                                         </td>
-{{--                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
+                                                        {{--                                                        <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
                                                         <td>{{ $item->description }}</td>
                                                         <td>{{isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                         <td class="text-center">{{$item->qty}}</td>
@@ -378,7 +388,8 @@
                                                     @foreach($quotations as $key => $quotation)
                                                         <td colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                             @if(!empty($quotation->remarks))
-                                                                <strong>{{ optional($quotation->editor)->name }}:</strong>
+                                                                <strong>{{ optional($quotation->editor)->name }}
+                                                                    :</strong>
                                                                 {{ $quotation->remarks }}
                                                             @endif
                                                         </td>
@@ -782,7 +793,7 @@
         function productLogs(uid) {
             $.dialog({
                 title: 'Product CS logs',
-                content: "url:" + location.href + "&get-product-logs&request_proposal_id={{ $requestProposalId }}&uid="+uid,
+                content: "url:" + location.href + "&get-product-logs&request_proposal_id={{ $requestProposalId }}&uid=" + uid,
                 animation: 'scale',
                 columnClass: 'col-md-12',
                 closeAnimation: 'scale',
@@ -796,6 +807,17 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             }).format(amount) + symbol;
+        }
+
+        function openFullViewModal(requestId) {
+            $.dialog({
+                title: 'CS View',
+                content: "url:{{url("pms/rfp/request-proposal")}}/" + requestId + "?preview",
+                animation: 'scale',
+                columnClass: 'col-md-12',
+                closeAnimation: 'scale',
+                backgroundDismiss: true,
+            });
         }
     </script>
 @endsection

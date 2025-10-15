@@ -105,6 +105,7 @@
                                 <th>{{__('Gross Price')}}</th>
                                 <th>{{__('Status')}}</th>
                                 <th>{{__('Quotation Type')}}</th>
+                                <th>Cancelled CS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,6 +137,14 @@
                                 <td class="text-right">{{ systemMoneyFormat($values->gross_price)}}</td>
                                 <td class="text-center">{{ucfirst($values->status)}}</td>
                                 <td class="text-center">{{ucfirst($values->type)}}</td>
+                                <td>
+                                    @if($values->parentQuotation)
+                                        <a
+                                                href="javascript:void(0)"
+                                                onclick="openFullViewModal({{$values->parentQuotation->request_proposal_id}})"
+                                                class="btn btn-link">{{$values->parentQuotation->relRequestProposal->reference_no}}</a>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
 
@@ -770,6 +779,17 @@
        $.dialog({
            title: 'CS Preview',
            content: "url:{{url("pms/rfp/request-proposal")}}/"+requestId+"?preview",
+           animation: 'scale',
+           columnClass: 'col-md-12',
+           closeAnimation: 'scale',
+           backgroundDismiss: true,
+       });
+   }
+
+   function openFullViewModal(requestId) {
+       $.dialog({
+           title: 'CS View',
+           content: "url:{{url("pms/rfp/request-proposal")}}/" + requestId + "?preview",
            animation: 'scale',
            columnClass: 'col-md-12',
            closeAnimation: 'scale',

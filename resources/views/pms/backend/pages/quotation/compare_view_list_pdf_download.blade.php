@@ -529,9 +529,9 @@
                                             <table class="table table-bordered table-sm">
                                                 <thead>
                                                 <tr>
-                                                    <th>Supplier</th>
+
                                                     <th>Reference No</th>
-                                                    <th>Qty</th>
+
                                                     <th style="width: 30%">Remarks</th>
 
                                                 </tr>
@@ -544,17 +544,14 @@
                                                         $approvedQty = collect($log['rel_quotation_items'] ?? [])->sum('approved_qty');
                                                     @endphp
                                                     <tr>
-                                                        <td>{{ $supplierName }}</td>
                                                         <td>{{ $log['reference_no'] }}</td>
-                                                        <td class="text-center">{{ $approvedQty }}</td>
-                                                        <td>{{ $log['remarks'] ?? 'No Remarks' }}</td>
-
+                                                        <td>{{ $log['remarks'] ?? '' }}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
                                         @else
-                                            <em>No Remarks</em>
+
                                         @endif
                                     </td>
                                     <td class="text-center">{{ ucwords($approval->response) }}</td>

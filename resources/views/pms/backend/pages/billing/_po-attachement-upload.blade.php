@@ -96,7 +96,7 @@
 <div class="col-md-12">
 <div class="form-group">
 <div class="form-line">
-    {!! Form::label('invoice_file', 'Invoice File (Supported format ::jpeg,jpg,png,gif,pdf & file size max :: 5MB)', array('class' => 'col-form-label')) !!} <span class="text-danger">&nbsp;*</span>
+    {!! Form::label('invoice_file', 'Invoice File (Supported format ::jpeg,jpg,png,gif,pdf & file size max :: 5MB)', array('class' => 'col-form-label')) !!} <span class="text-danger">&nbsp;</span>
 
     <div style="position:relative;">
         <a class='btn btn-primary btn-xs font-10' href='javascript:;'>
@@ -115,7 +115,7 @@
 <div class="form-group">
 <div class="form-line">
 
-    {!! Form::label('vat_challan_file', 'Vat Challan No (Supported format ::jpeg,jpg,png,gif,pdf & file size max :: 5MB)', array('class' => 'col-form-label')) !!} <span class="text-danger">&nbsp;*</span>
+    {!! Form::label('vat_challan_file', 'Vat Challan No (Supported format ::jpeg,jpg,png,gif,pdf & file size max :: 5MB)', array('class' => 'col-form-label')) !!} <span class="text-danger">&nbsp;</span>
     <div style="position:relative;">
         <a class='btn btn-success btn-xs font-10' href='javascript:;'>
             Choose File...

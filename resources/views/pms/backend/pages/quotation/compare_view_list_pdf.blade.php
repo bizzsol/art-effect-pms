@@ -368,13 +368,7 @@
                                                                         <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 10%">
-                                                                                Supplier
-                                                                            </th>
-                                                                            <th class="text-center" style="width: 10%">
                                                                                 Reference No
-                                                                            </th>
-                                                                            <th class="text-center" style="width: 10%">
-                                                                                Qty
                                                                             </th>
                                                                             <th class="text-center" style="width: 10%">
                                                                                 Remarks
@@ -388,14 +382,11 @@
                                                                                 $approvedQty = collect($log['rel_quotation_items'] ?? [])->sum('approved_qty');
                                                                             @endphp
                                                                             <tr>
-                                                                                <td class="text-center"
-                                                                                    style="width: 10%">{{ $supplierName }}</td>
+
                                                                                 <td class="text-center"
                                                                                     style="width: 10%">{{ $log['reference_no'] }}</td>
-                                                                                <td class="text-center"
-                                                                                    style="width: 10%">{{ $approvedQty }}</td>
                                                                                 <td class="text-left"
-                                                                                    style="width: 10%">{{ $log['remarks'] ?? 'No Remarks' }}</td>
+                                                                                    style="width: 10%">{{ $log['remarks'] ?? '' }}</td>
                                                                             </tr>
                                                                         @endforeach
                                                                         </tbody>
