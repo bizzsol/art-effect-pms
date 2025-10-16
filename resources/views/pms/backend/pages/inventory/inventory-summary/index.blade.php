@@ -37,7 +37,7 @@
 											<option value="0">{{ __('Select One') }}</option>
 											@foreach($categories as $values)
 											<option value="{{ $values->id }}" {{$category_id==$values->id ? 'selected' :
-												''}}>{{ $values->name }}</option>
+												''}}>{{ $values->name }} ({{$values->code}})</option>
 											@endforeach
 										</select>
 									</div>
@@ -118,7 +118,7 @@
 			var subCategories = '<option value="0">Select One</option>';
 			$.each(response, function(index, val) {
 				var selected = (sub_category_id == val.id ? 'selected' : '');
-				subCategories += '<option value="'+(val.id)+'" '+(selected)+'>'+(val.name)+'</option>';
+				subCategories += '<option value="'+(val.id)+'" '+(selected)+'>'+(val.name)+' (' + val.code +')</option>';
 			});
 
 			$('#sub_category_id').html(subCategories);
@@ -141,11 +141,12 @@
 		.done(function(response) {
 			var product = '<option value="0">Select One</option>';
 			$.each(response.products, function(index, val) {
-				var selected = '';
-				if(product_id == val.id){
-					selected = 'selected';
-				}
-				product += '<option value="'+(val.id)+'" '+(selected)+'>'+(val.name)+' ('+(response.attributes[val.id])+')</option>';
+			    var selected = '';
+			    if (product_id == val.id) {
+			        selected = 'selected';
+			    }
+			    product += '<option value="' + val.id + '" ' + selected + '>' 
+			        + val.name + ' (' + val.sku + ' - ' + response.attributes[val.id] + ')</option>';
 			});
 
 			$('#product_id').html(product);

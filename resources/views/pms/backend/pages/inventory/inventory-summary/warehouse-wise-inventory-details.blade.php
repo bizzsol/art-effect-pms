@@ -12,6 +12,7 @@ $stockQty = $stockQty->sum('qty');
                         <li><strong>{{__('Category') }} :</strong> {{isset($product->category->name)?$product->category->name:''}}</li>
 
                         <li><strong>{{__('Product Name')}} :</strong> {{$product->name}} {{ getProductAttributes($product->id) }}</li>
+                        <li><strong>{{__('Product SKU')}} :</strong> {{$product->sku}}</li>
                         <li><strong>{{__('Total Qty')}} :</strong>{{$stockQty}}</li>
                     </ul>
                 </div>

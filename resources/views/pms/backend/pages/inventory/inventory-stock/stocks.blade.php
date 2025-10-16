@@ -9,8 +9,8 @@
         @endphp
         <tr>
             <td class="text-center">{{ $key+1 }}</td>
-            <td>{{ isset($product->category->name)?$product->category->name:'' }}</td>
-            <td><a onclick="showWarehouseStocks('{{ $product->id }}')" class="text-primary">{{ $product->name }} {!! getProductAttributesFaster($product) !!}</a></td>
+            <td>{{ isset($product->category->name)?$product->category->name:'' }} ({{$product->category->code}})</td>
+            <td><a onclick="showWarehouseStocks('{{ $product->id }}')" class="text-primary">{{ $product->name }} [{{$product->sku}}] {!! getProductAttributesFaster($product) !!}</a></td>
             <td class="text-center">{{ $product->productUnit->unit_name }}</td>
             <td class="text-center">{{ $qty }}</td>
         </tr>

@@ -1,7 +1,7 @@
 <ul class="pl-3">
     <li>Category: <strong>{{ isset($product->category->name)?$product->category->name:'' }}</strong></li>
-    <li>Product Name: <strong>{{ $product->name }} {!! getProductAttributesFaster($product) !!}</strong></li>
-    <li>Attributes: </li>
+    <li>Product Name: <strong>{{ $product->name }} [{{$product->sku}}] </strong></li>
+    <li>Attributes: {!! getProductAttributesFaster($product) !!}</li>
 </ul>
 
 <table class="table table-bordered table-striped">
