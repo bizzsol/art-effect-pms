@@ -175,14 +175,17 @@
                                                 <td class="text-right">{{ systemMoneyFormat($values->gross_price)}}</td>
                                                 <td>{{ucfirst($values->status)}}</td>
                                                 <td>{{ucfirst($values->type)}}</td>
-                                                <td rowspan="{{ $proposals->relQuotations->count() }}">
-                                                    @if($values->parentQuotation)
-                                                        <a
-                                                                href="javascript:void(0)"
-                                                                onclick="openFullViewModal({{$values->parentQuotation->request_proposal_id}})"
-                                                                class="btn btn-link">{{$values->parentQuotation->relRequestProposal->reference_no}}</a>
-                                                    @endif
-                                                </td>
+                                                @if($rkey == 0)
+                                                    <td rowspan="{{ $proposals->relQuotations->count() }}">
+                                                        @if($values->parentQuotation)
+                                                            <a href="javascript:void(0)"
+                                                               onclick="openFullViewModal({{ $values->parentQuotation->request_proposal_id }})"
+                                                               class="btn btn-link">
+                                                                {{ $values->parentQuotation->relRequestProposal->reference_no }}
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     @endif

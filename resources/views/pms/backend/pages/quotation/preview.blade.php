@@ -69,6 +69,13 @@
                                                                 :</strong> {{ $quotation->relRequestProposal->project_name ?? 'n/a' }}
                                                         </li>
 
+                                                        <li>
+                                                            <a href="{{url('pms/quotation/cs-compare-view-pdf/'.$quotation->request_proposal_id).'?downloadpdf'}}"
+                                                               class="btn btn-sm btn-danger text-white"
+                                                               title="Download CS"> <i class="las la-download"></i>Download
+                                                                CS</a>
+                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             @endif
@@ -259,7 +266,7 @@
 
                                         </tr>
 
-                                        <tr  class="custom-tr">
+                                        <tr class="custom-tr">
                                             <td colspan="5" class="text-right"></td>
                                             @foreach($quotations as $key => $quotation)
                                                 <td

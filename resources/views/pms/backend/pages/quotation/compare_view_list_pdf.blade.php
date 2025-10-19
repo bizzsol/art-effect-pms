@@ -43,7 +43,7 @@
                     </li>
                     <li class="active">{{__($title)}}</li>
                     <li class="top-nav-btn">
-                        <a href="{{url('pms/quotation/cs-compare-view-pdf/'.$purchaseOrderId).'?downloadpdf'}}"
+                        <a href="{{url('pms/quotation/cs-compare-view-pdf/'.$requestProposalId).'?downloadpdf'}}"
                            class="btn btn-sm btn-danger text-white" title="Download CS"> <i class="las la-download"></i>Download
                             CS</a>
                     </li>
@@ -424,7 +424,7 @@
                 function productLogs(uid) {
                     $.dialog({
                         title: 'Product CS logs',
-                        content: "url:" + location.href + "?get-product-logs&request_proposal_id={{ $purchaseOrderId }}&uid=" + uid,
+                        content: "url:" + location.href + "?get-product-logs&request_proposal_id={{ $requestProposalId }}&uid=" + uid,
                         animation: 'scale',
                         columnClass: 'col-md-12',
                         closeAnimation: 'scale',
