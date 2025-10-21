@@ -34,6 +34,12 @@
 @section('page-script')
 @include('yajra.js')
 <script>
+    function openModal(quotation_id) {
+        $('#tableData').load('{{URL::to(Request()->route()->getPrefix()."/quotation-items")}}/' + quotation_id + '?approved');
+        $('#requisitionDetailModal').find('.modal-title').html(`Quotation Details`);
+        $('#requisitionDetailModal').modal('show');
+    }
+
      function poActions(element){
         var content = element.html();
         element.html('<i class="las la-spinner la-spin"></i>').prop('disabled', true);
