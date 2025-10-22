@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'Kjqeap'); return 0;
-##!!!##ZmbKvcnBz8y9v8F8nczMl2Zm0c/BfKXIyNHJxcq90MG4oL3Qvb69z8G4ocjLzdHBytC4qcvAwciXZma/yL3Pz3ysqa+uy8jBfMHU0MHKwM98qcvAwchm12ZlzM7L0MG/0MHAfIDQvb7IwXyZfH7Oy8jBz36XZmXM0b7Ixb98gMLFyMi9vsjBfJl8t2ZlZYPKvcnBg4hmfHx8fHx8fHyD08vOwLvOwc/QzsW/0MXLys+DiGZ8fHx8fHx8fIPD0b3OwLvKvcnBg4hmZbmXZtlm
+bolt_decrypt( __FILE__ , '4SPYnc'); return 0;
+##!!!##CwtvYm5mdHFiZGYhQnFxPAsLdnRmIUptbXZuam9idWZdRWJ1YmNidGZdRm1wcnZmb3VdTnBlZm08CwtkbWJ0dCFRTlRTcG1mIWZ5dWZvZXQhTnBlZm0LfAsKcXNwdWZkdWZlISV1YmNtZiE+ISNzcG1mdCM8CwpxdmNtamQhJWdqbW1iY21mIT4hXAsKCihvYm5mKC0LISEhISEhISEoeHBzZWBzZnR1c2pkdWpwb3QoLQshISEhISEhIShodmJzZWBvYm5mKC0LCl48C34L
