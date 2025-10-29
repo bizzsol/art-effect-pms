@@ -112,18 +112,18 @@
                         <td>{{ getProductAttributesFaster($item) }}</td>
                         <td>{{ isset($item->product->productUnit->unit_name)?$item->product->productUnit->unit_name:'' }}</td>
                         @can('requisition-acknowledge')
-                            <td class="text-center">{{isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0}}</td>
+                            <td class="text-center">{{verifyAvailableStock($item->requisition_id,$item->id)}}</td>
                         @endcan
                         <td class="text-center">{{number_format($item->requisition_qty,0)}}</td>
                         <td class="text-center">{{number_format($item->qty)}}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price) }}</td>
                         <td class="text-right">{{ systemMoneyFormat($item->unit_price*($requisition->status == 1 ? $item->qty : $item->requisition_qty)) }}</td>
                     </tr>
-{{--                    @dump($item)--}}
+
                     @can('requisition-acknowledge')
                         @php
 
-                            $total_stock_qty += isset($item->product->relInventorySummary->qty)?$item->product->relInventorySummary->qty:0;
+                            $total_stock_qty += verifyAvailableStock($item->requisition_id,$item->id);
 
                         @endphp
                     @endcan

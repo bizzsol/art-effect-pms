@@ -138,7 +138,7 @@
                                                 <tr class="text-center">
                                                     <th width="1%" class="text-center">SL</th>
                                                     <th>Product</th>
-{{--                                                    <th>Attributes</th>--}}
+                                                    {{--                                                    <th>Attributes</th>--}}
                                                     <th>Description</th>
                                                     <th>UOM</th>
                                                     <th class="text-center">Qty</th>
@@ -150,7 +150,8 @@
                                                                 )
                                                             </th>
                                                             <th class="text-center">Item Total
-                                                                ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }})
+                                                                ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
+                                                                )
                                                             </th>
                                                             @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                 <th class="text-center">Item Total
@@ -171,7 +172,7 @@
                                                             <tr>
                                                                 <td>{{$key+1}}</td>
                                                                 <td>{{isset($item->relProduct->name)?$item->relProduct->name:''}} {{ getProductAttributesFaster($item->relProduct) }}</td>
-{{--                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
+                                                                {{--                                                                <td>{{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}</td>--}}
                                                                 <td>{{ $item->description }}</td>
                                                                 <td>{{ isset($item->relProduct->productUnit->unit_name)?$item->relProduct->productUnit->unit_name:'' }}</td>
                                                                 <td class="text-center max-quantity">{{$item->qty}}</td>
@@ -231,7 +232,8 @@
                                                                 @php
                                                                     $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
                                                                 @endphp
-                                                                <td style="width:120px !important" colspan="2"><strong>Sub Total</strong></td>
+                                                                <td style="width:120px !important" colspan="2"><strong>Sub
+                                                                        Total</strong></td>
                                                                 <td style="width:120px !important" class="text-right">
                                                                     <strong id="total-sub-total-price-{{ $quotation->id }}">{{isset($quotation->relQuotationItems[0])? number_format($quotation->relQuotationItems->sum('sub_total_price'),2):0}}</strong>
                                                                 </td>
@@ -275,7 +277,12 @@
                                                                 @endphp
                                                                 <td colspan="2"><strong>(+) VAT
                                                                         ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
-                                                                        )</strong></td>
+                                                                        )</strong>
+
+                                                                    <input type="hidden"
+                                                                           id="vat-type-{{ $quotation->id }}"
+                                                                           value="{{$quotation->relQuotationItems->first()->vat_type}}">
+                                                                </td>
                                                                 <td class="text-right">
                                                                     <strong
                                                                             id="total-vat-amount-{{ $quotation->id }}"> {{$quotation->vat}}</strong>
@@ -298,7 +305,8 @@
                                                                 @endphp
                                                                 <td colspan="2"><strong>Gross Total</strong></td>
                                                                 <td class="text-right">
-                                                                    <strong id="total-gross-amount-{{ $quotation->id }}">@php number_format($quotation->gross_price, 2); @endphp</strong>
+                                                                    <strong id="total-gross-amount-{{ $quotation->id }}">@php number_format($quotation->gross_price, 2); @endphp
+                                                                    </strong>
                                                                 </td>
                                                                 @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                     <td class="text-right">
@@ -446,8 +454,14 @@
             const quotationId = parseInt(element.attr('data-quotation-id'));
 
             // clamp between min & max
-            if (value > max) { value = max; element.val(value); }
-            if (value < min) { value = min; element.val(value); }
+            if (value > max) {
+                value = max;
+                element.val(value);
+            }
+            if (value < min) {
+                value = min;
+                element.val(value);
+            }
 
             // prevent total recommendations from exceeding max
             if (!loading) {
@@ -462,9 +476,9 @@
             }
 
             // raw values
-            const unit_price     = parseFloat(element.attr('data-unit-price')) || 0;
-            const exchange_rate  = parseFloat(element.attr('data-exchange-rate')) || 1;
-            const discount       = parseFloat(element.attr('data-discount')) || 0;
+            const unit_price = parseFloat(element.attr('data-unit-price')) || 0;
+            const exchange_rate = parseFloat(element.attr('data-exchange-rate')) || 1;
+            const discount = parseFloat(element.attr('data-discount')) || 0;
             const vat_percentage = parseFloat(element.attr('data-vat-percentage')) || 0;
 
             // subtotal
@@ -561,8 +575,11 @@
                 .data('value', total_exchange_vat)
                 .html(formatNumber(total_exchange_vat));
 
-            const gross = total_sub_total - total_discount + total_vat;
-            const exchange_gross = total_exchange_sub_total - total_exchange_discount + total_exchange_vat;
+            const vatType = $('#vat-type-' + quotationId).val();
+
+            const gross = total_sub_total - total_discount + (vatType === 'exclusive' ? total_vat : 0);
+
+            const exchange_gross = total_exchange_sub_total - total_exchange_discount + (vatType === 'exclusive' ? total_exchange_discount : 0);
 
             $('#total-gross-amount-' + quotationId)
                 .data('value', gross)
@@ -572,12 +589,14 @@
                 .data('value', exchange_gross)
                 .html(formatNumber(exchange_gross));
         }
+
         function formatNumber(num) {
             return num.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
         }
+
         newApprover();
 
         function newApprover() {
