@@ -96,7 +96,7 @@
                                             <th>Dlv. UOM</th>
                                             <th>Dlv. Qty</th>
                                             <th>WareHouse</th>
-                                            <th>Cost Centre</th>
+                                            <!-- <th>Cost Centre</th> -->
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -165,7 +165,7 @@
                                                                     @endif
                                                                 </select>
                                                             </td>
-                                                            <td>
+                                                            <!-- <td>
                                                                 @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))
                                                                     <select class="form-control not-select2 cost_centre"
                                                                             name="cost_centre_id[{{$item->uid}}]"
@@ -173,7 +173,7 @@
                                                                         {!! $costCentres !!}
                                                                     </select>
                                                                 @endif
-                                                            </td>
+                                                            </td> -->
                                                         </tr>
                                                     @endif
                                                 @endif
