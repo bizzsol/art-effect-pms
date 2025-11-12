@@ -165,15 +165,21 @@
                                                                     @endif
                                                                 </select>
                                                             </td>
-                                                            <!-- <td>
-                                                                @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))
-                                                                    <select class="form-control not-select2 cost_centre"
-                                                                            name="cost_centre_id[{{$item->uid}}]"
-                                                                            id="cost_centre_{{$item->uid}}">
-                                                                        {!! $costCentres !!}
-                                                                    </select>
-                                                                @endif
-                                                            </td> -->
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))--}}
+                                                            {{--                                                                    <select class="form-control not-select2 cost_centre"--}}
+                                                            {{--                                                                            name="cost_centre_id[{{$item->uid}}]"--}}
+                                                            {{--                                                                            id="cost_centre_{{$item->uid}}">--}}
+                                                            {{--                                                                        {!! $costCentres !!}--}}
+                                                            {{--                                                                    </select>--}}
+                                                            {{--                                                                @endif--}}
+                                                            {{--                                                            </td>--}}
+                                                            @if(!($item->product->is_fixed_asset == 1 || $item->product->is_cwip == 1))
+                                                                <input type="hidden"
+                                                                       name="cost_centre_id[{{$item->uid}}]"
+                                                                       value="{{ optional($item->requisition)->cost_centre_id }}">
+                                                            @endif
+
                                                         </tr>
                                                     @endif
                                                 @endif
@@ -198,30 +204,30 @@
     </div>
 @endsection
 @section('page-script')
-<script>
-    $('body').addClass('sidebar-main');
+    <script>
+        $('body').addClass('sidebar-main');
 
-    function updateDeliveryQuantity(element) {
-        var rate = element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') != undefined ? element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') : 0;
-        var left = element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') != undefined ? element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') : 0;
-        var qty = Math.floor(rate*left);
+        function updateDeliveryQuantity(element) {
+            var rate = element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') != undefined ? element.parent().parent().find('.product_unit_id').find(':selected').attr('data-conversion-rate') : 0;
+            var left = element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') != undefined ? element.parent().parent().find('.warehouse_id').find(':selected').attr('data-remaining') : 0;
+            var qty = Math.floor(rate * left);
 
-        element.parent().parent().find('.delivery_qty').val(qty).attr('max', qty);
-    }
-
-    function checkDeliveryQuantity(element) {
-        var value = parseFloat(element.val());
-        var max = parseFloat(element.attr('max'));
-        var min = parseFloat(element.attr('min'));
-
-        if(value > max){
-            element.val(max);
+            element.parent().parent().find('.delivery_qty').val(qty).attr('max', qty);
         }
 
-        if(value < min){
-            element.val(min);
+        function checkDeliveryQuantity(element) {
+            var value = parseFloat(element.val());
+            var max = parseFloat(element.attr('max'));
+            var min = parseFloat(element.attr('min'));
+
+            if (value > max) {
+                element.val(max);
+            }
+
+            if (value < min) {
+                element.val(min);
+            }
         }
-    }
-</script>
+    </script>
 
 @endsection
