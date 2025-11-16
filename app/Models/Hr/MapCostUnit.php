@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'BiIM38'); return 0;
-##!!!##trYaDRkRHxwNDxHM7RwcCPkbEBEYHwj0Hue2tiEfEcz1GBghGRUaDSARCPANIA0ODR8RCPEYGx0hERogCPkbEBEY57a2DxgNHx/M+Q0c7xsfIAEaFSDMESQgERoQH8z5GxARGLYntszMzMwcHhsgEQ8gERDM0CANDhgR6czTFB4LDxsfIAsZDRwcFRoTCyEaFSDT57bMzMzMHCEOGBUPzNAgFRkRHyANGRwf6cwSDRgfEee2KbY=
+bolt_decrypt( __FILE__ , 'dVyZft'); return 0;
+##!!!##cXHVyNTM2tfIysyHqNfXw7TWy8zT2sOv2aJxcdzazIew09Pc1NDVyNvMw6vI28jJyNrMw6zT1tjczNXbw7TWy8zTonFxytPI2tqHtMjXqtba27zV0NuHzN/bzNXL2oe01svM03HicYeHh4fX2dbbzMrbzMuHi9vIydPMpIeOz9nGytba28bUyNfX0NXOxtzV0NuOonGHh4eH19zJ09DKh4vb0NTM2tvI1NfapIfNyNPazKJx5HE=
