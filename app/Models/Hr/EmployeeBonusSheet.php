@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'cA1KH2'); return 0;
-##!!!##pKQI+wf/DQr7/f+62woK9ucJ/v8GDfbiDNWkpA8N/7rjBgYPBwMI+w7/9t77Dvv8+w3/9t8GCQsP/wgO9ucJ/v8G1aSk/Qb7DQ263wcKBgkT///cCQgPDe0C//8Ouv8SDv8I/g265wn+/wakFaS6urq6CgwJDv/9Dv/+ur4O+/wG/9e6usECDPn8CQgPDfkNAv//DsHVpKS6urq6CgwJDv/9Dv/+ur4BD/sM/v/+ute69cED/sHGwf0M//sO//75+w7BxsEPCv77Dv/++fsOwffVpBek
+bolt_decrypt( __FILE__ , 'cr5SBr'); return 0;
+##!!!##Gxt/cn52hIFydHYxUoGBbV6AdXZ9hG1Zg0wbG4aEdjFafX2Gfnp/coV2bVVyhXJzcoR2bVZ9gIKGdn+FbV6AdXZ9TBsbdH1yhIQxVn6BfYCKdnZTgH+GhGR5dnaFMXaJhXZ/dYQxXoB1dn0bjBsxMTExgYOAhXZ0hXZ1MTWFcnN9dk4xMTh5g3BzgH+GhHCEeXZ2hThMGxsxMTExgYOAhXZ0hXZ1MTV4hnKDdXZ1MU4xbDh6dTg9OHSDdnKFdnVwcoU4PTiGgXVyhXZ1cHKFOG5MG44b
