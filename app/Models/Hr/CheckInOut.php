@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , '7Wxczi'); return 0;
-##!!!##Vla6rbmxv7ytr7Fsjby8qJmbsLG4v6iUvodWVsG/sWyVuLjBubW6rcCxqJCtwK2urb+xqJG4u73BsbrAqJm7sLG4h1ZWr7itv79sj7Sxr7eVupvBwGyxxMCxurC/bJm7sLG4VsdWbGxsbLy+u8Cxr8CxsGxwwK2uuLFsiWxur7Sxr7e1urvBwG6HVmxsbGy8wa64ta9scMC1ubG/wK25vL9siWyyrbi/sYdsVslW
+bolt_decrypt( __FILE__ , 'BuYs5r'); return 0;
+##!!!##NDSYi5ePnZqLjY9Ka5qahnd5jo+WnYZynGU0NJ+dj0pzlpafl5OYi56Phm6LnouMi52Phm+WmZufj5iehneZjo+WZTQ0jZaLnZ1KbZKPjZVzmHmfnkqPop6PmI6dSneZjo+WNKU0SkpKSpqcmZ6PjZ6PjkpOnouMlo9KZ0pMjZKPjZWTmJmfnkxlNEpKSkqan4yWk41KTp6Tl4+dnouXmp1KZ0qQi5adj2VKNKc0
