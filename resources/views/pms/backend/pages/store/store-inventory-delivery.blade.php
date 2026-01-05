@@ -106,6 +106,7 @@
                                                     @if($item->qty != $item->delivery_qty)
                                                         @php
                                                             $stock = isset($stocks[$item->id]) ? array_sum(array_values($stocks[$item->id])) : 0;
+                                                            
                                                             $left = floor(($item->purchase_qty > 0 ? $item->qc_qty : $item->qty) < $stock ? ($item->purchase_qty > 0 ? $item->qc_qty : $item->qty)-$item->delivery_qty : $stock);
                                                         @endphp
                                                         <tr id="SelectedRow{{$item->uid}}">
