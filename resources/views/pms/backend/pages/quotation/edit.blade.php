@@ -623,31 +623,69 @@
         });
 
         calculateDiscountValue()
+        // function calculateDiscountValue() {
+        //     var discount = parseFloat($('#discount').val() != '' ? $('#discount').val() : 0).toFixed(2);
+        //     var sumOfSubtoal = parseFloat($("#sumOfSubtoal").val() != '' ? $("#sumOfSubtoal").val() : 0).toFixed(2);
+        //     var discountPercetage = parseFloat(discount > 0 ? (discount * 100) / sumOfSubtoal : 0).toFixed(2);
+
+        //     $(".calculateDiscount").val(parseFloat(discountPercetage).toFixed(2));
+        //     var calculateDiscount = document.querySelectorAll('.calculateDiscount')
+        //     Array.from(calculateDiscount).map(item => {
+        //         var id = item.getAttribute('data-id');
+
+        //         var sub_total_price = parseFloat($('#subTotalPrice_' + id).val() != '' ? $('#subTotalPrice_' + id).val() : 0).toFixed(2);
+        //         var item_discount_percent = parseFloat($('#itemDiscountPercent' + id).val() != '' ? $('#itemDiscountPercent' + id).val() : 0).toFixed(2);
+        //         var value = parseFloat(item_discount_percent > 0 && sub_total_price > 0 ? (item_discount_percent * sub_total_price) / 100 : 0).toFixed(2);
+        //         $('#itemWiseDiscount_' + id).val(parseFloat(value).toFixed(2));
+        //         $('#discount_amount_' + id).html(parseFloat(value).toFixed(2));
+        //     });
+
+        //     var discountFields = document.querySelectorAll('.calculateDiscount');
+        //     Array.from(discountFields).map((item, key) => {
+        //         calculateItemDiscount(item.getAttribute('data-id'));
+        //         calculateSumOfVatValue(item.getAttribute('data-id'));
+        //     });
+
+        //     summation();
+        // }
+
         function calculateDiscountValue() {
-            var discount = parseFloat($('#discount').val() != '' ? $('#discount').val() : 0).toFixed(2);
-            var sumOfSubtoal = parseFloat($("#sumOfSubtoal").val() != '' ? $("#sumOfSubtoal").val() : 0).toFixed(2);
-            var discountPercetage = parseFloat(discount > 0 ? (discount * 100) / sumOfSubtoal : 0).toFixed(2);
+            let discount = parseFloat($('#discount').val()) || 0;
+            let subtotal = parseFloat($("#sumOfSubtoal").val()) || 0;
 
-            $(".calculateDiscount").val(parseFloat(discountPercetage).toFixed(2));
-            var calculateDiscount = document.querySelectorAll('.calculateDiscount')
-            Array.from(calculateDiscount).map(item => {
-                var id = item.getAttribute('data-id');
+            if (discount <= 0 || subtotal <= 0) return;
 
-                var sub_total_price = parseFloat($('#subTotalPrice_' + id).val() != '' ? $('#subTotalPrice_' + id).val() : 0).toFixed(2);
-                var item_discount_percent = parseFloat($('#itemDiscountPercent' + id).val() != '' ? $('#itemDiscountPercent' + id).val() : 0).toFixed(2);
-                var value = parseFloat(item_discount_percent > 0 && sub_total_price > 0 ? (item_discount_percent * sub_total_price) / 100 : 0).toFixed(2);
-                $('#itemWiseDiscount_' + id).val(parseFloat(value).toFixed(2));
-                $('#discount_amount_' + id).html(parseFloat(value).toFixed(2));
+            let items = $(".calculateSumOfSubtotal");
+            let distributedTotal = 0;
+
+            items.each(function (index) {
+                let id = $(this).attr('id').split('_')[1];
+                let itemSubtotal = parseFloat($(this).val()) || 0;
+
+                let ratio = itemSubtotal / subtotal;
+                let itemDiscount = Math.round(discount * ratio * 100) / 100;
+
+                $('#itemWiseDiscount_' + id).val(itemDiscount.toFixed(2));
+                distributedTotal += itemDiscount;
             });
 
-            var discountFields = document.querySelectorAll('.calculateDiscount');
-            Array.from(discountFields).map((item, key) => {
-                calculateItemDiscount(item.getAttribute('data-id'));
-                calculateSumOfVatValue(item.getAttribute('data-id'));
+            /* 🔧 Fix rounding difference on last item */
+            let diff = (discount - distributedTotal).toFixed(2);
+            if (diff != 0) {
+                let lastId = items.last().attr('id').split('_')[1];
+                let lastDiscount = parseFloat($('#itemWiseDiscount_' + lastId).val());
+                $('#itemWiseDiscount_' + lastId).val((lastDiscount + parseFloat(diff)).toFixed(2));
+            }
+
+            /* Recalculate VAT & totals */
+            items.each(function () {
+                let id = $(this).attr('id').split('_')[1];
+                calculateSumOfVatValue(id, true);
             });
 
             summation();
         }
+
 
         function summation() {
             var sumOfSubtoal = parseFloat($('#sumOfSubtoal').val() != '' ? $('#sumOfSubtoal').val() : 0).toFixed(2);
