@@ -789,5 +789,46 @@
         function removeApprover(element) {
             element.parent().parent().remove();
         }
+
+
+        $('#updateInventoryForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to submit this for approval?",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes, submit it!",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                },
+                dangerMode: true,
+            }).then((willSubmit) => {
+                if (willSubmit) {
+                    // If user confirms, submit the form
+                    this.submit();
+                } else {
+                    swal({
+                        text: "Submission cancelled.",
+                        icon: "info",
+                        timer: 1200,
+                        buttons: false
+                    });
+                }
+            });
+        });
+
     </script>
 @endsection
