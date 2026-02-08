@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'VBw532'); return 0;
+bolt_decrypt( __FILE__ , '1w32SI'); return 0;
 ##!!!##s7MXChYOHBkKDA7J6hkZBfYYDQ4VHAXxG+Szsx4cDsnyFRUeFhIXCh0OBe0KHQoLChwOBe4VGBoeDhcdBfYYDQ4V5LOzDBUKHBzJ/RsKEhcSFxD3ChYOHMkOIR0OFw0cyfYYDQ4VsySzycnJyRkbGB0ODB0ODcnNHQoLFQ7J5snQERsIHRsKEhcSFxAIFwoWDhzQ5LOzycnJyRkeCxUSDMnNHRIWDhwdChYZHMnmyQ8KFRwO5LMmsw==
