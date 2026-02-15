@@ -1,52 +1,51 @@
-<tbody>
-<tr>
-    <td class="text-center" colspan="29">
+<thead>
+<tr style="">
+    <th class="text-center" colspan="29">
         <h1><strong>{{ $title }}</strong></h1>
-    </td>
+    </th>
 </tr>
-<tr>
-    <td class="text-center"><strong>SL</strong></td>
-    <td class="text-center"><strong>Reference</strong></td>
-    <td class="text-center"><strong>Requisition Date</strong></td>
+<tr class="" style="position: sticky; top: -1px; background: #f8f9fa; z-index: 29;">
+    <th class="text-center"><strong>SL</strong></th>
+    <th class="text-center"><strong>Reference</strong></th>
+    <th class="text-center"><strong>Requisition Date</strong></th>
 
-    <td class="text-center"><strong>Approved By HOD</strong></td>
-    <td class="text-center"><strong>Req. Approved By Management</strong></td>
-    <td class="text-center"><strong>Req. Approved By Finance</strong></td>
+    <th class="text-center"><strong>Approved By HOD</strong></th>
+    <th class="text-center"><strong>Req. Approved By Management</strong></th>
+    <th class="text-center"><strong>Req. Approved By Finance</strong></th>
 
+    <th class="text-center"><strong>User Department</strong></th>
+    <th class="text-center"><strong>Store Requisition Send To Procurement</strong></th>
 
-    <td class="text-center"><strong>User Department</strong></td>
-    <td class="text-center"><strong>Store Requisition Send To Procurement</strong></td>
+    <th class="text-center"><strong>Materials Name</strong></th>
+    <th class="text-center"><strong>Quantity</strong></th>
+    <th class="text-center"><strong>Unit Price</strong></th>
+    <th class="text-center"><strong>Vat</strong></th>
+    <th class="text-center"><strong>Total Amount</strong></th>
+    <th class="text-center"><strong>Negotiation Savings</strong></th>
+    <th class="text-center"><strong>Company</strong></th>
 
+    <th class="text-center"><strong>CS Number</strong></th>
 
-    <td class="text-center"><strong>Materials Name</strong></td>
-    <td class="text-center"><strong>Quantity</strong></td>
-    <td class="text-center"><strong>Unit Price</strong></td>
-    <td class="text-center"><strong>Vat</strong></td>
-    <td class="text-center"><strong>Total Amount</strong></td>
-    <td class="text-center"><strong>Negotiation Savings</strong></td>
-    <td class="text-center"><strong>Company</strong></td>
+    <th class="text-center"><strong>CS Raise Date</strong></th>
+    <th class="text-center"><strong>CS Approved Date</strong></th>
 
-    <td class="text-center"><strong>CS Number</strong></td>
+    <th class="text-center"><strong>PO Number</strong></th>
+    <th class="text-center"><strong>PO Issue Date</strong></th>
 
-    <td class="text-center"><strong>CS Raise Date</strong></td>
-    <td class="text-center"><strong>CS Approved Date</strong></td>
+    <th class="text-center"><strong>Supplier's Name</strong></th>
+    <th class="text-center"><strong>Order Date</strong></th>
+    <th class="text-center"><strong>PO Delivery Date</strong></th>
+    <th class="text-center"><strong>Actual Delivery Date</strong></th>
+    <th class="text-center"><strong>Delivery Location</strong></th>
 
-    <td class="text-center"><strong>PO Number</strong></td>
-    <td class="text-center"><strong>PO Issue Date</strong></td>
+    <th class="text-center"><strong>Invoice Submission Date</strong></th>
+    <th class="text-center"><strong>Payment Date</strong></th>
 
-    <td class="text-center"><strong>Supplier's Name</strong></td>
-    <td class="text-center"><strong>Order Date</strong></td>
-    <td class="text-center"><strong>PO Delivery Date</strong></td>
-    <td class="text-center"><strong>Actual Delivery Date</strong></td>
-    <td class="text-center"><strong>Delivery Location</strong></td>
-
-    <td class="text-center"><strong>Invoice Submission Date</strong></td>
-    <td class="text-center"><strong>Payment Date</strong></td>
-
-    <td class="text-center"><strong>Assigned person</strong></td>
-    <td class="text-center"><strong>Remarks</strong></td>
+    <th class="text-center"><strong>Assigned person</strong></th>
+    <th class="text-center"><strong>Remarks</strong></th>
 </tr>
-
+</thead>
+<tbody>
 @if($requisitions->isNotEmpty())
     @foreach($requisitions as $key => $requisition)
         @php

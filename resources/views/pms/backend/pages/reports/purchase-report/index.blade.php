@@ -54,7 +54,10 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-12 table-responsive">
+                                <div class="col-md-12" style="    
+                                max-height: 1000px;
+                                overflow: auto;    
+                                width: 100%;">
                                     @include('pms.backend.pages.reports.exports.show', [
                                         'folder' => 'purchase-report'
                                     ])
