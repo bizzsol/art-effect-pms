@@ -1,9 +1,4 @@
 <thead>
-<tr style="">
-    <th class="text-center" colspan="29">
-        <h1><strong>{{ $title }}</strong></h1>
-    </th>
-</tr>
 <tr class="" style="position: sticky; top: -1px; background: #f8f9fa; z-index: 29;">
     <th class="text-center"><strong>SL</strong></th>
     <th class="text-center"><strong>Reference</strong></th>

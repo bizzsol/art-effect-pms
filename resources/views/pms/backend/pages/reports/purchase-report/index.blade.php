@@ -20,33 +20,46 @@
 
             <div class="page-content">
                 <div class="panel panel-info">
-                    <div class="panel-body">
-                        <form action="{{ url('pms/purchase-report') }}" method="get" accept-charset="utf-8">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="hr_unit_id"><strong>Unit</strong></label>
-                                        <select name="hr_unit_id" id="hr_unit_id" class="form-control">
-                                            @if(isset($units[0]))
-                                                @foreach($units as $unit)
-                                                    <option value="{{ $unit->hr_unit_id }}"
-                                                            {{request()->has('hr_unit_id')?(request()->get('hr_unit_id')==$unit->hr_unit_id?'selected':''):''}}>
-                                                        {{ $unit->hr_unit_name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    @include('pms.backend.pages.reports.tools.timeline')
-                                </div>
-                                <div class="col-md-3 pt-4">
-                                    <div class="mt-2">
-                                        @include('pms.backend.pages.reports.tools.buttons')
-                                    </div>
-                                </div>
+                    <div id="accordion">
+                        <div class="card">
+                            <div class="card-header bg-primary p-0" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#filter"
+                                            aria-expanded="true" aria-controls="filter">
+                                        <h5 class="text-white"><strong><i class="las la-chevron-circle-right la-spin"></i>&nbsp;Search</strong>
+                                        </h5>
+                                    </button>
+                                </h5>
                             </div>
-                        </form>
+                    <div id="filter" class="collapse {{ !request()->has('from') ? 'show' : '' }}" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <form action="{{ url('pms/purchase-report') }}" method="get" accept-charset="utf-8">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="hr_unit_id"><strong>Unit</strong></label>
+                                            <select name="hr_unit_id" id="hr_unit_id" class="form-control">
+                                                @if(isset($units[0]))
+                                                    @foreach($units as $unit)
+                                                        <option value="{{ $unit->hr_unit_id }}"
+                                                                {{request()->has('hr_unit_id')?(request()->get('hr_unit_id')==$unit->hr_unit_id?'selected':''):''}}>
+                                                            {{ $unit->hr_unit_name }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @include('pms.backend.pages.reports.tools.timeline')
+                                    </div>
+                                    <div class="col-md-3 pt-4">
+                                        <div class="mt-2">
+                                            @include('pms.backend.pages.reports.tools.buttons')
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 

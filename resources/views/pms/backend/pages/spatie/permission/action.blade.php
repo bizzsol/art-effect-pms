@@ -27,7 +27,7 @@
             <div class="modal-footer">
                 <button type="submit" class="btn btn-sm btn-success">Update</button>
             </div>
-        {!! Form::close(); !!}
+        {!! Form::close() !!}
         </div>
     </div>
 </div>
