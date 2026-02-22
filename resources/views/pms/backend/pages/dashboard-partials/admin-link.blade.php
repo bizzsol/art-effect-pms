@@ -4,6 +4,7 @@
     $purchaseStats = purchaseStats();
     $gateManagerData = gateManagerData();
     $gateQualityControllerData = gateQualityControllerData();
+    $billingAuditStats = billingAuditStats();
 @endphp
 
 <div class="col-lg-12 pl-0">
@@ -34,21 +35,23 @@
                     @include('pms.backend.pages.dashboard-partials.department-head')
                 @endif
 
-                @if(Auth::user()->hasRole('Store-Manager')|| Auth::user()->hasRole('Store-Department') || Auth::user()->hasRole('Super Admin'))
-                    @include('pms.backend.pages.dashboard-partials.store')
-                    @include('pms.backend.pages.dashboard-partials.quality-controller')
-                @endif
+              
 
                 @if(Auth::user()->hasRole('Purchase-Department') || Auth::user()->hasRole('Super Admin'))
                     @include('pms.backend.pages.dashboard-partials.purchase')
-                    @include('pms.backend.pages.dashboard-partials.billing')
+                   
                 @endif
 
-                @if(Auth::user()->hasRole('Management') || Auth::user()->hasRole('Super Admin'))
+                <!-- @if(Auth::user()->hasRole('Management') || Auth::user()->hasRole('Super Admin'))
                     @include('pms.backend.pages.dashboard-partials.quotation')
-                @endif
-                @if(Auth::user()->hasRole('Gate Permission') || Auth::user()->hasRole('Super Admin'))
+                @endif -->
+
+                <!-- @if(Auth::user()->hasRole('Gate Permission') || Auth::user()->hasRole('Super Admin'))
                     @include('pms.backend.pages.dashboard-partials.gate-manager')
+                @endif -->
+                
+                    @if(Auth::user()->hasRole('Store-Manager')|| Auth::user()->hasRole('Store-Department') || Auth::user()->hasRole('Super Admin'))
+                    @include('pms.backend.pages.dashboard-partials.store')
                 @endif
 
                 @if(Auth::user()->hasRole('Quality-Ensure') || Auth::user()->hasRole('Super Admin'))
@@ -62,9 +65,9 @@
                 @if(Auth::user()->hasRole('Audit') || Auth::user()->hasRole('Super Admin'))
                     @include('pms.backend.pages.dashboard-partials.audit')
                 @endif
-                @if(Auth::user()->hasRole('Accounts') || Auth::user()->hasRole('Super Admin') )
+                <!-- @if(Auth::user()->hasRole('Accounts') || Auth::user()->hasRole('Super Admin') )
                     @include('pms.backend.pages.dashboard-partials.accounts')
-                @endif
+                @endif -->
 
                 @include('pms.backend.pages.dashboard-partials.scripts')
             </div>

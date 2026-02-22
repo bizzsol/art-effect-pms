@@ -56,6 +56,9 @@
                 @empty
                     <li> No Menu Data Found</li>
                 @endforelse
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ul>
         </nav>
         <div class="p-3"></div>
