@@ -257,6 +257,7 @@
                                                                 <td class="text-right">
                                                                     <strong id="total-discount-amount-{{ $quotation->id }}"> <?= number_format(($quotation->discount), 2); ?></strong>
                                                                 </td>
+
                                                                 @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                     <td class="text-right">
                                                                         <strong id="total-exchnage-discount-amount-{{ $quotation->id }}"> <?= number_format(($quotation->discount) * $exchangeRate, 2); ?></strong>
@@ -266,7 +267,35 @@
                                                         @endif
                                                         @endif
                                                     </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right"></td>
+                                                        @if(isset($quotations[0]))
+                                                            @foreach($quotations as $key=>$quotation)
 
+                                                                @php
+                                                                    $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
+                                                                    $subTotal = $quotation->relQuotationItems->sum('sub_total_price');
+                                                                    $afterDiscount = $subTotal - $quotation->discount;
+                                                                @endphp
+
+                                                                <td colspan="2"><strong>After Discount</strong></td>
+                                                                <td class="text-right">
+                                                                    <strong id="total-after-discount-{{ $quotation->id }}">
+                                                                        {{ number_format($afterDiscount, 2) }}
+                                                                    </strong>
+                                                                </td>
+
+                                                                @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
+                                                                    <td class="text-right">
+                                                                        <strong>
+                                                                            {{ number_format($afterDiscount * $exchangeRate, 2) }}
+                                                                        </strong>
+                                                                    </td>
+                                                                @endif
+
+                                                            @endforeach
+                                                        @endif
+                                                    </tr>
                                                     <tr>
                                                         <td colspan="5" class="text-right"></td>
                                                         @if(isset($quotations[0]))
