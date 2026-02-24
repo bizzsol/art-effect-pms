@@ -68,7 +68,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12" style="    
-                                max-height: 1000px;
+                                max-height: 430px;
                                 overflow: auto;    
                                 width: 100%;">
                                     @include('pms.backend.pages.reports.exports.show', [
