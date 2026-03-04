@@ -257,12 +257,12 @@
                                         </td>
                                         <td>
                                             <input type="text" name="unit_price[{{$item->id}}]"
-                                                required class="form-control text-right" min="0.0"
-                                                step='any' value="{{$item->unit_price}}"
-                                                id="unitPrice{{$item->id}}"
-                                                placeholder="0.00"
-                                                onkeyup="calculateSubtotal({{$item->id}})"
-                                                onchange="calculateSubtotal({{$item->id}})">
+                                                   required class="form-control text-right" min="0.0"
+                                                   step="any" value="{{ number_format($item->unit_price, 2) }}"
+                                                   id="unitPrice{{$item->id}}"
+                                                   placeholder="0.00"
+                                                   onkeyup="calculateSubtotal({{$item->id}})"
+                                                   onchange="calculateSubtotal({{$item->id}})">
                                         </td>
                                         <td>
                                             <input type="number"

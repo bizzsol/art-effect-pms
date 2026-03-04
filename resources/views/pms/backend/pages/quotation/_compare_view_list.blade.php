@@ -310,7 +310,11 @@
                                                 <td colspan="6" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
-                                                    <td colspan="2"><strong>(+) VAT
+                                                    <td colspan="2"><strong>
+                                                            @if($quotation->relQuotationItems->first()->vat_type === 'exclusive')
+                                                                (+)
+                                                            @endif
+                                                                VAT
                                                             ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
                                                             )</strong></td>
                                                     <td class="text-right"><strong

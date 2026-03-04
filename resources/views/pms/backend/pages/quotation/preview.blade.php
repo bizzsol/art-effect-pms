@@ -161,7 +161,7 @@
                                                                 {{ $quotationInfo[$quotation->id]['items'][$item->uid]['approved_qty'] }}
                                                             </td>
                                                             <td class="text-right">
-                                                                {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['unit_price'] ,) }}
+                                                                {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['unit_price'] , 2) }}
                                                             </td>
                                                             <td class="text-right">
                                                                 {{ number_format($quotationInfo[$quotation->id]['items'][$item->uid]['sub_total'] ,2) }}
@@ -249,7 +249,11 @@
                                                 <td colspan="5" class="text-right"></td>
 
                                                 @foreach($quotations as $key=>$quotation)
-                                                    <td colspan="2"><strong>(+) VAT
+                                                    <td colspan="2"><strong>
+                                                            @if($quotation->relQuotationItems->first()->vat_type === 'exclusive')
+                                                                (+)
+                                                            @endif
+                                                                VAT
                                                             ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
                                                             )</strong></td>
                                                     <td class="text-right">

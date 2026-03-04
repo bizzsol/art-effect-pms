@@ -304,7 +304,11 @@
                                                                     $total_price = $quotation->relQuotationItems->sum('sub_total_price');
                                                                     $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
                                                                 @endphp
-                                                                <td colspan="2"><strong>(+) VAT
+                                                                <td colspan="2"><strong>
+                                                                        @if($quotation->relQuotationItems->first()->vat_type === 'exclusive')
+                                                                            (+)
+                                                                        @endif
+                                                                            VAT
                                                                         ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
                                                                         )</strong>
 
