@@ -55,10 +55,15 @@
     @foreach($requisition->items as $item_key => $item)
     @php
     $purchaseOrderItem = false;
+    $quotationItem = false;
     if($requisition->purchaseOrders->count() > 0){
     foreach($requisition->purchaseOrders as $po){
     if($po->purchaseOrder->relPurchaseOrderItems->count() > 0){
     $purchaseOrderItem = $po->purchaseOrder->relPurchaseOrderItems->where('product_id', $item->product_id)->first();
+    }
+
+    if(isset($po->purchaseOrder->relQuotation->relQuotationItems) && $po->purchaseOrder->relQuotation->relQuotationItems->count() > 0){
+    $quotationItem = $po->purchaseOrder->relQuotation->relQuotationItems->where('product_id', $item->product_id)->first();
     }
     }
     }
@@ -119,7 +124,7 @@
         @endphp
         <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->vat)  .'('.$vatTypeShort.')' : '-' }}</td>
         <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->total_price) : '-' }}</td>
-        <td class="text-center">{{ isset($purchaseOrderItem->id) ? systemMoneyFormat($purchaseOrderItem->discount) : '-' }}</td>
+        <td class="text-center">{{ isset($quotationItem->id) ? systemMoneyFormat($quotationItem->discount_amount) : '-' }}</td>
 
         @if($item_key == 0)
         <td class="text-center" rowspan="{{ $requisition->items->count() }}">
