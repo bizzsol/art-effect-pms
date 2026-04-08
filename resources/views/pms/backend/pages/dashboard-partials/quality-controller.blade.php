@@ -23,6 +23,19 @@
                         </div>
 
                         <div class="col-md-3 pr-0">
+                            <a href="{{ url('pms/quality-ensure/pending-qc-list') }}">
+                                <div class="feature-effect-box wow fadeInUp" data-wow-duration="0.6s">
+                                    <div class="feature-i iq-bg-warning">
+                                        <i class="las la-clock"></i>
+                                    </div>
+                                    <div class="feature-icon">
+                                        <h5>Pending QC ({{ $gateQualityControllerData['pending'] }})</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 pr-0">
                             <a href="{{ url('pms/quality-ensure/approved-list') }}">
                                 <div class="feature-effect-box wow fadeInUp" data-wow-duration="0.6s">
                                     <div class="feature-i iq-bg-success">

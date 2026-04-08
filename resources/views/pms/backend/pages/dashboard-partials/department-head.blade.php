@@ -17,7 +17,7 @@
                                             <i class="las la-clock"></i>
                                           </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Total Pending</h5>
+                                          <h5 class="text-white">Requisiton Waiting List</h5>
                                         </div>
                                         <div class="feature-i iq-bg-warning pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['user-requisitions']['pending'] }}

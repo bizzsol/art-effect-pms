@@ -17,7 +17,7 @@
                                             <i class="las la-receipt"></i>
                                           </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Total Draft</h5>
+                                          <h5 class="text-white">Requisition Draft</h5>
                                         </div>
                                         <div class="feature-i iq-bg-primary pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['requisitions']['draft'] }}
@@ -33,7 +33,7 @@
                                             <i class="las la-clock"></i>
                                           </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Total Pending</h5>
+                                          <h5 class="text-white">Waiting for Approval</h5>
                                         </div>
                                         <div class="feature-i iq-bg-warning pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['requisitions']['pending'] }}
@@ -73,7 +73,24 @@
                                     </div>
                                 </a>
                             </div>
-
+                            @if(Auth::user()->hasRole('Employee'))
+                            <div class="col-md-3 pr-0">
+                                <a href="{{ url('pms/requisition/delivered-requistion-list') }}">
+                                    <div class="feature-effect-box wow fadeInUp bg-success" data-wow-duration="0.4s">
+                                        <div class="feature-i iq-bg-success">
+                                            <i class="las la-truck"></i>
+                                        </div>
+                                        <div class="feature-icon">
+                                            <h5 class="text-white">Waiting for Receive</h5>
+                                        </div>
+                                        <div class="feature-i iq-bg-success pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
+                                            {{ $userData['requisitions']['delivered'] }}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            @endif
+                            @if(!Auth::user()->hasRole('Employee'))
                             <div class="col-md-3 pr-0">
                                 <a href="{{ url('pms/requisition/delivered-requistion-list') }}">
                                     <div class="feature-effect-box wow fadeInUp bg-success" data-wow-duration="0.4s">
@@ -89,7 +106,7 @@
                                     </div>
                                 </a>
                             </div>
-
+                            @endif
                             <div class="col-md-3 pr-0">
                                 <a href="#">
                                     <div class="feature-effect-box wow fadeInUp bg-dark" data-wow-duration="0.4s">
@@ -106,21 +123,21 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-3 pr-0">
-                                <a href="{{ url('pms/requisition/notification-all') }}">
-                                    <div class="feature-effect-box wow fadeInUp bg-danger" data-wow-duration="0.4s">
-                                          <div class="feature-i iq-bg-danger">
-                                            <i class="las la-bell"></i>
-                                          </div>
-                                        <div class="feature-icon">
-                                          <h5 class="text-white">Notification</h5>
-                                        </div>
-                                        <div class="feature-i iq-bg-danger pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
-                                            {{ $userData['notifications']['unread'] }}
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+{{--                            <div class="col-md-3 pr-0">--}}
+{{--                                <a href="{{ url('pms/requisition/notification-all') }}">--}}
+{{--                                    <div class="feature-effect-box wow fadeInUp bg-danger" data-wow-duration="0.4s">--}}
+{{--                                          <div class="feature-i iq-bg-danger">--}}
+{{--                                            <i class="las la-bell"></i>--}}
+{{--                                          </div>--}}
+{{--                                        <div class="feature-icon">--}}
+{{--                                          <h5 class="text-white">Notification</h5>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="feature-i iq-bg-danger pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">--}}
+{{--                                            {{ $userData['notifications']['unread'] }}--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
                 </section>

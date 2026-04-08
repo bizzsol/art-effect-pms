@@ -591,7 +591,7 @@
 
                                     <div class="col-md-3 col-sm-12">
                                         <div class="form-group">
-                                            <label for="QuotationFile"><strong>{{ __('Quotation File (Pdf)') }}
+                                            <label for="QuotationFile"><strong>{{ __('Quotation File') }}
                                                     :</strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <input type="file" name="quotation_file"
@@ -600,13 +600,14 @@
                                                        aria-label="Large"
                                                        aria-describedby="inputGroup-sizing-sm"
                                                        value=""
-                                                       accept="application/pdf">
+{{--                                                       accept="application/pdf"--}}
+                                                >
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-12">
                                         <div class="form-group">
-                                            <label for="technicalSpecification"><strong>{{ __('Technical Specification File (Pdf)') }}
+                                            <label for="technicalSpecification"><strong>{{ __('Technical Specification File') }}
                                                     :</strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
                                                 <input type="file"
@@ -616,7 +617,8 @@
                                                        aria-label="Large"
                                                        aria-describedby="inputGroup-sizing-sm"
                                                        value=""
-                                                       accept="application/pdf">
+{{--                                                       accept="application/pdf"--}}
+                                                >
                                             </div>
                                         </div>
                                     </div>

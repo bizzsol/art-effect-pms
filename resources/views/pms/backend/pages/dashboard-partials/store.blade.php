@@ -1,6 +1,6 @@
 <div class="col-lg-12">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="iq-card">
                 <div class="iq-card-header d-flex justify-content-between p-0 bg-white">
                     <div class="iq-header-title">
@@ -74,21 +74,21 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-md-4 pr-0 mt-3">
-                                    <a href="{{url('pms/qce-list')}}">
-                                        <div class="feature-effect-box wow fadeInUp bg-danger" data-wow-duration="0.6s">
-                                            <div class="feature-i iq-bg-danger">
-                                                <i class="las la-clipboard-check"></i>
-                                            </div>
-                                            <div class="feature-icon">
-                                                <h5 class="text-white">QCE List</h5>
-                                            </div>
-                                            <div class="feature-i iq-bg-danger pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
-                                                {{ $storeData['grn']['qce-list'] }}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
+{{--                                <div class="col-md-4 pr-0 mt-3">--}}
+{{--                                    <a href="{{url('pms/qce-list')}}">--}}
+{{--                                        <div class="feature-effect-box wow fadeInUp bg-danger" data-wow-duration="0.6s">--}}
+{{--                                            <div class="feature-i iq-bg-danger">--}}
+{{--                                                <i class="las la-clipboard-check"></i>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="feature-icon">--}}
+{{--                                                <h5 class="text-white">QCE List</h5>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="feature-i iq-bg-danger pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">--}}
+{{--                                                {{ $storeData['grn']['qce-list'] }}--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
                                 <div class="col-md-4 pr-0 mt-3">
                                     <a href="{{url('pms/grn-list')}}">
                                         <div class="feature-effect-box wow fadeInUp bg-dark" data-wow-duration="0.6s">
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-6">
             <div class="iq-card">
                 <div class="iq-card-header d-flex justify-content-between p-0 bg-white">
                     <div class="iq-header-title">

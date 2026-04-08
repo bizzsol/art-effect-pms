@@ -42,6 +42,11 @@
                    
                 @endif
 
+{{--                @if(Auth::user()->hasRole('Purchase-Department') || Auth::user()->hasRole('Super Admin'))--}}
+{{--                    @include('pms.backend.pages.dashboard-partials.direct-purchase')--}}
+
+{{--                @endif--}}
+
                 <!-- @if(Auth::user()->hasRole('Management') || Auth::user()->hasRole('Super Admin'))
                     @include('pms.backend.pages.dashboard-partials.quotation')
                 @endif -->

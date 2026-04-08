@@ -210,13 +210,13 @@
   </style>
   @endsection
   @section('main-content')
-  @php
-  $user = auth()->user();
-  @endphp
+    @php
+    $user = auth()->user();
+    @endphp
 
-  <div class="row">
-    @include('pms.backend.pages.dashboard-partials.admin-link')
-  </div>
+    <div class="row">
+      @include('pms.backend.pages.dashboard-partials.admin-link')
+    </div>
   @endsection
   @section('page-script')
   @endsection

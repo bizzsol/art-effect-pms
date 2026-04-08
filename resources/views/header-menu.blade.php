@@ -36,6 +36,14 @@
                  <i class="las la-bell" style="font-size: 35px;color:red;animation: shadow-pulse 1s infinite;"></i>
                  <small class="badge  badge-light float-right pt-1 notification-count">{{$unreadNotification->count()}}</small>
               </a>
+{{--                <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">--}}
+{{--                    <span style="margin-left: 8px; font-weight: 500;">Notification</span>--}}
+{{--                    <i class="las la-bell" style="font-size: 35px;color:red;animation: shadow-pulse 1s infinite;"></i>--}}
+
+{{--                    <small class="badge badge-light ml-2 notification-count">--}}
+{{--                        {{$unreadNotification->count()}}--}}
+{{--                    </small>--}}
+{{--                </a>--}}
               <div class="iq-sub-dropdown">
                  <div class="iq-card shadow-none m-0">
                        <div class="bg-primary p-3">
