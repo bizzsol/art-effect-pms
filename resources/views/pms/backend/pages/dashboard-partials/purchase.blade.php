@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="col-md-3 pr-0">
-                                <a href="{{ url('pms/quotation/generate-po-list') }}">
+                                <a href="{{ url('pms/purchase/order-list') }}">
                                     <div class="feature-effect-box wow fadeInUp bg-info" data-wow-duration="0.4s">
                                         <div class="feature-i iq-bg-info">
                                             <i class="las la-file-invoice"></i>
