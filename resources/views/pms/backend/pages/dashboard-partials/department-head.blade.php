@@ -13,11 +13,11 @@
                             <div class="col-md-4 pr-0">
                                 <a href="{{ url('pms/requisition/list-view') }}?status=0">
                                     <div class="feature-effect-box wow fadeInUp bg-warning" data-wow-duration="0.4s">
-                                          <div class="feature-i iq-bg-warning">
+                                        <div class="feature-i iq-bg-warning">
                                             <i class="las la-clock"></i>
-                                          </div>
+                                        </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Requisiton Waiting List</h5>
+                                            <h5 class="text-white">Requisiton Waiting List</h5>
                                         </div>
                                         <div class="feature-i iq-bg-warning pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['user-requisitions']['pending'] }}
@@ -29,11 +29,11 @@
                             <div class="col-md-4 pr-0">
                                 <a href="{{ url('pms/requisition/list-view') }}?status=1">
                                     <div class="feature-effect-box wow fadeInUp bg-success" data-wow-duration="0.4s">
-                                          <div class="feature-i iq-bg-success">
+                                        <div class="feature-i iq-bg-success">
                                             <i class="las la-check-circle"></i>
-                                          </div>
+                                        </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Total Acknowledge</h5>
+                                            <h5 class="text-white">Total Approved</h5>
                                         </div>
                                         <div class="feature-i iq-bg-success pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['user-requisitions']['acknowledge'] }}
@@ -45,11 +45,11 @@
                             <div class="col-md-4 pr-0">
                                 <a href="{{ url('pms/requisition/list-view') }}?status=2">
                                     <div class="feature-effect-box wow fadeInUp bg-danger" data-wow-duration="0.4s">
-                                          <div class="feature-i iq-bg-danger">
+                                        <div class="feature-i iq-bg-danger">
                                             <i class="las la-pause-circle"></i>
-                                          </div>
+                                        </div>
                                         <div class="feature-icon">
-                                          <h5 class="text-white">Total Halt</h5>
+                                            <h5 class="text-white">Total Halt</h5>
                                         </div>
                                         <div class="feature-i iq-bg-danger pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
                                             {{ $userData['user-requisitions']['halt'] }}
