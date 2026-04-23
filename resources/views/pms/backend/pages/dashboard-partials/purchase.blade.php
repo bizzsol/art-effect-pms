@@ -84,7 +84,7 @@
                                           <h5 class="text-white">Pending PO</h5>
                                         </div>
                                         <div class="feature-i iq-bg-success pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
-                                            {{ $purchaseStats['purchase-orders'] }}
+                                            {{ $pendingPoList }}
                                         </div>
                                     </div>
                                 </a>
@@ -100,7 +100,7 @@
                                             <h5 class="text-white">PO Generated</h5>
                                         </div>
                                         <div class="feature-i iq-bg-info pull-right counter mr-0" style="border-radius: 25% !important; font-weight: bold;margin-top: 2px">
-                                            {{ $purchaseStats['po-generated'] }}
+                                            {{ $purchaseOrderList }}
                                         </div>
                                     </div>
                                 </a>

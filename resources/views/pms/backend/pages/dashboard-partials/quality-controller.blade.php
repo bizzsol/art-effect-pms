@@ -73,6 +73,18 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-md-3 pr-0">
+                            <a href="{{ url('pms/grn-list') }}">
+                                <div class="feature-effect-box wow fadeInUp" data-wow-duration="0.6s">
+                                    <div class="feature-i iq-bg-success">
+                                        <i class="las la-exchange-alt"></i>
+                                    </div>
+                                    <div class="feature-icon">
+                                        <h5>GRN ({{ $grnList }})</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </section>
             </div>

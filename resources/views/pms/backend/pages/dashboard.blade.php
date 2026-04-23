@@ -215,6 +215,7 @@
     @endphp
 
     <div class="row">
+{{--      {{ dump($inventorySummaries) }}--}}
       @include('pms.backend.pages.dashboard-partials.admin-link')
     </div>
   @endsection
