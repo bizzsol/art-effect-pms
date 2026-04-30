@@ -16,7 +16,7 @@
                                         <i class="las la-truck-loading"></i>
                                     </div>
                                     <div class="feature-icon">
-                                        <h5>Gate-In ({{ $gateQualityControllerData['gate-in'] }})</h5>
+                                        <h5>Gate-In ({{ $gateIns }})</h5>
                                     </div>
                                 </div>
                             </a>
@@ -29,7 +29,7 @@
                                         <i class="las la-clock"></i>
                                     </div>
                                     <div class="feature-icon">
-                                        <h5>Pending QC ({{ $gateQualityControllerData['pending'] }})</h5>
+                                        <h5>Pending QC ({{ $pendingQc }})</h5>
                                     </div>
                                 </div>
                             </a>
@@ -42,7 +42,7 @@
                                         <i class="las la-check-circle"></i>
                                     </div>
                                     <div class="feature-icon">
-                                        <h5>Approved ({{ $gateQualityControllerData['approved'] }})</h5>
+                                        <h5>Approved ({{ $approvedQC }})</h5>
                                     </div>
                                 </div>
                             </a>
