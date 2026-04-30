@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'PXx6cc'); return 0;
-##!!!##JiaKfYmBj4x9f4E8XYyMeGmLgIGIj3hkjlcmJpGPgTxliIiRiYWKfZCBeGB9kH1+fY+BeGGIi42RgYqQeGmLgIGIVyYmf4h9j488couRf4SBjjyBlJCBioCPPGmLgIGIJpcmJYyOi5CBf5CBgDxAkH1+iIE8WTxDhI57kouRf4SBjkNXJjw8PDyMjouQgX+QgYA8QIORfY6AgYA8WTx3eVcmJjw8PDyMjouQgX+QgYA8QIB9kIGPPFk8dyY8PDw8PDw8PEN/joF9kIGAe32QQ0g8Q5GMgH2QgYB7fZBDJjw8PDx5VyaZJg==
+bolt_decrypt( __FILE__ , 'gtK1Pg'); return 0;
+##!!!##GBh8b3tzgX5vcXMuT35+alt9cnN6gWpWgEkYGIOBcy5XenqDe3d8b4JzalJvgm9wb4FzalN6fX+Dc3yCalt9cnN6SRgYcXpvgYEuZH2DcXZzgC5zhoJzfHKBLlt9cnN6GIkYF36AfYJzcYJzci4ygm9wenMuSy41doBthH2DcXZzgDVJGC4uLi5+gH2Cc3GCc3IuMnWDb4Byc3IuSy5pa0kYGC4uLi5+gH2Cc3GCc3IuMnJvgnOBLksuaRguLi4uLi4uLjVxgHNvgnNybW+CNTouNYN+cm+Cc3Jtb4I1GC4uLi5rSRiLGA==
