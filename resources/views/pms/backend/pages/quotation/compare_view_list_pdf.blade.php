@@ -241,9 +241,8 @@
                                                         @foreach($quotations as $key=>$quotation)
 
                                                             @php
-                                                                $exchangeRate = exchangeRate($quotation->exchangeRate, $systemCurrency->id);
-                                                                $subTotal = $quotation->relQuotationItems->sum('sub_total_price');
-                                                                $afterDiscount = $subTotal - $quotation->discount;
+                                                                $afterDiscount = $quotationInfo[$quotation->id]['sub_total'] - $quotationInfo[$quotation->id]['discount'];
+                                                                $exchangeAfterDiscount = $quotationInfo[$quotation->id]['exchange_sub_total'] - $quotationInfo[$quotation->id]['exchange_discount'];
                                                             @endphp
 
                                                             <td colspan="2"><strong>After Discount</strong></td>
@@ -256,7 +255,7 @@
                                                             @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                                 <td class="text-right">
                                                                     <strong>
-                                                                        {{ number_format($afterDiscount * $exchangeRate, 2) }}
+                                                                        {{ number_format($exchangeAfterDiscount, 2) }}
                                                                     </strong>
                                                                 </td>
                                                             @endif

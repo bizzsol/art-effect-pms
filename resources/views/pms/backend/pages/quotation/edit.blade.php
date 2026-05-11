@@ -257,12 +257,12 @@
                                         </td>
                                         <td>
                                             <input type="text" name="unit_price[{{$item->id}}]"
-                                                   required class="form-control text-right" min="0.0"
-                                                   step="any" value="{{ number_format($item->unit_price, 2) }}"
-                                                   id="unitPrice{{$item->id}}"
-                                                   placeholder="0.00"
-                                                   onkeyup="calculateSubtotal({{$item->id}})"
-                                                   onchange="calculateSubtotal({{$item->id}})">
+                                                required class="form-control text-right" min="0.0"
+                                                step="any" value="{{ systemDoubleValue($item->unit_price, 2) }}"
+                                                id="unitPrice{{$item->id}}"
+                                                placeholder="0.00"
+                                                onkeyup="calculateSubtotal({{$item->id}})"
+                                                onchange="calculateSubtotal({{$item->id}})">
                                         </td>
                                         <td>
                                             <input type="number"
@@ -400,7 +400,7 @@
                                             <strong>Discount Amount: </strong>
                                         </td>
                                         <td>
-                                            <input type="text" name="discount" class="form-control bg-white mask-money" step='any' id="discount" placeholder="0.00" value="{{ $quotation->discount }}">
+                                            <input type="text" name="discount" class="form-control bg-white mask-money" step='any' id="discount" placeholder="0.00" value="{{ systemDoubleValue($quotation->discount, 2) }}">
                                             <input type="hidden" id="sub_total_with_discount" name="sub_total_with_discount" min="0" placeholder="{{ $quotation->total_price-$quotation->discount }}" value="{{ $quotation->total_price-$quotation->discount }}">
 
                                             {{ Form::hidden('discount_percent', old('discount_percent')?old('discount_percent'):0, ['class'=>'form-control rounded', 'placeholder'=>'0%','min'=>'0','max'=>'100','step'=>'any','id'=>'discount_percent','oninput'=>"this.value = Math.abs(this.value)"]) }}
@@ -436,7 +436,7 @@
                                             <strong>VAT(%): </strong>
                                         </td>
                                         <td class="text-right">
-                                            <input type="text" step="0.01" name="vat" id="vat" value="{{ $vat_percentage }}" class="form-control mask-money" onkeyup="distributeVATPercentage()" onchange="distributeVATPercentage()">
+                                            <input type="text" step="0.01" name="vat" id="vat" value="{{ systemDoubleValue($vat_percentage, 2) }}" class="form-control mask-money" onkeyup="distributeVATPercentage()" onchange="distributeVATPercentage()">
                                         </td>
                                     </tr>
                                     <tr class="total-row">
@@ -481,8 +481,7 @@
                                         <input type="file" name="quotation_file" id="QuotationFile"
                                             class="btn btn-outline-primary" aria-label="Large"
                                             aria-describedby="inputGroup-sizing-sm" value="{{ $quotation->quotation_file}}"
-{{--                                            accept="application/pdf"--}}
-                                        >
+                                            {{--                                            accept="application/pdf"--}}>
                                     </div>
                                 </div>
                             </div>
@@ -495,8 +494,7 @@
                                             id="technicalSpecification"
                                             class="btn btn-outline-success" aria-label="Large"
                                             aria-describedby="inputGroup-sizing-sm" value="{{ $quotation->technical_specification_file }}"
-{{--                                            accept="application/pdf"--}}
-                                        >
+                                            {{--                                            accept="application/pdf"--}}>
                                     </div>
                                 </div>
                             </div>
@@ -661,7 +659,7 @@
         let discount = parseFloat($('#discount').val()) || 0;
         let subtotal = parseFloat($("#sumOfSubtoal").val()) || 0;
 
-        if (discount <= 0 || subtotal <= 0) return;
+        if (subtotal <= 0) return;
 
         let items = $(".calculateSumOfSubtotal");
         let distributedTotal = 0;

@@ -248,14 +248,15 @@
                                                     {{$key+1}}
                                                     <input type="hidden" name="product_id[]" value="{{$item->uid}}">
                                                     <input type="hidden" name="unit_price" id="unit_price"
-                                                           value="{{$item->unit_price}}">
+                                                           value="{{$item->unit_price}}" class="unit_price">
                                                     <input type="hidden" name="discount_percentage[{{ $item->id }}]"
                                                            id="discount_percentage" value="{{$item->discount}}"
-                                                           class="discount_percentage">
+                                                           class="discount_percentage"
+                                                           data-unit-discount="{{ $item->qty > 0 ? round($item->discount_amount / $item->qty, 8) : 0 }}">
                                                     <input type="hidden" name="vat_type[{{ $item->id }}]" id="vat_type"
-                                                           value="{{$item->vat_type}}">
+                                                           value="{{$item->vat_type}}" class="vat_type">
                                                     <input type="hidden" name="vat_percentage[{{ $item->id }}]"
-                                                           id="vat_percentage" value="{{$item->vat_percentage}}">
+                                                           id="vat_percentage" value="{{$item->vat_percentage}}" class="vat_percentage">
                                                 </td>
                                                 {{-- <td>{{isset($item->relProduct->category->name) ? $item->relProduct->category->name : ''}}</td> --}}
                                                 <td>
@@ -327,7 +328,8 @@
                                         <tr>
                                             <td colspan="6" class="text-right"><strong>Discount</strong></td>
                                             <td class="text-right">
-                                                <input type="number" step="any" min="0" value="0"
+                                                <input type="number" step="any" min="0"
+                                                       value="{{ $quotation->relQuotationItems->where('is_approved', 'approved')->sum('discount_amount') }}"
                                                        class="form-control text-right po-discount"
                                                        style="font-weight: bold;" onchange="distributeDiscount()"
                                                        onkeyup="distributeDiscount()">
@@ -493,12 +495,12 @@
                                     $('#po-' + item_id).parent().find('.view-data').html(po_qty);
                                 });
 
-                                checkPOQty();
+                                 checkPOQty(true);
                             }
                         });
                     } else {
                         $('.po-qty').val(0);
-                        checkPOQty();
+                        checkPOQty(true);
                     }
                 })
             }
@@ -525,19 +527,20 @@
                     });
                     $('#requisition_id').html(requisition).change();
                     $('.po-qty').val(0);
-                    checkPOQty();
+                    checkPOQty(true);
 
                     getCostCentres();
                 })
                 .fail(function () {
                     $('#requisition_id').html('').change();
-                    checkPOQty();
+                    checkPOQty(true);
 
                     getCostCentres();
                 });
         }
 
-        function checkPOQty() {
+        function checkPOQty(sync_discount = false) {
+            if (typeof sync_discount !== 'boolean') sync_discount = false;
             $.each($('.check-po-qty'), function (event) {
                 var po_qty = parseInt($(this).val());
                 var quotation_qty = parseInt($(this).parent().parent().find('.quotation-qty').text());
@@ -552,73 +555,15 @@
             });
 
 
-            calculatePayAmount();
+            calculatePayAmount(sync_discount);
         }
 
-        {{--function calculatePayAmount(show_discount = true) {--}}
-        {{--    var exchangeRate = parseFloat("{{ $exchangeRate }}");--}}
-        {{--    var sub_total = 0;--}}
-        {{--    var total_discount = 0;--}}
-        {{--    var total_discounted = 0;--}}
-        {{--    var total_vat = 0;--}}
-        {{--    var grand_total = 0;--}}
-        {{--    $.each($('.check-po-qty'), function (event) {--}}
-        {{--        var po_qty = parseFloat($(this).val());--}}
-        {{--        var unit_price = parseFloat($(this).parent().parent().find('#unit_price').val());--}}
-        {{--        var discount_percentage = parseFloat($(this).parent().parent().find('#discount_percentage').val());--}}
-        {{--        var vat_type = $(this).parent().parent().find('#vat_type').val();--}}
-        {{--        var vat_percentage = parseFloat($(this).parent().parent().find('#vat_percentage').val());--}}
-        {{--        var unit_total = (po_qty * unit_price);--}}
-        {{--        var discount = (discount_percentage > 0 & unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);--}}
-        {{--        var discounted = (unit_total - discount);--}}
+        $(document).ready(function() {
+            // Discount box is pre-populated from PHP; just refresh totals using that value
+            calculatePayAmount(false);
+        });
 
-        {{--        if (vat_type == 'inclusive') {--}}
-        {{--            var vat = parseFloat(vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);--}}
-        {{--            var total = discounted;--}}
-        {{--        } else if (vat_type == 'exclusive') {--}}
-        {{--            var vat = (vat_percentage > 0 & discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);--}}
-        {{--            var total = (discounted + vat);--}}
-        {{--        } else {--}}
-        {{--            var vat = 0;--}}
-        {{--            var total = discounted;--}}
-        {{--        }--}}
-
-        {{--        sub_total += unit_total;--}}
-        {{--        total_discount += discount;--}}
-        {{--        total_discounted += discounted;--}}
-        {{--        total_vat += vat;--}}
-        {{--        grand_total += total;--}}
-
-        {{--        $(this).parent().parent().find('.po-amount').html(parseFloat(unit_total).toFixed(2));--}}
-        {{--        // $(this).parent().parent().find('.po-amount-system-currency').html(parseFloat(discounted * exchangeRate).toFixed(2));--}}
-        {{--    });--}}
-
-        {{--    $('.po-sub-total').html(parseFloat(sub_total).toFixed(2));--}}
-        {{--    if (show_discount) {--}}
-        {{--        $('.po-discount').val(parseFloat(total_discount).toFixed(2));--}}
-        {{--    }--}}
-        {{--    $('.po-after-discount').html(parseFloat(total_discounted).toFixed(2));--}}
-        {{--    $('.po-vat-amount').html(parseFloat(total_vat).toFixed(2));--}}
-        {{--    $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));--}}
-
-        {{--    // $('.total-po-item-amount').html(parseFloat(sub_total).toFixed(2));--}}
-        {{--    // $('.total-po-item-amount-system-currency').html(parseFloat(sub_total * exchangeRate).toFixed(2));--}}
-        {{--    // $('.total-po-vat-amount').html(parseFloat(total_vat).toFixed(2));--}}
-        {{--    // $('.total-po-vat-amount-system-currency').html(parseFloat(total_vat * exchangeRate).toFixed(2));--}}
-        {{--    // $('.total-po-amount').html(parseFloat(grand_total).toFixed(2));--}}
-        {{--    // $('.total-po-amount-system-currency').html(parseFloat(grand_total * exchangeRate).toFixed(2));--}}
-        {{--}--}}
-
-        {{--function distributeDiscount() {--}}
-        {{--    var discount = parseFloat($('.po-discount').val());--}}
-        {{--    var sub_total = parseFloat($('.po-sub-total').text());--}}
-
-        {{--    var percentage = discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0;--}}
-        {{--    console.log(percentage);--}}
-
-        {{--    $('.discount_percentage').val(percentage);--}}
-        {{--    calculatePayAmount(false);--}}
-        {{--}--}}
+        
 
         function formatNumber(num) {
             return num.toLocaleString('en-US', {
@@ -628,60 +573,80 @@
         }
 
         function calculatePayAmount(show_discount = true) {
-            var exchangeRate = parseFloat("{{ $exchangeRate }}") || 1;
             var sub_total = 0;
-            var total_discount = 0;
-            var total_discounted = 0;
-            var total_vat = 0;
-            var grand_total = 0;
 
+            // First pass: calculate sub_total and update row amounts
             $('.check-po-qty').each(function () {
                 var po_qty = parseFloat($(this).val()) || 0;
-                var unit_price = parseFloat($(this).closest('tr').find('#unit_price').val()) || 0;
-                var discount_percentage = parseFloat($(this).closest('tr').find('#discount_percentage').val()) || 0;
-                var vat_type = $(this).closest('tr').find('#vat_type').val();
-                var vat_percentage = parseFloat($(this).closest('tr').find('#vat_percentage').val()) || 0;
-
+                var unit_price = parseFloat($(this).closest('tr').find('.unit_price').val()) || 0;
                 var unit_total = po_qty * unit_price;
-                var discount = (discount_percentage > 0 && unit_total > 0 ? (unit_total * (discount_percentage / 100)) : 0);
-                var discounted = unit_total - discount;
-
-                var vat = 0, total = discounted;
-                if (vat_type === 'inclusive') {
-                    vat = (vat_percentage > 0 && discounted > 0 ? ((discounted * vat_percentage) / (100 + vat_percentage)) : 0);
-                } else if (vat_type === 'exclusive') {
-                    vat = (vat_percentage > 0 && discounted > 0 ? (discounted * (vat_percentage / 100)) : 0);
-                    total = discounted + vat;
-                }
-
                 sub_total += unit_total;
-                total_discount += discount;
-                total_discounted += discounted;
-                total_vat += vat;
-                grand_total += total;
 
                 $(this).closest('tr').find('.po-amount')
                     .data('value', unit_total)
                     .html(formatNumber(unit_total));
             });
 
-            $('.po-sub-total').data('value', sub_total).html(formatNumber(sub_total));
+            var total_discount = 0;
+
             if (show_discount) {
-                $('.po-discount').val(total_discount.toFixed(2)); // keep input plain
+                // Use data-unit-discount (per-unit monetary discount from DB) × po_qty
+                // This matches exactly how the CS view computes discounts
+                $('.check-po-qty').each(function () {
+                    var po_qty = parseFloat($(this).val()) || 0;
+                    var unit_discount = parseFloat($(this).closest('tr').find('.discount_percentage').data('unit-discount')) || 0;
+                    total_discount += unit_discount * po_qty;
+                });
+                // Only write to discount box if we actually got a value
+                if (total_discount > 0) {
+                    $('.po-discount').val(total_discount.toFixed(2));
+                }
+            } else {
+                // User-edited value or PHP pre-populated value — read directly from box
+                total_discount = parseFloat($('.po-discount').val()) || 0;
             }
+
+            // Derive the proportional discount % to apply to each row
+            var global_discount_percentage = (sub_total > 0 ? (total_discount / sub_total) * 100 : 0);
+
+            var total_discounted = 0;
+            var total_vat = 0;
+            var grand_total = 0;
+
+            // Second pass: apply discount & VAT per row
+            $('.check-po-qty').each(function () {
+                var po_qty = parseFloat($(this).val()) || 0;
+                var unit_price = parseFloat($(this).closest('tr').find('.unit_price').val()) || 0;
+                var vat_type = $(this).closest('tr').find('.vat_type').val();
+                var vat_percentage = parseFloat($(this).closest('tr').find('.vat_percentage').val()) || 0;
+
+                var unit_total = po_qty * unit_price;
+                var item_discount = unit_total * (global_discount_percentage / 100);
+                var discounted = unit_total - item_discount;
+
+                var vat = 0, total = discounted;
+                if (vat_type === 'inclusive') {
+                    vat = (vat_percentage > 0 && discounted > 0 ? (discounted * vat_percentage) / (100 + vat_percentage) : 0);
+                } else if (vat_type === 'exclusive') {
+                    vat = (vat_percentage > 0 && discounted > 0 ? discounted * (vat_percentage / 100) : 0);
+                    total = discounted + vat;
+                }
+
+                total_discounted += discounted;
+                total_vat += vat;
+                grand_total += total;
+
+                // Store back the effective percentage for form submission
+                $(this).closest('tr').find('.discount_percentage').val(global_discount_percentage.toFixed(8));
+            });
+
+            $('.po-sub-total').data('value', sub_total).html(formatNumber(sub_total));
             $('.po-after-discount').data('value', total_discounted).html(formatNumber(total_discounted));
             $('.po-vat-amount').data('value', total_vat).html(formatNumber(total_vat));
             $('.total-po-amount').data('value', grand_total).html(formatNumber(grand_total));
         }
 
         function distributeDiscount() {
-            var discount = parseFloat($('.po-discount').val()) || 0;
-            var sub_total = parseFloat($('.po-sub-total').data('value')) || 0;
-
-            var percentage = (discount > 0 && sub_total > 0 ? (discount / sub_total) * 100 : 0);
-            console.log("Distributed discount %:", percentage);
-
-            $('.discount_percentage').val(percentage);
             calculatePayAmount(false);
         }
 

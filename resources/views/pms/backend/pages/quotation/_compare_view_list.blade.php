@@ -213,6 +213,7 @@
                                                                        data-exchange-rate="{{ exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}"
                                                                        data-unit-price="{{ isset($this_prices['unit_price']) ? $this_prices['unit_price'] : 0 }}"
                                                                        data-discount="{{ isset($this_prices['discount']) ? $this_prices['discount'] : 0 }}"
+                                                                       data-unit-discount="{{ isset($this_prices['discount_amount']) ? ($this_prices['qty'] > 0 ? $this_prices['discount_amount'] / $this_prices['qty'] : 0) : 0 }}"
                                                                        data-vat-percentage="{{ isset($this_prices['vat_percentage']) ? $this_prices['vat_percentage'] : 0 }}"
                                                                        min="0" max="{{ $item->qty }}"
                                                                        onchange="checkQuantity($(this))"
@@ -296,7 +297,7 @@
 
                                                         @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
                                                             <td class="text-right">
-                                                                <strong>
+                                                                <strong id="total-exchange-after-discount-{{ $quotation->id }}">
                                                                     {{ number_format($afterDiscount * $exchangeRate, 2) }}
                                                                 </strong>
                                                             </td>
@@ -630,10 +631,12 @@
 
             var unit_price = parseFloat(element.attr('data-unit-price'));
             var exchange_rate = parseFloat(element.attr('data-exchange-rate'));
-            var discount = parseFloat(element.attr('data-discount'));
+            var unit_discount = parseFloat(element.attr('data-unit-discount'));
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
+            var vat_type = $('.vat-type-' + parseInt(element.attr('data-quotation-id'))).first().text().trim().toLowerCase();
+            var quantity = parseFloat(element.val() || 0);
 
-            var sub_total = unit_price * parseFloat(element.val() > 0 ? element.val() : element.attr('max'));
+            var sub_total = unit_price * quantity;
             element.parent().parent()
                 .find('.sub-total-price-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(sub_total));
@@ -643,13 +646,21 @@
                 .find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(exchange_sub_total));
 
-            var discount_amount = (sub_total > 0 && discount > 0 ? sub_total * (discount / 100) : 0);
+            var discount_amount = unit_discount * quantity;
             var exchange_discount_amount = discount_amount * exchange_rate;
             element.parent().find('.this-discount-amount').html(systemMoneyFormat(discount_amount));
             element.parent().find('.this-exchange-discount-amount').html(systemMoneyFormat(exchange_discount_amount));
 
             var after_discount = sub_total - discount_amount;
-            var vat_amount = (after_discount > 0 && vat_percentage > 0 ? after_discount * (vat_percentage / 100) : 0);
+            var vat_amount = 0;
+            if (after_discount > 0 && vat_percentage > 0) {
+                if (vat_type === 'inclusive') {
+                    vat_amount = after_discount * (vat_percentage / (100 + vat_percentage));
+                } else if (vat_type === 'exclusive') {
+                    vat_amount = after_discount * (vat_percentage / 100);
+                }
+            }
+            
             var exchange_vat_amount = vat_amount * exchange_rate;
             element.parent().find('.this-vat-amount').html(systemMoneyFormat(vat_amount));
             element.parent().find('.this-exchange-vat-amount').html(systemMoneyFormat(exchange_vat_amount));
@@ -678,7 +689,7 @@
             var exclusive_vat = 0;
             $.each($('.vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_vat += parseFloat($(this).text().split(",").join(""));
-                if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
+                if (vat_type === 'exclusive') {
                     exclusive_vat += parseFloat($(this).text().split(",").join(""));
                 }
             });
@@ -687,7 +698,7 @@
             var exchange_exclusive_vat = 0;
             $.each($('.exchange-vat-amount-' + parseInt(element.attr('data-quotation-id'))), function (index, val) {
                 total_exchange_vat += parseFloat($(this).text().split(",").join(""));
-                if ($('.vat-type-' + parseInt(element.attr('data-quotation-id'))).text() == 'exclusive') {
+                if (vat_type === 'exclusive') {
                     exchange_exclusive_vat += parseFloat($(this).text().split(",").join(""));
                 }
             });
@@ -706,6 +717,11 @@
                 .html(systemMoneyFormat(total_vat));
             $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(total_exchange_vat));
+
+            $('#total-after-discount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_sub_total - total_discount));
+            $('#total-exchange-after-discount-' + parseInt(element.attr('data-quotation-id')))
+                .html(systemMoneyFormat(total_exchange_sub_total - total_exchange_discount));
 
             $('#total-gross-amount-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(total_sub_total - total_discount + exclusive_vat));
