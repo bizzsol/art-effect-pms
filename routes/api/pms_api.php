@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'cRPGOV'); return 0;
-##!!!##EftDYGZlVisrWGNgZmEZTBhhY1ZXWmkYES4vERhhXmQYHRhfUl5WZGFSVFYYES4vERhBXmQYTh0RV2ZfVGVaYF8ZGmz7+kNgZmVWKytYVmUZGFJUVGBmX2VkIGRmYWFdWlZjHl1WVVhWY2QYHRgyQTpNRGZhYV1aVmM9VlVYVmM0YF9lY2BdXVZjMWRmYWFdWlZjPVZVWFZjZBgaLPtuGiz7+/v7
+bolt_decrypt( __FILE__ , 'vaiGfu'); return 0;
+##!!!##gmy00dfWx5ycydTR19KKvYnS1MfIy9qJgp+ggonSz9WJjonQw8/H1dLDxceJgp+ggomyz9WJv46CyNfQxdbL0dCKi91sa7TR19bHnJzJx9aKicPFxdHX0NbVkdXX0tLOy8fUj87HxsnH1NWJjomjsqu+tdfS0s7Lx9Sux8bJx9Sl0dDW1NHOzsfUotXX0tLOy8fUrsfGycfU1YmLnWzfi51sbGxs
