@@ -1,10 +1,5 @@
-@php
-    $directPurchase = ($purchaseOrder->relQuotation->type == "direct-purchase" ? true : false);
-    $corporateAddress = \App\Models\PmsModels\SupplierAddress::where(['supplier_id' => isset($purchaseOrder->relQuotation->relSuppliers->id) ? $purchaseOrder->relQuotation->relSuppliers->id : 0, 'type' => 'corporate'])->first();
-    $factoryAddress = \App\Models\PmsModels\SupplierAddress::where(['supplier_id' => isset($purchaseOrder->relQuotation->relSuppliers->id) ? $purchaseOrder->relQuotation->relSuppliers->id : 0, 'type' => 'factory'])->first();
-    $contactPersonSales = \App\Models\PmsModels\SupplierContactPerson::where(['supplier_id' => isset($purchaseOrder->relQuotation->relSuppliers->id) ? $purchaseOrder->relQuotation->relSuppliers->id : 0, 'type' => 'sales'])->first();
-@endphp
-        <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -265,6 +260,7 @@
         <thead>
         <tr class="text-center">
             <td style="text-align:  center;width: 5% !important"><strong>SL</strong></td>
+
             <td style="text-align:  center;width: 16% !important"><strong>Product</strong></td>
 
             <td style="text-align:  center;width: 21% !important"><strong>Description</strong></td>
@@ -285,8 +281,11 @@
             <tr>
                 <td class="text-center">{{ $key+1}}</td>
                 <td class="text-center">
+                    @if($companyCode!==null && $companyCode=='CGL')
+                    <small><strong>Category:</strong> {{ isset($item->relProduct->category->name) ? $item->relProduct->category->name : '' }} | </small>
+                    @endif
+                    <br>
                     {{ isset($item->relProduct->name) ? $item->relProduct->name : '' }}
-                    {{--                    {{ getProductAttributesFaster($item->relProduct) }} {{ getProductAttributesFaster($requisitionItems->where('uid', $item->uid)->first()) }}--}}
                 </td>
 
                 <td style="text-align: center">{{ $purchaseOrder->relQuotation->relQuotationItems->where('uid', $item->uid)->first()->description }}</td>
