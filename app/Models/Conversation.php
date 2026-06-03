@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'EcraMx'); return 0;
-##!!!##Skquoa2ls7Cho6VggbCwnI2vpKWss3tKSrWzpWCJrKy1ramuobSlnIShtKGiobOlnIWsr7G1pa60nI2vpKWse0pKo6yhs7Ngg6+utqWys6G0qa+uYKW4tKWupLNgja+kpaxKu0pJsLKvtKWjtKWkYGS0oaKspWB9YGKjr662pbKzobSpr65ie0pgYGBgsLWirKmjYGS0qa2ls7ShrbCzYH1gpqGss6V7YEq9
+bolt_decrypt( __FILE__ , 'V3zDXY'); return 0;
+##!!!##AgJmWWVda2hZW10YOWhoVEVnXF1kazMCAm1rXRhBZGRtZWFmWWxdVDxZbFlaWWtdVD1kZ2ltXWZsVEVnXF1kMwICW2RZa2sYO2dmbl1qa1lsYWdmGF1wbF1mXGsYRWdcXWQCcwIBaGpnbF1bbF1cGBxsWVpkXRg1GBpbZ2ZuXWprWWxhZ2YaMwIYGBgYaG1aZGFbGBxsYWVda2xZZWhrGDUYXllka10zGAJ1
