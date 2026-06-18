@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'ZqamID'); return 0;
-##!!!##MDCUh5OLmZaHiYtGZ5aWgnOViouSmYJumGEwMJuZi0ZvkpKbk4+Uh5qLgmqHmoeIh5mLgmuSlZebi5SagnOViouSYTAwiZKHmZlGcouHnItnlpaSj4mHmo+VlEaLnpqLlIqZRnOViouSMKEwRkZGRpaYlZqLiZqLikZKmoeIkotGY0ZNjpiFkouHnIuFh5aWko+Jh5qPlZRNYTAwRkZGRpabiJKPiUZKmo+Ti5mah5OWmUZjRoyHkpmLYTCjMA==
+bolt_decrypt( __FILE__ , '18y0iF'); return 0;
+##!!!##y8svIi4mNDEiJCbhAjExHQ4wJSYtNB0JM/zLyzY0JuEKLS02LiovIjUmHQUiNSIjIjQmHQYtMDI2Ji81HQ4wJSYt/MvLJC0iNDThDSYiNyYCMTEtKiQiNSowL+EmOTUmLyU04Q4wJSYtyzzL4eHh4TEzMDUmJDUmJeHlNSIjLSbh/uHoKTMgLSYiNyYgIjExLSokIjUqMC/o/MvL4eHh4TE2Iy0qJOHlNSouJjQ1Ii4xNOH+4SciLTQm/Ms+yw==

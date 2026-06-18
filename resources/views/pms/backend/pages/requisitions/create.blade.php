@@ -67,10 +67,10 @@
                                     </div>
                                     <div class="col-md-2 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="hr_unit_id"><strong>Unit:<span
-                                                            class="text-danger">&nbsp;*</span></strong></label></p>
+                                                        class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <select name="hr_unit_id" id="hr_unit_id" class="form-control"
-                                                    onchange="getCostCentres()">
+                                                    onchange="getCostCentres(); getDepartments(this.value);">
                                                 @if(isset($units[0]))
                                                     @foreach($units as $unit)
                                                         <option value="{{ $unit->hr_unit_id }}">{{ $unit->hr_unit_short_name }}</option>
@@ -79,6 +79,18 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    @if(auth()->user()->approval_process_type === 'multi_unit')
+                                    <div class="col-md-2 col-sm-6">
+                                        <p class="mb-1 font-weight-bold"><label for="hr_department_id"><strong>Department:<span
+                                                        class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <select name="hr_department_id" id="hr_department_id" class="form-control">
+                                                <option value="">-- Select Department --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="col-md-2 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="saleable"><strong>Saleable ?<span
                                                             class="text-danger">&nbsp;*</span></strong></label></p>
@@ -888,6 +900,13 @@
         }
 
         getCostCentres();
+        // Department loads only when user picks a unit (onchange)
+        $(document).ready(function() {
+            var unitId = $('#hr_unit_id').val();
+            if (unitId) {
+                getDepartments(unitId);
+            }
+        });
 
         function getCostCentres() {
             $('#cost_centre_id').html('<option value="{{ null }}">Please wait...</option>');
@@ -899,6 +918,17 @@
                 .done(function (response) {
                     $('#cost_centre_id').html(response).select2();
                 });
+        }
+
+        function getDepartments(unitId) {
+            if (!unitId) return;
+            $('#hr_department_id').html('<option value="">Loading...</option>');
+            $.ajax({
+                url: "{{ url('pms/requisition/requisition/create') }}?get-departments&hr_unit_id=" + unitId,
+                type: 'GET',
+            }).done(function (response) {
+                $('#hr_department_id').html(response);
+            });
         }
     </script>
     <script>

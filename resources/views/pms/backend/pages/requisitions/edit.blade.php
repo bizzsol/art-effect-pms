@@ -69,7 +69,7 @@
                                                             class="text-danger">&nbsp;*</span></strong></label></p>
                                         <div class="input-group input-group-md mb-3 d-">
                                             <select name="hr_unit_id" id="hr_unit_id" class="form-control"
-                                                    onchange="getCostCentres()">
+                                                    onchange="getCostCentres(); getDepartments(this.value);">
                                                 @if($requisition->author_id == auth()->user()->id)
                                                     @if(isset($units[0]))
                                                         @foreach($units as $unit)
@@ -82,6 +82,26 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    @if(auth()->user()->approval_process_type === 'multi_unit')
+                                    <div class="col-md-2 col-sm-6">
+                                        <p class="mb-1 font-weight-bold"><label for="hr_department_id"><strong>Department:<span
+                                                            class="text-danger">&nbsp;*</span></strong></label></p>
+                                        <div class="input-group input-group-md mb-3 d-">
+                                            <select name="hr_department_id" id="hr_department_id" class="form-control">
+                                                <option value="">-- Select Department --</option>
+                                                @if(isset($departments) && $departments->isNotEmpty())
+                                                    @foreach($departments as $dept)
+                                                        <option value="{{ $dept->hr_department_id }}"
+                                                            {{ $requisition->hr_department_id == $dept->hr_department_id ? 'selected' : '' }}>
+                                                            {{ $dept->hr_department_name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="col-md-2 col-sm-6">
                                         <p class="mb-1 font-weight-bold"><label for="saleable"><strong>Saleable ?<span
                                                             class="text-danger">&nbsp;*</span></strong></label></p>
@@ -757,6 +777,7 @@
         }
 
         getCostCentres();
+        getDepartments($('#hr_unit_id').val(), '{{ $requisition->hr_department_id }}');
 
         function getCostCentres() {
             $('#cost_centre_id').html('<option value="{{ null }}">Please wait...</option>');
@@ -768,6 +789,20 @@
                 .done(function (response) {
                     $('#cost_centre_id').html(response).select2().val('{{ $requisition->cost_centre_id }}').trigger("change");
                 });
+        }
+
+        function getDepartments(unitId, selectedId) {
+            if (!unitId) return;
+            $('#hr_department_id').html('<option value="">Loading...</option>');
+            $.ajax({
+                url: "{{ url('pms/requisition/requisition/create') }}?get-departments&hr_unit_id=" + unitId,
+                type: 'GET',
+            }).done(function (response) {
+                $('#hr_department_id').html(response);
+                if (selectedId) {
+                    $('#hr_department_id').val(selectedId);
+                }
+            });
         }
     </script>
     <script>

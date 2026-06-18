@@ -18,7 +18,11 @@
                             {{isset($requisition->relUsersList->employee->department->hr_department_name)?$requisition->relUsersList->employee->department->hr_department_name:''}}
                         </li>
                         <li>
-                            <strong>Department Head:</strong> {{getDepartmentHeadName($requisition->author_id)}}
+                            <strong>Department Head:</strong> @if($requisition->creator->approval_process_type=='multi_unit')
+                                    {{ getDepartmentHeadNameByUnitDep($requisition->hr_unit_id, $requisition->hr_department_id) }}
+                                @else
+                                    {{ getDepartmentHeadName($requisition->author_id) }}
+                                @endif
                         </li>
                     </ul>
                 </div>
