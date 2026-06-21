@@ -354,7 +354,7 @@
                                                         <td
                                                                 colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <span><strong>
-                                                                    {{ $approvals->first()->user->name }}:
+                                                                    {{ $approvals->first()?->user?->name }}:
                                                                 </strong> {!! !empty($quotation->remarks) ? $quotation->remarks : 'No Remarks' !!}
                                                         </span>
                                                         </td>
@@ -390,7 +390,7 @@
                                                             <td class="text-center"
                                                                 style="width: 10%">{{ $approval->priority }}</td>
                                                             <td class="text-center"
-                                                                style="width: 15%">{{ $approval->user->name }}</td>
+                                                                style="width: 15%">{{ $approval->user?->name }}</td>
                                                             <td style="padding:0;width: 30%">
                                                                 @php
                                                                     $logs = $approval->logs ? json_decode($approval->logs, true) : [];

@@ -635,8 +635,10 @@
             var vat_percentage = parseFloat(element.attr('data-vat-percentage'));
             var vat_type = $('.vat-type-' + parseInt(element.attr('data-quotation-id'))).first().text().trim().toLowerCase();
             var quantity = parseFloat(element.val() || 0);
+            // when approved/recommended qty is 0, calculate price using full qty so management can still compare suppliers
+            var calc_qty = quantity > 0 ? quantity : max;
 
-            var sub_total = unit_price * quantity;
+            var sub_total = unit_price * calc_qty;
             element.parent().parent()
                 .find('.sub-total-price-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(sub_total));
@@ -646,7 +648,7 @@
                 .find('.exchange-sub-total-price-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(exchange_sub_total));
 
-            var discount_amount = unit_discount * quantity;
+            var discount_amount = unit_discount * calc_qty;
             var exchange_discount_amount = discount_amount * exchange_rate;
             element.parent().find('.this-discount-amount').html(systemMoneyFormat(discount_amount));
             element.parent().find('.this-exchange-discount-amount').html(systemMoneyFormat(exchange_discount_amount));

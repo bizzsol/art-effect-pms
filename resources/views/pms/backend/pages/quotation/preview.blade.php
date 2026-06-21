@@ -372,7 +372,7 @@
                                         <td class="text-center"
                                             style="width: 10%">{{ $approval->priority }}</td>
                                         <td class="text-center"
-                                            style="width: 15%">{{ $approval->user->name }}</td>
+                                            style="width: 15%">{{ $approval->user?->name }}</td>
                                         <td style="padding:0;width: 30%">
                                             @php
                                             $logs = $approval->logs ? json_decode($approval->logs, true) : [];

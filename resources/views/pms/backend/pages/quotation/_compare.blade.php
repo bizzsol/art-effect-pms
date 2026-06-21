@@ -513,8 +513,13 @@
         const discount = parseFloat(element.attr('data-discount')) || 0;
         const vat_percentage = parseFloat(element.attr('data-vat-percentage')) || 0;
 
+        // For price comparison: when the recommend/approved qty is 0,
+        // calculate the price using the item's full qty so management can still compare suppliers.
+        // (The submitted recommend value stays as-is; only the displayed price calc uses this.)
+        const calc_qty = value > 0 ? value : max;
+
         // subtotal
-        const sub_total = unit_price * value;
+        const sub_total = unit_price * calc_qty;
         element.closest('tr').find('.sub-total-price-' + quotationId)
             .data('value', sub_total)
             .html(formatNumber(sub_total));
@@ -527,7 +532,7 @@
 
         // discount + VAT
         const unit_discount = parseFloat(element.attr('data-unit-discount')) || 0;
-        const discount_amount = unit_discount * value;
+        const discount_amount = unit_discount * calc_qty;
         const exchange_discount_amount = discount_amount * exchange_rate;
 
         element.parent().find('.this-discount-amount')

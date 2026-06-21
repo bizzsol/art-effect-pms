@@ -17,7 +17,7 @@
         @endphp
         <tr>
             <td>{{ $key+1 }}</td>
-            <td>{{ $approval->user->name }}</td>
+            <td>{{ $approval->user?->name }}</td>
             <td>
                 <table class="table table-bordered">
                     <thead>

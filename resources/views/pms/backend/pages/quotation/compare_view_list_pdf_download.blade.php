@@ -490,7 +490,7 @@
                                     <td
                                             colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
                                                         <span><strong>
-                                                                    {{ $approvals->first()->user->name }}:
+                                                                    {{ $approvals->first()?->user?->name }}:
                                                                 </strong> {!! !empty($quotation->remarks) ? $quotation->remarks : 'No Remarks' !!}
                                                         </span>
                                     </td>
@@ -551,7 +551,7 @@
                             @foreach($quotations->first()->relRequestProposal->approvals as $approval)
                                 <tr>
                                     <td class="text-center">{{ $approval->priority }}</td>
-                                    <td>{{ $approval->user->name }}</td>
+                                    <td>{{ $approval->user?->name }}</td>
                                     <td>
                                         @php
                                             $logs = $approval->logs ? json_decode($approval->logs, true) : [];
