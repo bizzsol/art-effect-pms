@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , 'LnQxg5'); return 0;
+bolt_decrypt( __FILE__ , 'bCuvIF'); return 0;
 ##!!!##KSmNgIyEko+AgoQ/YI+Pe2yOg4SLkntnkVopKZSShD9oi4uUjIiNgJOEe2OAk4CBgJKEe2SLjpCUhI2Te2yOg4SLWikpgouAkpI/bpOHhJFhhI2EhYiTYJKSiIaNP4SXk4SNg5I/bI6DhIspmik/Pz8/j5GOk4SCk4SDP0OTgIGLhD9cP0GHkX6Ok4eEkX6BhI2EhYiTfoCSkoiGjUFaKSk/Pz8/j5SBi4iCP0OTiIyEkpOAjI+SP1w/hYCLkoRaKZwp
