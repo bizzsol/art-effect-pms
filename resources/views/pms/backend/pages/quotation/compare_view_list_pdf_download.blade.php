@@ -34,7 +34,7 @@
         }
 
         table,
-        td {
+        /* td {
             padding-top: 1px !important;
             padding-bottom: 1px !important;
             padding-left: 7px !important;
@@ -89,15 +89,15 @@
 
         .table-bordered tr th:last-child {
             border-right: 0;
-        }
+        } */
 
         .mt-0 {
             margin-top: 0;
         }
 
-        .mb-0 {
+        /* .mb-0 {
             margin-bottom: 0;
-        }
+        } */
 
         .image-space {
             white-space: wrap !important;
@@ -424,12 +424,12 @@
                                         @endif
                                             VAT ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }})</strong></td>
                                 <td class="text-right">
-                                    <strong>{{ number_format($quotationInfo[$quotation->id]['vat'], 2) }}</strong>
+                                    <strong>{{ number_format($quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotationInfo[$quotation->id]['vat'], 2) }}</strong>
                                 </td>
                                 @if($systemCurrency->code != ($quotation->exchangeRate ?
                                 $quotation->exchangeRate->currency->code : ''))
                                 <td class="text-right">
-                                    <strong>{{ number_format($quotationInfo[$quotation->id]['exchange_vat'], 2) }}</strong>
+                                    <strong>{{ number_format($quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotationInfo[$quotation->id]['exchange_vat'], 2) }}</strong>
                                 </td>
                                 @endif
                                 @endforeach

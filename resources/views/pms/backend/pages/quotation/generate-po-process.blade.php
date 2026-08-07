@@ -612,6 +612,7 @@
             var total_discounted = 0;
             var total_vat = 0;
             var grand_total = 0;
+            var display_vat_type = null;
 
             // Second pass: apply discount & VAT per row
             $('.check-po-qty').each(function () {
@@ -619,6 +620,10 @@
                 var unit_price = parseFloat($(this).closest('tr').find('.unit_price').val()) || 0;
                 var vat_type = $(this).closest('tr').find('.vat_type').val();
                 var vat_percentage = parseFloat($(this).closest('tr').find('.vat_percentage').val()) || 0;
+
+                if (display_vat_type === null) {
+                    display_vat_type = vat_type;
+                }
 
                 var unit_total = po_qty * unit_price;
                 var item_discount = unit_total * (global_discount_percentage / 100);
@@ -642,7 +647,7 @@
 
             $('.po-sub-total').data('value', sub_total).html(formatNumber(sub_total));
             $('.po-after-discount').data('value', total_discounted).html(formatNumber(total_discounted));
-            $('.po-vat-amount').data('value', total_vat).html(formatNumber(total_vat));
+            $('.po-vat-amount').data('value', total_vat).html(formatNumber(display_vat_type === 'inclusive' ? 0 : total_vat));
             $('.total-po-amount').data('value', grand_total).html(formatNumber(grand_total));
         }
 

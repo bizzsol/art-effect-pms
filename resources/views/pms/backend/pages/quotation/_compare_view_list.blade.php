@@ -319,11 +319,11 @@
                                                             ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
                                                             )</strong></td>
                                                     <td class="text-right"><strong
-                                                                id="total-vat-amount-{{ $quotation->id }}">{{$quotation->vat}}</strong>
+                                                                id="total-vat-amount-{{ $quotation->id }}">{{ $quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotation->vat }}</strong>
                                                     </td>
                                                     @if($systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : ''))
                                                         <td class="text-right">
-                                                            <strong id="total-exchange-vat-amount-{{ $quotation->id }}">{{$quotation->vat*exchangeRate($quotation->exchangeRate, $systemCurrency->id)}}</strong>
+                                                            <strong id="total-exchange-vat-amount-{{ $quotation->id }}">{{ $quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotation->vat*exchangeRate($quotation->exchangeRate, $systemCurrency->id) }}</strong>
                                                         </td>
                                                     @endif
                                                 @endforeach
@@ -716,9 +716,9 @@
                 .html(systemMoneyFormat(total_exchange_discount));
 
             $('#total-vat-amount-' + parseInt(element.attr('data-quotation-id')))
-                .html(systemMoneyFormat(total_vat));
+                .html(systemMoneyFormat(vat_type === 'inclusive' ? 0 : total_vat));
             $('#total-exchange-vat-amount-' + parseInt(element.attr('data-quotation-id')))
-                .html(systemMoneyFormat(total_exchange_vat));
+                .html(systemMoneyFormat(vat_type === 'inclusive' ? 0 : total_exchange_vat));
 
             $('#total-after-discount-' + parseInt(element.attr('data-quotation-id')))
                 .html(systemMoneyFormat(total_sub_total - total_discount));

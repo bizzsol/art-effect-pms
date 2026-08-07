@@ -120,7 +120,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="text-right">(+) Vat </td>
-                                        <td class="text-right">{{number_format($quotation->vat,2)}}</td>
+                                        <td class="text-right">{{number_format($quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotation->vat, 2)}}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="text-right"><strong>Total Amount</strong></td>

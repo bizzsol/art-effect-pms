@@ -276,12 +276,12 @@
                                                                 ({{ ucwords($quotation->relQuotationItems->first()->vat_type) }}{{ $quotation->relQuotationItems->first()->vat_type != 'exempted' ? ', '.$quotation->relQuotationItems->first()->vat_percentage.'%' : '' }}
                                                                 )</strong></td>
                                                         <td class="text-right">
-                                                            <strong>{{ number_format($quotationInfo[$quotation->id]['vat'], 2) }}</strong>
+                                                            <strong>{{ number_format($quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotationInfo[$quotation->id]['vat'], 2) }}</strong>
                                                         </td>
                                                         @if($systemCurrency->code != ($quotation->exchangeRate ?
                                                         $quotation->exchangeRate->currency->code : ''))
                                                             <td class="text-right">
-                                                                <strong>{{ number_format($quotationInfo[$quotation->id]['exchange_vat'], 2) }}</strong>
+                                                                <strong>{{ number_format($quotation->relQuotationItems->first()->vat_type === 'inclusive' ? 0 : $quotationInfo[$quotation->id]['exchange_vat'], 2) }}</strong>
                                                             </td>
                                                         @endif
                                                     @endforeach

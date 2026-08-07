@@ -149,13 +149,10 @@
                                                 ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
                                                 )
                                             </th>
-                                            <th class="text-center">Item Total
-                                                ({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }}
-                                                )
+                                            <th class="text-center">Item Total({{ $quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '' }})
                                             </th>
                                             @if($systemCurrency->id != ($quotation->exchangeRate ? $quotation->exchangeRate->currency_id : ''))
-                                            <th class="text-center">Item Total
-                                                ({{ $systemCurrency->code }})
+                                            <th class="text-center">Item Total({{ $systemCurrency->code }})
                                             </th>
                                             @endif
                                             @endforeach
