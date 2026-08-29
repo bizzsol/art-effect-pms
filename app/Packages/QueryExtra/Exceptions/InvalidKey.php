@@ -1,3 +1,3 @@
 <?php
-bolt_decrypt( __FILE__ , '3mdZ3n'); return 0;
+bolt_decrypt( __FILE__ , 'YoTLDS'); return 0;
 ##!!!##CQltYGxkcm9gYmQfQG9vW09gYmpgZmRyW1B0ZHF4RHdzcWBbRHdiZG9zaG5tcjoJCXRyZB9Ed2Jkb3Nobm06CQlia2Bych9IbXVga2hjSmR4H2R3c2RtY3IfRHdiZG9zaG5tCXoJHx8fHy4pKQkfHx8fHykfUWRvbnFzH3NnZB9kd2Jkb3Nobm0tCR8fHx8fKQkfHx8fHykfP3Fkc3RxbR91bmhjCR8fHx8fKS4JHx8fH290YWtoYh9ldG1ic2hubR9xZG9ucXMnKAkfHx8fegkfHx8ffAl8

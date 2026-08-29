@@ -388,6 +388,56 @@
                                     </table>
                                 </div>
                             </div>
+
+                            @if(isset($approvals) && count($approvals))
+                            <div class="panel panel-info">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Approval History</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 25%">Approver</th>
+                                                    <th style="width: 15%">Response</th>
+                                                    <th style="width: 60%">Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $supplierNames = $quotations->pluck('relSuppliers.name', 'id');
+                                                @endphp
+                                                @foreach($approvals as $approval)
+                                                @php $approvalRemarks = $approval->remarks_list; @endphp
+                                                <tr>
+                                                    <td>{{ optional($approval->user)->name ?? 'Unknown User' }}</td>
+                                                    <td class="{{ $approval->response == 'denied' ? 'text-danger' : 'text-success' }}">
+                                                        {{ ucfirst($approval->response == 'denied' ? 'rejected' : $approval->response) }}
+                                                    </td>
+                                                    <td>
+                                                        @if($approvalRemarks['note'] !== '')
+                                                            <div>{{ $approvalRemarks['note'] }}</div>
+                                                        @endif
+                                                        @foreach($approvalRemarks['quotations'] as $quotationId => $remark)
+                                                            <div>
+                                                                <strong>{{ $supplierNames[$quotationId] ?? 'Supplier #'.$quotationId }}:</strong>
+                                                                {{ $remark }}
+                                                            </div>
+                                                        @endforeach
+                                                        @if($approvalRemarks['note'] === '' && count($approvalRemarks['quotations']) == 0)
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
                             <div class="panel panel-info">
                                 <div class="row">
                                     <div class="col-md-12">

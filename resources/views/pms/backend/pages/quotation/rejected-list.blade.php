@@ -69,5 +69,29 @@
         $('#requisitionDetailModal').find('.modal-title').html(`Proposal Details`);
         $('#requisitionDetailModal').modal('show');
     }
+
+    function reopenCs(link) {
+        swal({
+            title: "Reopen this CS ?",
+            text: "The CS goes back to the compare screen so you can revise it. Approvers who already approved keep their approval, and on resend it returns to the approver who rejected it.",
+            icon: "warning",
+            dangerMode: true,
+            buttons: {
+                cancel: true,
+                confirm: {
+                    text: "Reopen",
+                    value: true,
+                    visible: true,
+                    closeModal: true
+                },
+            },
+        }).then((value) => {
+            if (value) {
+                var form = $('<form>', {method: 'POST', action: link});
+                form.append($('<input>', {type: 'hidden', name: '_token', value: '{{ csrf_token() }}'}));
+                form.appendTo('body').submit();
+            }
+        });
+    }
 </script>
 @endsection

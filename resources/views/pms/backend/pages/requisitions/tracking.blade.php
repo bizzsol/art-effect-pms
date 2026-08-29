@@ -92,12 +92,9 @@
 			@forelse ($histories as $index => $history)
 			<tr>
 				<td>{{ $index + 1 }}</td>
-				{{-- <td>{{ stage($history->stage) }}</td>--}}
-				{{-- new way to find stage--}}
-				@php
-				$stageRecord = stageFinder($history->requisition_id, $history->stage);
-				@endphp
-				<td>{{ $stageRecord ? stage($stageRecord->stage) : 'Unknown Stage' }}</td>
+				{{-- The row already carries its own stage; looking it up again returned the latest
+				     record of that stage, which is the wrong one when a stage repeats. --}}
+				<td>{{ stage($history->stage) ?: 'Unknown Stage' }}</td>
 				<td>{{ ucwords($history->note) }}</td>
 				<td>{{ \Carbon\Carbon::parse($history->stage_updated_at)->format('d F Y, h.i A') }}</td>
 				<td>{{ $history->createdBy->name ?? 'System' }}</td>

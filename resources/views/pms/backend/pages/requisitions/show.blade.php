@@ -5,7 +5,7 @@
                 <div class="well col-6">
                     <ul class="list-unstyled mb0">
                         <li>
-                            <strong>Name:</strong> {{ isset($requisition->relUsersList->name) ? $requisition->relUsersList->name : '' }}
+                            <strong>Name:</strong> {{ isset($requisition->relUsersList->name) ? $requisition->relUsersList->name . '[' . $requisition->relUsersList->associate_id . ']' : '' }}
                         </li>
 
                         <li>
@@ -51,7 +51,7 @@
                         <li><strong>Saleable:</strong> {{ ucwords($requisition->saleable) }}</li>
                         <li><strong>Assigned To (For Finance Approval):</strong> {{ ucwords
                         ($requisition->assignedFinanceUser->name?? '')
-                        }}</li>
+                        }} [{{ $requisition->assignedFinanceUser->associate_id ?? '' }}]</li>
                     </ul>
                 </div>
             </div>

@@ -399,18 +399,6 @@
                                             {{--                                               --}}
                                             {{--                                            </tr>--}}
 
-                                            {{--                                            new column for old approval--}}
-                                            {{--                                            @foreach($approvals as $approval)--}}
-                                            {{--                                                <tr>--}}
-                                            {{--                                                    <td colspan="7" class="text-right">--}}
-                                            {{--                                                        {{ $approval->user->name ?? 'Unknown User' }}--}}
-                                            {{--                                                        ({{ ucfirst($approval->response) }})--}}
-                                            {{--                                                    </td>--}}
-                                            {{--                                                    <td colspan="{{ count($quotations)*3}}">--}}
-                                            {{--                                                        {{ $approval->quotation->remarks ?? '-' }}--}}
-                                            {{--                                                    </td>--}}
-                                            {{--                                                </tr>--}}
-                                            {{--                                            @endforeach--}}
                                             @php
                                                 $hasRemarks = $quotations->contains(function ($q) {
                                                     return !empty($q->remarks);
@@ -430,6 +418,23 @@
                                                         </td>
                                                     @endforeach
                                                 </tr>
+                                            @endif
+
+                                            {{-- Supplier wise remarks are listed in "Previous Remarks" above,
+                                                 so a rejection only adds its one overall note here. --}}
+                                            @if(isset($approvals))
+                                                @foreach($approvals->where('response', 'denied') as $approval)
+                                                    @if($approval->remarks_list['note'] !== '')
+                                                        <tr class="custom-tr">
+                                                            <td colspan="6" class="text-right text-danger">
+                                                                Rejected by {{ optional($approval->user)->name ?? 'Unknown User' }}
+                                                            </td>
+                                                            <td colspan="{{ count($quotations)*3 }}">
+                                                                {{ $approval->remarks_list['note'] }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             @endif
 
 
@@ -468,8 +473,7 @@
                                     <button type="submit" class="btn btn-success cs-button"><i class="la la-check"></i>&nbsp;Approve
                                     </button>
 
-                                    <a type="button" class="btn btn-danger"
-                                       onclick="rejectAllQuotation('{{route('pms.quotation.quotations.reject.all',$requestProposalId)}}?type={{ request()->get('type') }}')"><i
+                                    <a type="button" class="btn btn-danger" onclick="openRejectModal()"><i
                                                 class="la la-ban"></i>&nbsp;Reject</a>
 
                                     @if(request()->get('type')=='direct-purchase')
@@ -491,10 +495,56 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="csRejectModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Reject this CS</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form action="{{ route('pms.quotation.quotations.reject.all', $requestProposalId) }}?type={{ request()->get('type') }}"
+                      method="POST" id="csRejectForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="reject_note">Reason for rejection <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="reject_note" id="reject_note" rows="4" required
+                                      placeholder="Tell the purchase team what has to be corrected before resubmission"></textarea>
+                        </div>
+                        <p class="text-muted mb-0">
+                            <small>Any supplier-wise remarks you typed on the CS sheet are submitted along with this
+                                reason and stay visible on the CS after it is reopened.</small>
+                        </p>
+                        <div id="csRejectRemarks"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger"><i class="la la-ban"></i>&nbsp;Reject All</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('page-script')
     <script type="text/javascript">
+        function openRejectModal() {
+            //Carry the supplier-wise remarks typed on the CS sheet into the reject request,
+            //otherwise they are lost the moment we leave this page.
+            var holder = $('#csRejectRemarks').empty();
+            $('.cs-from').find('textarea[name^="remarks["]').each(function () {
+                var value = $(this).val();
+                if ($.trim(value) !== '') {
+                    holder.append($('<input>', {type: 'hidden', name: $(this).attr('name'), value: value}));
+                }
+            });
+
+            $('#csRejectModal').modal('show');
+        }
+
         function rejectAllQuotation(link) {
             swal({
                 title: "Are you sure ?",
