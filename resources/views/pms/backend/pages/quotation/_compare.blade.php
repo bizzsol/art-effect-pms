@@ -695,7 +695,9 @@
     newApprover();
 
     function newApprover() {
-        var approvers = '';
+        //On a reopened CS, adding a new approver is optional (the rejecting approver is already
+        //re-queued server-side), so don't force-select the first one in the list.
+        var approvers = <?php echo json_encode((isset($approvals) && count($approvals) > 0) ? '<option value="">Choose one</option>' : ''); ?>;
         $.each(<?php echo json_encode($approvers); ?>, function(index, approver) {
             approvers += '<option value="' + approver.id + '">' + approver.name + '</option>';
         });
