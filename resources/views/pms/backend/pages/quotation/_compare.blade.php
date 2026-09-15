@@ -441,6 +441,12 @@
                             <div class="panel panel-info">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if(isset($approvals) && count($approvals))
+                                        <p class="text-muted" style="margin: 10px 15px 0;">
+                                            <i class="las la-info-circle"></i>
+                                            Optional &mdash; this CS already has an approval chain. Choose an approver only if you want to override it; otherwise it will go to the default approval chain.
+                                        </p>
+                                        @endif
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -692,7 +698,13 @@
         });
     }
 
-    newApprover();
+    //Auto-add one approver row only when there's no existing approval chain yet (a fresh CS,
+    //where choosing an approver is mandatory). A reopened CS already has one, so it starts
+    //empty since picking an approver there is optional.
+    var hasApprovalHistory = <?php echo (isset($approvals) && count($approvals)) ? 'true' : 'false'; ?>;
+    if (!hasApprovalHistory) {
+        newApprover();
+    }
 
     function newApprover() {
         //On a reopened CS, adding a new approver is optional (the rejecting approver is already
