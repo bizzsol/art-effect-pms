@@ -487,11 +487,19 @@
                                 @endphp
                                 <td colspan="5" class="text-right">Approver Remarks</td>
                                 @foreach($quotations as $key => $quotation)
+                                    @php
+                                    $remarkApproval = $approvals->first(function ($approval) use ($quotation) {
+                                        return !empty($approval->remarks_list['quotations'][$quotation->id] ?? null);
+                                    });
+                                    $remarkText = $remarkApproval ? $remarkApproval->remarks_list['quotations'][$quotation->id] : null;
+                                    @endphp
                                     <td
                                             colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
-                                                        <span><strong>
-                                                                    {{ $approvals->first()?->user?->name }}:
-                                                                </strong> {!! !empty($quotation->remarks) ? $quotation->remarks : 'No Remarks' !!}
+                                                        <span>
+                                                                @if($remarkApproval && isset($remarkApproval->user->name))
+                                                                <strong>{{ $remarkApproval->user->name }}:</strong>
+                                                                @endif
+                                                                {!! $remarkText !!}
                                                         </span>
                                     </td>
                                 @endforeach
@@ -555,6 +563,7 @@
                                     <td>
                                         @php
                                             $logs = $approval->logs ? json_decode($approval->logs, true) : [];
+                                            $approvalRemarks = $approval->remarks_list;
                                         @endphp
 
                                         @if(count($logs))
@@ -574,10 +583,11 @@
                                                         // Get supplier name from quotations collection
                                                         $supplierName = $quotations->where('id', $log['id'])->first()->relSuppliers->name ?? 'N/A';
                                                         $approvedQty = collect($log['rel_quotation_items'] ?? [])->sum('approved_qty');
+                                                        $logRemark = $approvalRemarks['quotations'][$log['id']] ?? null;
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $log['reference_no'] }}</td>
-                                                        <td>{{ $log['remarks'] ?? '' }}</td>
+                                                        <td>{{ $logRemark ?: '' }}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

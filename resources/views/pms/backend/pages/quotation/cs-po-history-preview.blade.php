@@ -324,11 +324,19 @@
                                             @endphp
                                             <td colspan="5" class="text-right">Approver Remarks</td>
                                             @foreach($quotations as $key => $quotation)
+                                                @php
+                                                $remarkApproval = $approvals->first(function ($approval) use ($quotation) {
+                                                    return !empty($approval->remarks_list['quotations'][$quotation->id] ?? null);
+                                                });
+                                                $remarkText = $remarkApproval ? $remarkApproval->remarks_list['quotations'][$quotation->id] : null;
+                                                @endphp
                                                 <td
                                                         colspan="{{ $systemCurrency->code != ($quotation->exchangeRate ? $quotation->exchangeRate->currency->code : '') ? 4 : 3 }}">
-                                                        <span><strong>
-                                                                    {{ $approvals->first()?->user?->name }}:
-                                                                </strong> {!! !empty($quotation->remarks) ? $quotation->remarks : 'No Remarks' !!}
+                                                        <span>
+                                                                @if($remarkApproval && isset($remarkApproval->user->name))
+                                                                <strong>{{ $remarkApproval->user->name }}:</strong>
+                                                                @endif
+                                                                {!! $remarkText !!}
                                                         </span>
                                                 </td>
                                             @endforeach
@@ -367,6 +375,7 @@
                                                     <td style="padding:0;width: 30%">
                                                         @php
                                                             $logs = $approval->logs ? json_decode($approval->logs, true) : [];
+                                                            $approvalRemarks = $approval->remarks_list;
                                                         @endphp
 
                                                         @if(count($logs))
@@ -386,12 +395,13 @@
                                                                     @php
                                                                         $supplierName = $quotations->where('id', $log['id'])->first()->relSuppliers->name ?? 'N/A';
                                                                         $approvedQty = collect($log['rel_quotation_items'] ?? [])->sum('approved_qty');
+                                                                        $logRemark = $approvalRemarks['quotations'][$log['id']] ?? null;
                                                                     @endphp
                                                                     <tr>
                                                                         <td class="text-center"
                                                                             style="width: 10%">{{ $log['reference_no'] }}</td>
                                                                         <td class="text-left"
-                                                                            style="width: 10%">{{ $log['remarks'] ?? 'No Remarks' }}</td>
+                                                                            style="width: 10%">{{ $logRemark ?: 'No Remarks' }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                                 </tbody>
