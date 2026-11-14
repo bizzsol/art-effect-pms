@@ -142,7 +142,7 @@
                                         <div class="col-md-12">
                                             <p class="mb-1 font-weight-bold"><label for="unit_price"><strong>{{ __('Unit Price') }}<span class="text-danger">&nbsp;*</span></strong></label> {!! $errors->has('unit_price')? '<span class="text-danger text-capitalize">'. $errors->first('unit_price').'</span>':'' !!}</p>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <input type="text" name="unit_price" id="unit_price" class="form-control rounded mask-money" aria-label="Large" placeholder="{{__('Item unit price')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ old('unit_price', systemDoubleValue($product->unit_price, 2)) }}" >
+                                                <input type="number" name="unit_price" id="unit_price" class="form-control rounded text-right" step="0.01" min="0" aria-label="Large" placeholder="{{__('Item unit price')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ old('unit_price', systemDoubleValue($product->unit_price, 2)) }}" >
                                             </div>
                                         </div>
                                         {{-- <div class="col-md-6">
@@ -175,7 +175,7 @@
                                                 {{ __('VAT') }}<span class="text-danger">&nbsp;*</span>
                                             </strong></label> {!! $errors->has('vat')? '<span class="text-danger text-capitalize">'. $errors->first('vat').'</span>':'' !!}</p>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <input type="text" name="vat" id="vat" class="form-control rounded mask-money" aria-label="Large" placeholder="{{__('Item VAT(%)')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ old('vat', systemDoubleValue($product->vat, 2)) }}"
+                                                <input type="number" name="vat" id="vat" class="form-control rounded text-right" step="0.01" min="0" aria-label="Large" placeholder="{{__('Item VAT(%)')}}" aria-describedby="inputGroup-sizing-sm" required value="{{ old('vat', systemDoubleValue($product->vat, 2)) }}"
                                                 >
                                             </div>
                                         </div>
@@ -245,7 +245,7 @@
                                         <div class="col-md-3">
                                             <label for="inventory_account_id"><strong>{{ request()->has('fixed-assets') ? 'Fixed Asset' : (request()->has('cwip') ? 'CWIP' : 'Inventory') }} Accounts:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_account_id }}">
+                                                <select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_account_id > 0 ? $product->inventory_account_id : ($accountDefaultSettings['inventory_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -254,7 +254,7 @@
                                         <div class="col-md-3">
                                             <label for="cogs_account_id"><strong>{{ __('Consumption Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $product->cogs_account_id }}">
+                                                <select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $product->cogs_account_id > 0 ? $product->cogs_account_id : ($accountDefaultSettings['cogs_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -271,7 +271,7 @@
                                         <div class="col-md-3">
                                             <label for="inventory_adjustments_account_id"><strong>{{ request()->has('fixed-assets') ? 'Fixed Asset' : (request()->has('cwip') ? 'CWIP' : 'Inventory') }} Adjustments Account:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="inventory_adjustments_account_id" id="inventory_adjustments_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_adjustments_account_id }}">
+                                                <select name="inventory_adjustments_account_id" id="inventory_adjustments_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_adjustments_account_id > 0 ? $product->inventory_adjustments_account_id : ($accountDefaultSettings['inventory_adjustments_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -314,7 +314,7 @@
                                         <div class="col-md-3 ledgers-div inventory-div">
                                             <label for="inventory_account_id"><strong><span id="inventory-title">Inventory Accounts</span>:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_account_id }}">
+                                                <select name="inventory_account_id" id="inventory_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_account_id > 0 ? $product->inventory_account_id : ($accountDefaultSettings['inventory_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -323,7 +323,7 @@
                                         <div class="col-md-3 ledgers-div consumption-div">
                                             <label for="cogs_account_id"><strong>{{ __('Consumption Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $product->cogs_account_id }}">
+                                                <select name="cogs_account_id" id="cogs_account_id" class="form-control select-me rounded" data-selected="{{ $product->cogs_account_id > 0 ? $product->cogs_account_id : ($accountDefaultSettings['cogs_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -332,7 +332,7 @@
                                         <div class="col-md-3 ledgers-div sales-div">
                                             <label for="sales_account_id"><strong>{{ __('Sales Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                             <div class="input-group input-group-md mb-3 d-">
-                                                <select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $product->sales_account_id }}">
+                                                <select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $product->sales_account_id > 0 ? $product->sales_account_id : ($accountDefaultSettings['sales_account'] ?? 0) }}">
                                                     {!! $chartOfAccountsOptions !!}
                                                 </select>
                                             </div>
@@ -372,7 +372,7 @@
                                                         {{-- <div class="col-md-4">
                                                             <label for="sales_account_id"><strong>{{ __('Sales Account') }}:<span class="text-danger">&nbsp;*</span></strong></label>
                                                             <div class="input-group input-group-md mb-3 d-">
-                                                                <select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $product->sales_account_id }}">
+                                                                <select name="sales_account_id" id="sales_account_id" class="form-control select-me rounded" data-selected="{{ $product->sales_account_id > 0 ? $product->sales_account_id : ($accountDefaultSettings['sales_account'] ?? 0) }}">
                                                                     {!! $chartOfAccountsOptions !!}
                                                                 </select>
                                                             </div>
@@ -388,7 +388,7 @@
                                                         <div class="col-md-4">
                                                             <label for="inventory_adjustments_account_id"><strong>Accumulated Depreciation Account:<span class="text-danger">&nbsp;*</span></strong></label>
                                                             <div class="input-group input-group-md mb-3 d-">
-                                                                <select name="inventory_adjustments_account_id" id="inventory_adjustments_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_adjustments_account_id }}">
+                                                                <select name="inventory_adjustments_account_id" id="inventory_adjustments_account_id" class="form-control select-me rounded" data-selected="{{ $product->inventory_adjustments_account_id > 0 ? $product->inventory_adjustments_account_id : ($accountDefaultSettings['inventory_adjustments_account'] ?? 0) }}">
                                                                     {!! $chartOfAccountsOptions !!}
                                                                 </select>
                                                             </div>
@@ -459,7 +459,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $.each($('.select-me'), function(index, val) {
-            $(this).select2().val($(this).attr('data-selected')).trigger("change");
+            var $select = $(this);
+            var selected = $select.attr('data-selected');
+
+            $select.select2();
+            if (selected && selected != '0') {
+                $select.val(selected).trigger("change");
+            }
         });
 
 
